@@ -51,5 +51,20 @@ describe("Board", function() {
         board.play_black(2,4);
       }).toThrow(new IllegalMoveError("It's not your turn."));
     });
+
+    it("it should let you play a color, clear the board, and play that color again", function() {
+      expect(board.play_black(4,4)).toEqual(true);
+      board.clear()
+      expect(board.play_black(4,4)).toEqual(true);
+    });
   });
+
+  describe("counting moves", function() {
+    it("move_count should increment with each move", function() {
+      board.play_white(2,4)
+      board.play_black(4,4)
+      expect(board.get('move_count')).toEqual(2)
+    });
+  });
+
 });
