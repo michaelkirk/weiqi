@@ -178,17 +178,7 @@ function NotFound(msg){
   Error.captureStackTrace(this, arguments.callee);
 }
 
-// Routing
-app.all('/', function(req, res) {
-  // Set example session uid for use with socket.io.
-  if (!req.session.uid) {
-    req.session.uid = (0 | Math.random()*1000000);
-  }
-  res.locals({
-    'key': 'value'
-  });
-  res.render('index');
-});
+routes = require('./routes')(app)
 
 // Initiate this after all other routing is done, otherwise wildcard will go crazy.
 var dummyHelpers = new DummyHelper(app);
