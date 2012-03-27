@@ -36,6 +36,7 @@ var socketIo = new require('./lib/socket-io-server.js')(app, sessionStore);
 var authentication = new require('./lib/authentication.js')(app, siteConf);
 // Setup groups for CSS / JS assets
 var assetsSettings = {
+
   'js': {
     'route': /\/static\/js\/[a-z0-9]+\/.*\.js/
     , 'path': './public/js/'
@@ -44,7 +45,11 @@ var assetsSettings = {
       'http://code.jquery.com/jquery-latest.js'
       , siteConf.uri+'/socket.io/socket.io.js' // special case since the socket.io module serves its own js
       , 'jquery.client.js'
-
+      , 'vendor/underscore.js'
+      , 'vendor/backbone.js'
+      , 'models/Board.js'
+      , 'models/Cell.js'
+      , 'views/BoardView.js'
     ]
     , 'debug': true
     , 'postManipulate': {

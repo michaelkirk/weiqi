@@ -4,14 +4,14 @@ describe("Board", function() {
     board.clear();
   });
 
-  it("should be 9 cells wide by default", function() {
-    expect(board.get('width')).toEqual(9);
+  it("should be 19 cells wide by default", function() {
+    expect(board.get('width')).toEqual(19);
   });
 
   it("should have a (width x width) matrix of cells", function() {
-    expect(board.get('cells').length).toEqual(9);
+    expect(board.get('cells').length).toEqual(19);
     _.each(board.get('cells'), function(column) {
-      expect(column.length).toEqual(9);
+      expect(column.length).toEqual(19);
     });
   });
 
@@ -23,7 +23,7 @@ describe("Board", function() {
     });
     it("should do boundary checking", function() {
       expect(function() {
-        board.get_cell(9, 9)
+        board.get_cell(20, 9)
       }).toThrow();
     });
   });

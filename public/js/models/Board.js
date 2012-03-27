@@ -1,6 +1,6 @@
 var Board = Backbone.Model.extend({
   defaults: {
-    width: 9,
+    width: 19,
     move_count:0,
     cells: [],
     last_played: null
