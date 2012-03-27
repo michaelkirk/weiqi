@@ -6,7 +6,7 @@ var settings = {
 };
 
 if (process.env.NODE_ENV == 'production') {
-	settings.uri = 'http://somefancy.url.com';
+	settings.uri = 'http://evening-meadow-5281.herokuapp.com/';
 	settings.port = process.env.PORT || 80; // Joyent SmartMachine uses process.env.PORT
 }
 module.exports = settings;
