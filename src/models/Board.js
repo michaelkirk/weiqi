@@ -1,6 +1,7 @@
 var Board = Backbone.Model.extend({
   defaults: {
     width: 9,
+    move_count:0,
     cells: [],
     last_played: null
   },
@@ -16,6 +17,7 @@ var Board = Backbone.Model.extend({
     if(this.get("last_played") == color) { throw new IllegalMoveError("It's not your turn.") }
     this.get_cell(x,y).play(color);
     this.set("last_played", color);
+    this.set("move_count", this.get('move_count') + 1)
     return true;
   },
   play_black: function(x,y) {
@@ -34,6 +36,8 @@ var Board = Backbone.Model.extend({
       }
     }
     new_board.set('cells', cells)
+    new_board.set('move_count', 0)
+    new_board.set('last_played', null)
   },
   initialize: function() {
     this.clear();
