@@ -25,7 +25,7 @@ Install WeiQi
 
 Tests
 =====
-To run the specs, point your browser to SpecRunner.html locally
+To run the specs, point your browser to: file://<project directory>/spec/SpecRunner.html
 
 Deployment
 ==========
