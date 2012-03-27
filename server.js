@@ -21,9 +21,12 @@ var assetHandler = require('connect-assetmanager-handlers');
 //var notifoMiddleware = require('connect-notifo');
 var DummyHelper = require('./lib/dummy-helper');
 
+// Heroku backwards compatible session store
+var HerokuRedisStore = require('connect-heroku-redis')(express);
+var sessionStore = new HerokuRedisStore;
 // Session store
-var RedisStore = require('connect-redis')(express);
-var sessionStore = new RedisStore;
+// var RedisStore = require('connect-redis')(express);
+// var sessionStore = new RedisStore;
 
 var app = module.exports = express.createServer();
 app.listen(siteConf.port, null);
@@ -107,7 +110,7 @@ app.configure(function() {
 
 	// Send notification to computer/phone @ visit. Good to use for specific events or low traffic sites.
 	if (siteConf.notifoAuth) {
-		app.use(notifoMiddleware(siteConf.notifoAuth, { 
+		app.use(notifoMiddleware(siteConf.notifoAuth, {
 			'filter': function(req, res, callback) {
 				callback(null, (!req.xhr && !(req.headers['x-real-ip'] || req.connection.remoteAddress).match(/192.168./)));
 			}
