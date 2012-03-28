@@ -10,10 +10,10 @@
     });
   }
   $(function() {
-    var board = new Board;
+    var board = new weiqi.Board;
     //just for something fun to look at
     random_fill(board);
-    var board_view = new BoardView(board, $('#app'));
+    var board_view = new weiqi.BoardView(board, $('#app'));
   });
 </script>
 <div id="app">

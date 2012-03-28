@@ -1,5 +1,5 @@
 describe("Board", function() {
-  var board = new Board;
+  var board = new weiqi.Board;
   beforeEach(function() {
     board.clear();
   });
@@ -49,7 +49,7 @@ describe("Board", function() {
       expect(board.play_black(4,4)).toEqual(true);
       expect(function() {
         board.play_black(2,4);
-      }).toThrow(new IllegalMoveError("It's not your turn."));
+      }).toThrow(new weiqi.IllegalMoveError("It's not your turn."));
     });
 
     it("it should let you play a color, clear the board, and play that color again", function() {

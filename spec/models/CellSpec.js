@@ -1,5 +1,5 @@
 describe("Cell", function() {
-  var cell = new Cell;
+  var cell = new weiqi.Cell;
 
   describe("#is_empty", function() {
     it("should start as empty", function() {
@@ -44,7 +44,7 @@ describe("Cell", function() {
       it("should error", function() {
         expect(function() {
           cell.play('black')
-        }).toThrow(new IllegalMoveError("Can only play in empty cells."));
+        }).toThrow(new weiqi.IllegalMoveError("Can only play in empty cells."));
       });
     });
 

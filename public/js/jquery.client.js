@@ -3,47 +3,24 @@
 
 (function ($) {
 
-	// Shorthand jQuery selector cache. Only use on selectors for the DOM that won't change.
-	var $$ = (function() {
-		var cache = {};
-		return function(selector) {
-			if (!cache[selector]) {
-				cache[selector] = $(selector);
-			}
-			return cache[selector];
-		};
-	})();
-
 	var socketIoClient = io.connect(null, {
 		'port': '#socketIoPort#'
 		, 'rememberTransport': true
 		, 'transports': ['websocket', 'xhr-multipart', 'xhr-polling', 'htmlfile', 'flashsocket']
 	});
 	socketIoClient.on('connect', function () {
-		$$('#connected').addClass('on').find('strong').text('Online');
+    console.log('connected')
 	});
 
-	var image = $.trim($('#image').val());
-	var service = $.trim($('#service').val());
 	socketIoClient.on('message', function(msg) {
-		var $li = $('<li>').text(msg).append($('<img class="avatar">').attr('src', image));
-		if (service) {
-			$li.append($('<img class="service">').attr('src', service));
-		}
-		$$('#bubble ul').prepend($li);
-		$$('#bubble').scrollTop(98).stop().animate({
-			'scrollTop': '0'
-		}, 500);
-		setTimeout(function() {
-			$li.remove();
-		}, 5000);
 
+    console.log("recvd. message: ", msg)
 		setTimeout(function() {
-			socketIoClient.send('pong');
+		//	socketIoClient.send('pong');
 		}, 1000);
 	});
 
 	socketIoClient.on('disconnect', function() {
-		$$('#connected').removeClass('on').find('strong').text('Offline');
+    console.log('disconnected')
 	});
 })(jQuery);
