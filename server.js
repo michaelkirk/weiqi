@@ -54,8 +54,8 @@ var assetsSettings = {
     , 'debug': true
     , 'postManipulate': {
       '^': [
-        assetHandler.uglifyJsOptimize
-        , function insertSocketIoPort(file, path, index, isLast, callback) {
+        //assetHandler.uglifyJsOptimize,
+         function insertSocketIoPort(file, path, index, isLast, callback) {
           callback(file.replace(/.#socketIoPort#./, siteConf.port));
         }
       ]
