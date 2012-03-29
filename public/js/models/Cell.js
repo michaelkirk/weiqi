@@ -1,9 +1,4 @@
-(function(){
-
-  if(typeof exports === "undefined")
-    this['weiqi'] = this['weiqi'] || {};
-  else
-    this['weiqi'] = exports;
+var _init = function(weiqi){
 
   weiqi.IllegalMoveError = function(message) {
       this.name = "IllegalMoveError";
@@ -11,7 +6,7 @@
   }
   weiqi.IllegalMoveError.prototype = Error.prototype;
 
-  weiqi.Cell = Backbone.Model.extend({
+  weiqi.Cell = this.Backbone.Model.extend({
     defaults: {
       holds: null,
       x: null,
@@ -34,4 +29,14 @@
       return this.get('holds') == null
     },
   });
-})();
+
+  return weiqi
+}
+
+
+if(typeof exports === "undefined"){
+  this['weiqi'] = this['weiqi'] || {};
+  weiqi = _init(weiqi)
+}
+else
+  module.exports = _init;

@@ -1,11 +1,6 @@
-(function(){
+var _init = function(weiqi){
 
-  if(typeof exports === "undefined")
-    this['weiqi'] = this['weiqi'] || {};
-  else
-    this['weiqi'] = exports;
-
-  weiqi.Board = Backbone.Model.extend({
+  weiqi.Board = this.Backbone.Model.extend({
     defaults: {
       width: 19,
       move_count:0,
@@ -50,4 +45,13 @@
       this.clear();
     },
   });
-})();
+
+  return weiqi
+}
+
+if(typeof exports === "undefined"){
+  this['weiqi'] = this['weiqi'] || {};
+  weiqi = _init(weiqi)
+}
+else
+  module.exports = _init;
