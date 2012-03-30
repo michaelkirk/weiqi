@@ -135,7 +135,7 @@ app.configure('production', function(){
   });
 });
 
-// Template helpers
+// all views (templates) have access to the following variables
 app.dynamicHelpers({
   'assetsCacheHashes': function(req, res) {
     return assetsMiddleware.cacheHashes;
@@ -145,33 +145,11 @@ app.dynamicHelpers({
   }
 });
 
-// Error handling
-app.error(function(err, req, res, next){
-  // Log the error to Airbreak if available, good for backtracking.
-  console.log(err);
-  if (airbrake) { airbrake.notify(err); }
-
-  if (err instanceof NotFound) {
-    res.render('errors/404');
-  } else {
-    res.render('errors/500');
-  }
-});
-function NotFound(msg){
-  this.name = 'NotFound';
-  Error.call(this, msg);
-  Error.captureStackTrace(this, arguments.callee);
-}
-
 // build a set of application routes
 routes = require('./routes')(app)
 
 // Initiate this after all other routing is done, otherwise wildcard will go crazy.
+// :(
 var dummyHelpers = new DummyHelper(app);
-
-// If all fails, hit em with the 404
-app.all('*', function(req, res){
-  throw new NotFound;
-});
 
 console.log('Running in '+(process.env.NODE_ENV || 'development')+' mode @ '+siteConf.uri);
