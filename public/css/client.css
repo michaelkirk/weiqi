@@ -1,22 +1,13 @@
 html {
-  background-color:#222;
 	height: 100%;
 }
 body {
-	color: #fff;
 	margin: 0;
 	font: 14px 'helvetica neue', helvetica, arial, sans-serif;
 	text-rendering: optimizeLegibility;
 }
 img {
 	-ms-interpolation-mode:bicubic;
-}
-a {
-	color: #000;
-	text-decoration: none;
-}
-a:hover {
-	text-decoration: underline;
 }
 strong {
 	font-weight: bold;
