@@ -39,7 +39,7 @@ module.exports = function(app) {
   app.error(function(err, req, res, next){
     // Log the error to Airbreak if available, good for backtracking.
     console.log(err);
-    if (airbrake) { airbrake.notify(err); }
+    //if (airbrake) { airbrake.notify(err); }
 
     if (err instanceof NotFound) {
       res.render('errors/404', {status: 404});
