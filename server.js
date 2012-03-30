@@ -96,7 +96,9 @@ var assetsMiddleware = assetManager(assetsSettings);
 
 // Settings
 app.configure(function() {
-  app.set('view engine', 'ejs');
+  app.set('view engine', 'jade');
+  // enable template inheritance by turning off layout
+  app.set('view options', { layout: false });
   app.set('views', __dirname+'/views');
 });
 

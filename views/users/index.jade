@@ -1,0 +1,12 @@
+extends ../layout
+
+block body
+  h1 Users
+
+  ul
+    - users.forEach(function(user, id){
+      li
+        a(href="/users/"+id) #{user.name}:
+        a(href="/users/"+id+"/edit", class="edit") edit
+    - })
+

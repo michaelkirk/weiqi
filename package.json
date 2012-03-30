@@ -13,6 +13,7 @@
    "socket.io" : ">=0.7.8",
    "connect-redis" : ">=1.0.7",
    "redis-url": ">0",
-   "everyauth" : ">=0.2.18"
+   "everyauth" : ">=0.2.18",
+   "jade" : "latest"
  }
 }
