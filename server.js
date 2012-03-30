@@ -113,21 +113,6 @@ app.configure(function() {
   app.use(authentication.middleware.auth());
   app.use(authentication.middleware.normalizeUserData());
   app.use(express['static'](__dirname+'/public', {maxAge: 86400000}));
-
-  // Send notification to computer/phone @ visit. Good to use for specific events or low traffic sites.
-  if (siteConf.notifoAuth) {
-    app.use(notifoMiddleware(siteConf.notifoAuth, {
-      'filter': function(req, res, callback) {
-        callback(null, (!req.xhr && !(req.headers['x-real-ip'] || req.connection.remoteAddress).match(/192.168./)));
-      }
-      , 'format': function(req, res, callback) {
-        callback(null, {
-          'title': ':req[x-real-ip]/:remote-addr @ :req[host]'
-          , 'message': ':response-time ms - :date - :req[x-real-ip]/:remote-addr - :method :user-agent / :referrer'
-        });
-      }
-    }));
-  }
 });
 
 // ENV based configuration
@@ -178,6 +163,7 @@ function NotFound(msg){
   Error.captureStackTrace(this, arguments.callee);
 }
 
+// build a set of application routes
 routes = require('./routes')(app)
 
 // Initiate this after all other routing is done, otherwise wildcard will go crazy.
