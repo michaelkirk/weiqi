@@ -1,11 +1,11 @@
 html {
-	gradient: #222_#000;
+  background-color:#222;
 	height: 100%;
 }
 body {
-	color: #000;
+	color: #fff;
 	margin: 0;
-	font: 12px 'helvetica neue', helvetica, arial, sans-serif;
+	font: 14px 'helvetica neue', helvetica, arial, sans-serif;
 	text-rendering: optimizeLegibility;
 }
 img {
