@@ -105,6 +105,7 @@ app.configure(function() {
 // Middleware
 app.configure(function() {
   app.use(express.bodyParser());
+  app.use(express.methodOverride());
   app.use(express.cookieParser());
   app.use(assetsMiddleware);
   app.use(express.session({

@@ -14,7 +14,7 @@ module.exports = function(app) {
   app.get('/users/:id', user.view);
   app.get('/users/:id/view', user.view);
   app.get('/users/:id/edit', user.edit);
-  app.post('/users/:id/edit', user.update);
+  app.put('/users/:id/edit', user.update);
 
   // board
   app.all('/boards', board.list);
