@@ -14,6 +14,8 @@ module.exports = function(app) {
   app.get('/users/:id', user.view);
   app.get('/users/:id/view', user.view);
   app.get('/users/:id/edit', user.edit);
+  // should be put, but raw html forms in e.g. firefox 
+  // do not support "PUT" as method
   app.post('/users/:id/edit', user.update);
 
   // board
