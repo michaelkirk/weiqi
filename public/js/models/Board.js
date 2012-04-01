@@ -41,6 +41,9 @@ var _init = function(weiqi){
       new_board.set('move_count', 0)
       new_board.set('last_played', null)
     },
+    width: function() {
+      return this.get('width');
+    },
     initialize: function() {
       this.clear();
     },

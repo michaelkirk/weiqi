@@ -50,6 +50,7 @@ var assetsSettings = {
       , 'models/Board.js'
       , 'models/Cell.js'
       , 'views/BoardView.js'
+      , 'views/CellView.js'
     ]
     , 'debug': true
     , 'postManipulate': {
