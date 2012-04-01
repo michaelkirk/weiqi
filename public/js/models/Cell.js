@@ -18,7 +18,7 @@ var _init = function(weiqi){
       }
 
       if(this.is_empty()) {
-        this.set('holds', piece)
+        this.set('holds', piece);
         return true;
       }
       else {
@@ -26,11 +26,11 @@ var _init = function(weiqi){
       }
     },
     is_empty: function() {
-      return this.get('holds') == null
+      return this.get('holds') == null;
     },
   });
 
-  return weiqi
+  return weiqi;
 }
 
 

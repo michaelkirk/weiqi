@@ -16,6 +16,6 @@ block body
       var board = new weiqi.Board;
       //just for something fun to look at
       random_fill(board);
-      var board_view = new weiqi.BoardView(board, $('#app'));
+      var board_view = new weiqi.BoardView({model: board, el: $('#app')});
     });
   div#app

@@ -7,17 +7,15 @@
 
   weiqi.BoardView = Backbone.View.extend({
     tagName: "div",
-    initialize: function(board, $el) {
-      this.board = board;
+    initialize: function() {
       this.cells = [];
       var board_view = this;
-      _.each(this.board.get('cells'), function(rows) {
+      _.each(this.model.get('cells'), function(rows) {
         _.each(rows, function(cell) {
-          board_view.cells.push(new weiqi.CellView(cell, board_view));
+          board_view.cells.push(new weiqi.CellView({model: cell}));
         });
       });
 
-      this.$el = $el;
       this.$el.addClass('jgo_board');
       this.render();
     },
