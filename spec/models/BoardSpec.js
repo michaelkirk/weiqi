@@ -67,4 +67,16 @@ describe("Board", function() {
     });
   });
 
+  describe("serialization", function() {
+    it("should be able to serialize the board state to json", function() {
+      board.get('cells')[0][1].play("black");
+      var rehydrated = JSON.parse(JSON.stringify(board));
+      expect(rehydrated.width).toEqual(19);
+      expect(rehydrated.cells.length).toEqual(19);
+      expect(rehydrated.cells[0].length).toEqual(19);
+      expect(rehydrated.cells[0][1]['holds']).toEqual("black");
+      expect(rehydrated.cells[0][0]['holds']).toEqual(null);
+    });
+  })
+
 });
