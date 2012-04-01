@@ -20,6 +20,12 @@
       this.$el.addClass('jgo_c');
       this.$el.attr('style', 'top: ' + this.y + 'px; left: ' + this.x + 'px;"')
     },
+    events: {
+      "click": "play"
+    },
+    play: function() {
+      this.model.play("black");
+    },
     render: function() {
       if(this.model.get('holds') == 'black') {
         this.$el.removeClass('jgo_w');
