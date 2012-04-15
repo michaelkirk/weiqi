@@ -44,9 +44,9 @@ var assetsSettings = {
     , 'files': [
       'http://code.jquery.com/jquery-latest.js'
       , siteConf.uri+'/socket.io/socket.io.js' // special case since the socket.io module serves its own js
-      , 'jquery.client.js'
       , 'vendor/underscore.js'
       , 'vendor/backbone.js'
+      , 'weiqi.js'
       , 'models/Board.js'
       , 'models/Cell.js'
       , 'views/BoardView.js'
@@ -82,8 +82,8 @@ var assetsSettings = {
 };
 // Add auto reload for CSS/JS/templates when in development
 app.configure('development', function(){
-  assetsSettings.js.files.push('jquery.frontend-development.js');
-  assetsSettings.css.files.push('frontend-development.css');
+//  assetsSettings.js.files.push('jquery.frontend-development.js');
+//  assetsSettings.css.files.push('frontend-development.css');
   [['js', 'updatedContent'], ['css', 'updatedCss']].forEach(function(group) {
     assetsSettings[group[0]].postManipulate['^'].push(function triggerUpdate(file, path, index, isLast, callback) {
       callback(file);
