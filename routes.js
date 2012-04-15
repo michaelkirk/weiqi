@@ -1,12 +1,10 @@
-var index = require('./controllers/index');
-var user = require('./controllers/users');
-var board = require('./controllers/boards');
-
 module.exports = function(app) {
 
+  // pass the app into each controller
+  var index = require('./controllers/index')(app);
+  var user = require('./controllers/users')(app);
+  var board = require('./controllers/boards')(app);
 
-  // some main pages
-  app.all('/', index.index);
 
   // user
   app.all('/users', user.list);
@@ -19,12 +17,14 @@ module.exports = function(app) {
   app.post('/users/:id/edit', user.update);
 
   // board
+  app.get('/', board.create);
   app.all('/boards', board.list);
+  app.post('/boards/new', board.create);
   app.all('/boards/:id/:op?', board.load);
   app.get('/boards/:id', board.view);
   app.get('/boards/:id/view', board.view);
   app.get('/boards/:id/edit', board.edit);
-  app.put('/boards/:id/edit', board.update);
+  app.put('/boards/:id', board.update);
 
   function NotFound(msg){
     this.name = 'NotFound';
