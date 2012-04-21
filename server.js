@@ -1,6 +1,5 @@
 // Fetch the site configuration
 var siteConf = require('./lib/getConfig');
-
 process.title = siteConf.uri.replace(/http:\/\/(www)?/, '');
 
 var airbrake;
@@ -24,11 +23,13 @@ var DummyHelper = require('./lib/dummy-helper');
 // Heroku backwards compatible session store
 var HerokuRedisStore = require('connect-heroku-redis')(express);
 var sessionStore = new HerokuRedisStore;
-// Session store
-// var RedisStore = require('connect-redis')(express);
-// var sessionStore = new RedisStore;
 
 var app = module.exports = express.createServer();
+
+// Set up the app database connection
+var redis = require('redis')
+app.db = redis.createClient()
+
 app.listen(siteConf.port, null);
 
 // Setup socket.io server
