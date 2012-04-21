@@ -1,5 +1,6 @@
 var settings = {
 	'sessionSecret': 'sessionSecret'
+  , 'bcrypt-salt':'$2a$10$24CiVNkItY7bu/gY05aD/e'
 	, 'port': 8000
 	, 'uri': 'http://localhost:8000' // Without trailing /
 	, 'debug': (process.env.NODE_ENV !== 'production')
