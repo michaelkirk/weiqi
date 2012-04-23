@@ -1,0 +1,7 @@
+extends ../layout
+
+block body
+   
+  div#create-board
+    form(method="post", action="/boards/new")
+      input(type="submit", value="create-new-board")
