@@ -14,9 +14,9 @@
    "connect-redis" : ">=1.0.7",
    "redis-url": ">0",
    "everyauth" : ">=0.2.18",
-   "jade" : "latest"
-   "bcrypt" : "latest"
-   "redis" : "latest"
+   "jade" : "latest",
+   "bcrypt" : "latest",
+   "redis" : "latest",
    "hiredis" : "latest"
  }
 }
