@@ -17,6 +17,7 @@
    "jade" : "latest",
    "bcrypt" : "latest",
    "redis" : "latest",
-   "hiredis" : "latest"
+   "hiredis" : "latest",
+   "jasmine-node" : "latest"
  }
 }

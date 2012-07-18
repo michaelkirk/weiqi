@@ -1,3 +1,8 @@
+if(!(typeof exports == "undefined")){
+  require('../../lib/weiqi-models.js');
+  require('jasmine-node');
+}
+
 describe("Cell", function() {
   var cell = new weiqi.Cell;
 

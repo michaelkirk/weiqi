@@ -1,5 +1,11 @@
+if(!(typeof exports == "undefined")){
+  require('../../lib/weiqi-models.js');
+  require('jasmine-node');
+}
+
 describe("Board", function() {
-  var board = new weiqi.Board;
+
+  var board = new weiqi.Board();
   beforeEach(function() {
     board.clear();
   });
