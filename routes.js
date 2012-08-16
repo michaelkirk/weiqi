@@ -36,7 +36,8 @@ module.exports = function(app) {
   });
 
   // Error handling
-  app.error(function(err, req, res, next){
+  // https://github.com/visionmedia/express/wiki/Migrating-from-2.x-to-3.x
+  app.use(function(err, req, res, next){
     // Log the error to Airbreak if available, good for backtracking.
     console.log(err);
     //if (airbrake) { airbrake.notify(err); }

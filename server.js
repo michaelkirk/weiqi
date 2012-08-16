@@ -140,7 +140,7 @@ app.configure('production', function(){
 });
 
 // all views (templates) have access to the following variables
-app.dynamicHelpers({
+app.locals({
   'assetsCacheHashes': function(req, res) {
     return assetsMiddleware.cacheHashes;
   }
