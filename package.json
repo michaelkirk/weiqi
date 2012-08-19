@@ -15,7 +15,7 @@
    "redis-url": ">0",
    "everyauth" : ">=0.2.18",
    "jade" : "latest",
-   "bcrypt" : "latest",
+   "bcrypt" : "0.5.0",
    "redis" : "latest",
    "hiredis" : "latest",
    "jasmine-node" : "latest"

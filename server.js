@@ -15,6 +15,7 @@ process.addListener('uncaughtException', function (err, stack) {
 
 var connect = require('connect');
 var express = require('express');
+var http = require('http');
 var assetManager = require('connect-assetmanager');
 var assetHandler = require('connect-assetmanager-handlers');
 //var notifoMiddleware = require('connect-notifo');
@@ -24,16 +25,18 @@ var DummyHelper = require('./lib/dummy-helper');
 var HerokuRedisStore = require('connect-heroku-redis')(express);
 var sessionStore = new HerokuRedisStore;
 
-var app = module.exports = express.createServer();
+var app = module.exports = express();
 
 // Set up the app database connection
-var redis = require('redis')
-app.db = redis.createClient()
+var redis = require('redis');
+app.db = redis.createClient();
 
-app.listen(siteConf.port, null);
+// Build the http server, bind it to a port
+var server = http.createServer(app);
+server.listen(siteConf.port, null);
 
 // Setup socket.io server
-var socketIo = new require('./lib/socket-io-server.js')(app, sessionStore);
+var socketIo = require('socket.io').listen(server, sessionStore)
 var authentication = new require('./lib/authentication.js')(app, siteConf);
 // Setup groups for CSS / JS assets
 var assetsSettings = {
@@ -81,8 +84,9 @@ var assetsSettings = {
     }
   }
 };
+
 // Add auto reload for CSS/JS/templates when in development
-app.configure('development', function(){
+if('development' == app.get('env')){
 //  assetsSettings.js.files.push('jquery.frontend-development.js');
 //  assetsSettings.css.files.push('frontend-development.css');
   [['js', 'updatedContent'], ['css', 'updatedCss']].forEach(function(group) {
@@ -91,38 +95,32 @@ app.configure('development', function(){
       dummyHelpers[group[1]]();
     });
   });
-});
+}
 
 var assetsMiddleware = assetManager(assetsSettings);
 
 // Settings
-app.configure(function() {
-  app.set('view engine', 'jade');
-  // enable template inheritance by turning off layout
-  app.set('view options', { layout: false });
-  app.set('views', __dirname+'/views');
-});
+app.set('view engine', 'jade');
+// enable template inheritance by turning off layout
+app.set('view options', { layout: false });
+app.set('views', __dirname+'/views');
 
 // Middleware
-app.configure(function() {
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(express.cookieParser());
-  app.use(assetsMiddleware);
-  app.use(express.session({
-    'store': sessionStore
-    , 'secret': siteConf.sessionSecret
-  }));
-  app.use(express.logger({format: ':response-time ms - :date - :req[x-real-ip] - :method :url :user-agent / :referrer'}));
-  app.use(authentication.middleware.auth());
-  app.use(authentication.middleware.normalizeUserData());
-  app.use(express['static'](__dirname+'/public', {maxAge: 86400000}));
-});
-
-// ENV based configuration
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(express.cookieParser());
+app.use(assetsMiddleware);
+app.use(express.session({
+  'store': sessionStore
+  , 'secret': siteConf.sessionSecret
+}));
+app.use(express.logger({format: ':response-time ms - :date - :req[x-real-ip] - :method :url :user-agent / :referrer'}));
+app.use(authentication.middleware.auth());
+app.use(authentication.middleware.normalizeUserData());
+app.use(express['static'](__dirname+'/public', {maxAge: 86400000}));
 
 // Show all errors and keep search engines out using robots.txt
-app.configure('development', function(){
+if('development' == app.get('env')){
   app.use(express.errorHandler({
     'dumpExceptions': true
     , 'showStack': true
@@ -130,14 +128,15 @@ app.configure('development', function(){
   app.all('/robots.txt', function(req,res) {
     res.send('User-agent: *\nDisallow: /', {'Content-Type': 'text/plain'});
   });
-});
+}
+
 // Suppress errors, allow all search engines
-app.configure('production', function(){
+if('production' == app.get('env')){
   app.use(express.errorHandler());
   app.all('/robots.txt', function(req,res) {
     res.send('User-agent: *', {'Content-Type': 'text/plain'});
   });
-});
+}
 
 // all views (templates) have access to the following variables
 app.locals({
@@ -153,7 +152,6 @@ app.locals({
 routes = require('./routes')(app)
 
 // Initiate this after all other routing is done, otherwise wildcard will go crazy.
-// :(
 var dummyHelpers = new DummyHelper(app);
 
-console.log('Running in '+(process.env.NODE_ENV || 'development')+' mode @ '+siteConf.uri);
+console.log('Running in '+ app.get('env') +' mode @ '+siteConf.uri);
