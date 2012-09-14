@@ -3,51 +3,70 @@
 
 var _init = function (weiqi) {
 
-	var socketClient = io.connect(null, {
-		'port': '#socketIoPort#'
-		, 'rememberTransport': true
-		, 'transports': ['websocket', 'xhr-multipart', 'xhr-polling', 'htmlfile', 'flashsocket']
-	});
-
   // a general app for the weiqi site
   weiqi.site = function(initCallback){
 
-   this.socketClient = socketClient;
+  this.socketClient = io.connect('http://localhost::#socketIoPort#//weiqi');
 
-    // global '/' channel
-    this.socketClient
-      .of('/')
+   this.socketClient
+      .of('/weiqi')
+      .on('connecting', function () {
+        console.log('connecting!')
+      })
       .on('connect', function () {
-        console.log('connected');
-        if(typeof initFunc == 'function')
-          // so we are connected, 
-          // is there anything we want to do immediately?
-          initCallback();
-    });
-    this.socketClient
-      .of('/')
+         console.log('connected');
+         if(typeof initFunc == 'function')
+           // so we are connected, 
+           // is there anything we want to do immediately?
+           initCallback();
+      })
+      .on('connect_failed', function () {console.log('connection failed')})
       .on('disconnect', function() {
-        console.log('disconnected!!!!!')
-    });
-    this.socketClient
-      .of('/')
-      .on('error', function() {
-        console.log('error!')
-    });
-
-    this.socketClient
-      .of('/')
-      .on('message', function(msg) {
+          console.log('client of:"/weiqi" - disconnected')
+      })
+      .on('error', function(e) {
+          console.log('client of:"/weiqi" - error', e)
+      })
+      .on('anything', function(data, callback) {
+        console.log('anything', data, callback)
+      })
+      .on('message', function(msg, callback) {
         console.log("recvd. message: ", msg)
         setTimeout(function() {
-        	socketClient.send('pong');
+          console.log('sending pong');
+          callback('pong');
         }, 1000);
-    });
+      });
   }
-    // a simple game app
+
+  // a simple game app
   weiqi.game = function(boardId){
 
+/*
+     function random_fill(board){
+      cells = board.get('cells');
+      _.each(cells, function(columns) {
+        _.each(columns, function(cell) {
+          random = ['white', 'black', null][Math.round(Math.random() * 3)]
+          cell.set('holds', random);
+        });
+      });
+    }
+    $(function() {
+      var board = new weiqi.Board;
+      //just for something fun to look at
+      random_fill(board);
+      var board_view = new weiqi.BoardView(board, $('#app'));
+    });
+*/
+
     this.socketClient = socketClient;
+    this.board = new wieqi.Board();
+  }
+
+  // a test rig to experiment with socket.io
+  weiqi.chat = function(path){
+    this.path = path;
     this.board = new wieqi.Board();
   }
   return weiqi;

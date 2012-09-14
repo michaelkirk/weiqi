@@ -22,8 +22,8 @@ var assetHandler = require('connect-assetmanager-handlers');
 var DummyHelper = require('./lib/dummy-helper');
 
 // Heroku backwards compatible session store
-var HerokuRedisStore = require('connect-heroku-redis')(express);
-var sessionStore = new HerokuRedisStore;
+var redis = require('connect-heroku-redis')(express);
+var sessionStore = new redis;
 
 var app = module.exports = express();
 
@@ -36,7 +36,7 @@ var server = http.createServer(app);
 server.listen(siteConf.port, null);
 
 // Setup socket.io server
-var socketIo = require('socket.io').listen(server, sessionStore)
+var socketIo = require('./lib/socket-io-server.js')(server, sessionStore, redis)
 var authentication = new require('./lib/authentication.js')(app, siteConf);
 // Setup groups for CSS / JS assets
 var assetsSettings = {

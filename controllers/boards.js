@@ -1,4 +1,5 @@
 var underscore = require("underscore");
+require('../lib/weiqi-models.js')
 
 module.exports = function(app){
 
@@ -21,10 +22,11 @@ module.exports = function(app){
   }
   boards.create = function(req, res){
 
-    debugger
+    require('repl').start()
     res.render('boards/create', {
               action: 'create'
     });
+
   }
   boards.edit = function(req, res){
     res.render('boards/stub', {

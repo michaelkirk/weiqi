@@ -18,6 +18,7 @@
    "bcrypt" : "0.5.0",
    "redis" : "latest",
    "hiredis" : "latest",
-   "jasmine-node" : "latest"
+   "jasmine-node" : "latest",
+   "cookie" : "latest"
  }
 }
