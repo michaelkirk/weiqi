@@ -30,13 +30,9 @@ module.exports = function(app) {
     Error.captureStackTrace(this, arguments.callee);
   }
 
-  // If all fails, raise 404
-  app.all('*', function(req, res){
-    throw new NotFound;
-  });
-
   // Error handling
   // https://github.com/visionmedia/express/wiki/Migrating-from-2.x-to-3.x
+  /*
   app.use(function(err, req, res, next){
     // Log the error to Airbreak if available, good for backtracking.
     console.log(err);
@@ -47,5 +43,5 @@ module.exports = function(app) {
     } else {
       res.render('errors/500', {error: err, status: 500});
     }
-  });
+  });*/
 }

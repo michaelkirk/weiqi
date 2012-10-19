@@ -11,11 +11,11 @@ var _init = function (weiqi) {
    this.socketClient
       .of('/weiqi')
       .on('connecting', function () {
-        console.log('connecting!')
+        console.log('connecting to /weiqi')
       })
       .on('connect', function () {
-         console.log('connected');
-         if(typeof initFunc == 'function')
+         console.log('connected to /weiqi');
+         if(typeof initCallback == 'function')
            // so we are connected, 
            // is there anything we want to do immediately?
            initCallback();
@@ -30,7 +30,7 @@ var _init = function (weiqi) {
       .on('anything', function(data, callback) {
         console.log('anything', data, callback)
       })
-      .on('message', function(msg, callback) {
+      .on('news', function(msg, callback) {
         console.log("recvd. message: ", msg)
         setTimeout(function() {
           console.log('sending pong');

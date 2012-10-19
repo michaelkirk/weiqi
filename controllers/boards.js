@@ -22,7 +22,6 @@ module.exports = function(app){
   }
   boards.create = function(req, res){
 
-    require('repl').start()
     res.render('boards/create', {
               action: 'create'
     });
