@@ -1,5 +1,6 @@
 describe("Cell", function() {
-  var cell = new weiqi.Cell;
+  var board = new weiqi.Board();
+  var cell = new weiqi.Cell({x:1, y:2, board: board});
 
   describe("#is_empty", function() {
     it("should start as empty", function() {
@@ -36,6 +37,11 @@ describe("Cell", function() {
           }).toThrow();
         });
       });
+      it("should update the board's attributes", function() {
+        expect(board.get('cells')[1][2].holds).toBe(null);
+        cell.play("black")
+        expect(board.get('cells')[1][2].holds).toBe("black");
+      });
     });
     describe("when the cell is not empty", function() {
       beforeEach(function() {
@@ -47,6 +53,5 @@ describe("Cell", function() {
         }).toThrow(new weiqi.IllegalMoveError("Can only play in empty cells."));
       });
     });
-
   });
 });
