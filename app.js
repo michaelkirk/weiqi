@@ -9,20 +9,7 @@ var express = require('express')
   , http = require('http')
   , path = require('path');
 
-var redis = require('redis')
-  // heroku compatible version of connect-redis
-  , redisStore = require('connect-redis')(express);
-
 var app = express();
-
-app.configure('production', function () {
-  var redisUrl = require('url').parse(process.env.REDISTOGO_URL),
-  redisAuth = redisUrl.auth.split(':');
-  app.set('redisHost', redisUrl.hostname);
-  app.set('redisPort', redisUrl.port);
-  app.set('redisDb', redisAuth[0]);
-  app.set('redisPass', redisAuth[1]);
-});
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
@@ -33,8 +20,20 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser('yae2ieghiegh7Ahdie4U'));
+
+  var redisStore = require('connect-redis')(express);
+  var radis;
+  if (process.env.REDISTOGO_URL) {
+    var rtg = require("url").parse(process.env.REDISTOGO_URL);
+    redis = require("redis").createClient(rtg.port, rtg.hostname);
+
+    redis.auth(rtg.auth.split(":")[1]);
+  } else {
+    redis = require("redis").createClient();
+  }
+
   app.use(express.session({
-    store: new redisStore({client: redis.createClient()})   
+    store: new redisStore({client: redis})   
   }));
   app.use(app.router);
   // app.use(require('less-middleware')({ src: __dirname + '/public' }));
