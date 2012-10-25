@@ -1,7 +1,10 @@
 {
   "name": "weiqi",
   "version": "0.0.1",
-  "engines": {"node" : "0.8.x"},
+  "engines": {
+    "node": "0.8.x",
+    "npm": "1.1.x"
+  },
   "private": true,
   "scripts": {
     "start": "node app"
