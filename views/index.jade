@@ -1,9 +1,6 @@
 extends layout
 
-block content
-  h1= title
-  p Welcome to #{title}
-
+block body 
   script
     function random_fill(board){
       _.each(board.cells, function(columns) {
@@ -14,9 +11,10 @@ block content
       });
     }
     $(function() {
-      var board = new weiqi.Board;
+      var board = new weiqi.Board();
       //just for something fun to look at
       random_fill(board);
       var board_view = new weiqi.BoardView({model: board, el: $('#app')});
     });
   div#app
+
