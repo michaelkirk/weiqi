@@ -4,15 +4,25 @@ var _init = function(weiqi){
     defaults: {
       width: 19,
       move_count:0,
-      cells: [],
       last_played: null
     },
     get_cell: function(x,y) {
       if(x < this.get('width') && y < this.get('width')){
-        return this.get('cells')[x][y];
+        return this.cells[x][y];
       }
       else {
         throw new Error("attempting to accessing outside of game board");
+      }
+    },
+    parse: function(attributes) {
+      var cells_attr = attributes['cells'];
+      this.set('width', cells_attr.length);
+      this.cells = [];
+      for(x=0; x < this.get('width'); x++){
+        this.cells[x] = []
+        for(y=0; y < this.get('width'); y++){
+          this.cells[x][y] = new weiqi.Cell({x: x, y: y, holds: cells_attr[x][y].holds, board: this});
+        }
       }
     },
     play: function(color, x, y) {
@@ -29,21 +39,38 @@ var _init = function(weiqi){
       return this.play("white", x, y);
     },
     clear: function() {
-      var new_board = this;
-      var cells = [];
-      for(x=0; x < new_board.get('width'); x++){
-        cells.push([])
-        for(y=0; y < new_board.get('width'); y++){
-          cells[x].push(new weiqi.Cell({x: x, y: y}));
+      _.each(this.cells, function(column) {
+        _.each(column, function(cell) {
+          cell.set('holds', null);
+        });
+      });
+      this.set('move_count', 0)
+      this.set('last_played', null)
+    },
+    width: function() {
+      return this.get('width');
+    },
+    initialize: function(attributes) {
+      this.set('cells', this.blank_board(this.get('width')));
+
+      this.cells = [];
+      for(x=0; x < this.get('width'); x++){
+        this.cells[x] = [];
+        for(y=0; y < this.get('width'); y++){
+          this.cells[x][y] = new weiqi.Cell({x: x, y: y, board: this});
         }
       }
-      new_board.set('cells', cells)
-      new_board.set('move_count', 0)
-      new_board.set('last_played', null)
     },
-    initialize: function() {
-      this.clear();
-    },
+    blank_board: function(width) {
+      var cells = [];
+      for(x=0; x < width; x++){
+        cells[x] = [];
+        for(y=0; y < width; y++){
+          cells[x][y] = {x: x, y: y, holds: null};
+        }
+      }
+      return cells;
+    }
   });
 
   return weiqi

@@ -3,3 +3,20 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+
+  script
+    function random_fill(board){
+      _.each(board.cells, function(columns) {
+        _.each(columns, function(cell) {
+          random = ['white', 'black', null][Math.round(Math.random() * 3)]
+          cell.set('holds', random);
+        });
+      });
+    }
+    $(function() {
+      var board = new weiqi.Board;
+      //just for something fun to look at
+      random_fill(board);
+      var board_view = new weiqi.BoardView({model: board, el: $('#app')});
+    });
+  div#app
