@@ -35,14 +35,16 @@ Install WeiQi
 
 Tests
 =====
-To run the specs, point your browser to: file://<project directory>/spec/SpecRunner.html
+To run the specs, point your browser to: file://&lt;project directory&gt;/spec/SpecRunner.html
 
 Deployment
 ==========
 Add heroku to your git remotes once
+
     $> git remote add heroku git@heroku.com:evening-meadow-5281.git
 
 To deploy, push your branch to heroku
+
     $> git pull # make sure you're up to date
     $> git push heroku
 
