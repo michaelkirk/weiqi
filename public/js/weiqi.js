@@ -41,25 +41,6 @@ var _init = function (weiqi) {
 
   // a simple game app
   weiqi.game = function(boardId){
-
-/*
-     function random_fill(board){
-      cells = board.get('cells');
-      _.each(cells, function(columns) {
-        _.each(columns, function(cell) {
-          random = ['white', 'black', null][Math.round(Math.random() * 3)]
-          cell.set('holds', random);
-        });
-      });
-    }
-    $(function() {
-      var board = new weiqi.Board;
-      //just for something fun to look at
-      random_fill(board);
-      var board_view = new weiqi.BoardView(board, $('#app'));
-    });
-*/
-
     this.socketClient = socketClient;
     this.board = new wieqi.Board();
   }
