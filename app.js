@@ -11,9 +11,18 @@ var express = require('express')
 
 var redis = require('redis')
   // heroku compatible version of connect-redis
-  , redisStore = require('connect-heroku-redis')(express);
+  , redisStore = require('connect-redis')(express);
 
 var app = express();
+
+app.configure('production', function () {
+  var redisUrl = require('url').parse(process.env.REDISTOGO_URL),
+  redisAuth = redisUrl.auth.split(':');
+  app.set('redisHost', redisUrl.hostname);
+  app.set('redisPort', redisUrl.port);
+  app.set('redisDb', redisAuth[0]);
+  app.set('redisPass', redisAuth[1]);
+});
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
