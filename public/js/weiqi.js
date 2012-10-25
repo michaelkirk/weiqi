@@ -42,13 +42,13 @@ var _init = function (weiqi) {
   // a simple game app
   weiqi.game = function(boardId){
     this.socketClient = socketClient;
-    this.board = new wieqi.Board();
+    this.board = new weiqi.Board();
   }
 
   // a test rig to experiment with socket.io
   weiqi.chat = function(path){
     this.path = path;
-    this.board = new wieqi.Board();
+    this.board = new weiqi.Board();
   }
   return weiqi;
 
