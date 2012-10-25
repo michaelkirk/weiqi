@@ -14,7 +14,16 @@ block body
       var board = new weiqi.Board();
       //just for something fun to look at
       random_fill(board);
-      var board_view = new weiqi.BoardView({model: board, el: $('#app')});
+      var black_board_view = new weiqi.BoardView({model: board, el: $('#black .board')});
+      var white_board_view = new weiqi.BoardView({model: board, el: $('#white .board')});
+      white_board_view.player_color = "white";
     });
-  div#app
+  
+
+  #black
+    h2 black
+    .board
+  #white
+    h2 white
+    .board
 
