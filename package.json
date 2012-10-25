@@ -21,7 +21,6 @@
     "hiredis" : "latest",
     "cookie" : "latest",
     "connect-redis" : "latest",
-    "connect-heroku-redis" : "latest",
     "jasmine-node":"latest"
   }
 }
