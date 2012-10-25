@@ -7,7 +7,10 @@
 
   weiqi.CellView = Backbone.View.extend({
     tagName: "div",
-    initialize: function() {
+    initialize: function(options) {
+      this.board_view = options.board_view;
+
+      //render whenever model changes
       _.bindAll(this, "render");
       this.model.bind("change", this.render);
 
@@ -24,7 +27,13 @@
       "click": "play"
     },
     play: function() {
-      this.model.play("black");
+      if (this.board_view.player_color == "black") {
+        this.model.board.play_black(this.model.get('x'), this.model.get('y'));
+      } else if (this.board_view.player_color == "white") {
+        this.model.board.play_white(this.model.get('x'), this.model.get('y'));
+      } else {
+        throw new Error("illegal board_view color: " + this.board_view.player_color);
+      }
     },
     render: function() {
       if(this.model.get('holds') == 'black') {

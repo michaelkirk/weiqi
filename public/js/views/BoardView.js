@@ -9,10 +9,11 @@
     tagName: "div",
     initialize: function() {
       this.cells = [];
+      this.player_color = "black"; //TODO make this dynamic
       var board_view = this;
-      _.each(this.model.get('cells'), function(rows) {
+      _.each(this.model.cells, function(rows) {
         _.each(rows, function(cell) {
-          board_view.cells.push(new weiqi.CellView({model: cell}));
+          board_view.cells.push(new weiqi.CellView({model: cell, board_view: board_view}));
         });
       });
 

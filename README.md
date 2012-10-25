@@ -1,3 +1,13 @@
+Weiqi
+=====
+                   _       _ 
+     __      _____(_) __ _(_)
+     \ \ /\ / / _ \ |/ _` | |
+      \ V  V /  __/ | (_| | |
+       \_/\_/ \___|_|\__, |_|
+                        |_|  
+
+
 Installation
 ============
 
@@ -21,7 +31,7 @@ Install WeiQi
 
 >  git clone git@github.com:michaelkirk/weiqi.git && cd weiqi
 >  npm install
->  node server.js
+>  node app.js
 
 Tests
 =====
