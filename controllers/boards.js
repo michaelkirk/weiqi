@@ -6,15 +6,14 @@ module.exports = function(app){
   boards = {};
 
   boards.list = function(req, res){
-    res.render('boards/list', {
-              action: 'list'
-    });
+    res.render('boards/list');
   }
+
   boards.show = function(req, res){
     if(req.params.format == 'json') {
-      res.status(205);
-      res.render('boards/stub', {
-        action: 'show-json'
+      redis.get('boards:' + req.params.id, function(err, result) {
+        res.set('Content-Type', 'application/json');
+        res.send(result.toString());
       });
     } else if (req.params.format == undefined) {
       res.render('boards/show', {
@@ -25,21 +24,32 @@ module.exports = function(app){
       res.render('errors/404');
     }
   }
-  boards.create = function(req, res){
-    debugger
-    //var id = redis.increment('boards:next_id');
-    var id = 670;
-    var board = new weiqi.Board({ id: id });
-    redis.set('boards:'+ board.id,  JSON.stringify(board.attributes));
 
-    res.redirect(201, 'boards/show/' + board.id);
-  }
-  boards.update = function(req, res){
-    res.render('boards/stub', {
-              action: 'update'
+  boards.create = function(req, res){
+    redis.incr("boards:id", function(err, id) {
+      var board = new weiqi.Board({ id: id });
+      redis.set('boards:'+ board.id,  JSON.stringify(board.attributes), function(err, result) {
+        res.redirect(302, '/boards/' + board.id);
+      });
     });
   }
 
+  boards.update = function(req, res){
+    var id = req.params.id
+
+    //TODO see if it exists, else 404
+    if(req.params.format == 'json') {
+      attributes_string = JSON.stringify(req.body);
+      redis.set('boards:' + id, attributes_string, function(err, result) {
+        res.status(200);
+        res.set('Content-Type', 'application/json');
+        res.send(attributes_string);
+      });
+    } else {
+      res.status(404);
+      res.render('errors/404');
+    }
+  }
 
   return boards;
 }
