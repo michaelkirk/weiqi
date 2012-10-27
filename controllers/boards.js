@@ -17,8 +17,8 @@ module.exports = function(app){
         action: 'show-json'
       });
     } else if (req.params.format == undefined) {
-      res.render('boards/stub', {
-        action: 'show'
+      res.render('boards/show', {
+        id: req.params.id
       });
     } else {
       res.status(404);
