@@ -70,7 +70,9 @@ var _init = function(weiqi){
         }
       }
       return cells;
-    }
+    },
+    urlRoot: '/boards'
+
   });
 
   return weiqi

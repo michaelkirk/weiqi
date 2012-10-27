@@ -22,5 +22,9 @@
     "cookie" : "latest",
     "connect-redis" : "latest",
     "jasmine-node":"latest"
+  },
+  "devDependencies": {
+    "node-inspector": "latest"
   }
+
 }

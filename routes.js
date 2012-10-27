@@ -4,7 +4,9 @@ module.exports = function(app) {
   var index = require('./controllers/index')(app);
   var user = require('./controllers/users')(app);
   var board = require('./controllers/boards')(app);
-
+  
+  // currently an app demo
+  app.get('/', index.index);
 
   // user
   app.all('/users', user.list);
@@ -15,13 +17,9 @@ module.exports = function(app) {
   app.put('/users/:id/edit', user.update);
 
   // board
-  app.get('/', index.index);
-  app.all('/boards', board.list);
-  app.post('/boards/new', board.create);
-  app.all('/boards/:id/:op?', board.load);
-  app.get('/boards/:id', board.view);
-  app.get('/boards/:id/view', board.view);
-  app.get('/boards/:id/edit', board.edit);
+  app.get('/boards', board.list);
+  app.post('/boards', board.create);
+  app.get('/boards/:id.:format?', board.show);
   app.put('/boards/:id', board.update);
 
   function NotFound(msg){

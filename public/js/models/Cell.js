@@ -1,5 +1,6 @@
 var _init = function(weiqi){
 
+
   weiqi.IllegalMoveError = function(message) {
       this.name = "IllegalMoveError";
       this.message = (message || "");
@@ -13,7 +14,10 @@ var _init = function(weiqi){
       this.board = attributes.board;
       delete attributes.board;
 
-      Backbone.Model.apply(this, arguments);
+      //FIXME this won't work on client side, but server couldn't find backbone here.
+      //strangely, it seems to see it in the weiqi.Cell = this.Backbone.Model.extend scope
+      this['Backbone'] = require('backbone');
+      this.Backbone.Model.apply(this, arguments);
     },
     initialize: function(attributes) {
       this.on("change:holds", this.update_board);
