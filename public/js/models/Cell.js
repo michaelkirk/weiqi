@@ -7,6 +7,10 @@ var _init = function(weiqi){
   }
   weiqi.IllegalMoveError.prototype = Error.prototype;
 
+  //FIXME I have to do this for models to work server side
+  //Why isn't Backbone available within the scope of the Cell 
+  //constructor?
+  var the_module = this;
   weiqi.Cell = this.Backbone.Model.extend({
     constructor: function(attributes, options) {
       //board isn't a backbone attribute of the cell 
@@ -14,10 +18,7 @@ var _init = function(weiqi){
       this.board = attributes.board;
       delete attributes.board;
 
-      //FIXME this won't work on client side, but server couldn't find backbone here.
-      //strangely, it seems to see it in the weiqi.Cell = this.Backbone.Model.extend scope
-      this['Backbone'] = require('backbone');
-      this.Backbone.Model.apply(this, arguments);
+      the_module.Backbone.Model.apply(this, arguments);
     },
     initialize: function(attributes) {
       this.on("change:holds", this.update_board);
