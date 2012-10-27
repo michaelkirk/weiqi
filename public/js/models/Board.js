@@ -15,9 +15,7 @@ var _init = function(weiqi){
       }
     },
     parse: function(attributes) {
-      debugger;
       var cells_attr = attributes['cells'];
-      this.set('width', cells_attr.length);
       for(x=0; x < this.get('width'); x++){
         for(y=0; y < this.get('width'); y++){
           this.cells[x][y].set(cells_attr[x][y]);
