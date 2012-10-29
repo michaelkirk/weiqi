@@ -16,12 +16,9 @@ var _init = function(weiqi){
     },
     parse: function(attributes) {
       var cells_attr = attributes['cells'];
-      this.set('width', cells_attr.length);
-      this.cells = [];
       for(x=0; x < this.get('width'); x++){
-        this.cells[x] = []
         for(y=0; y < this.get('width'); y++){
-          this.cells[x][y] = new weiqi.Cell({x: x, y: y, holds: cells_attr[x][y].holds, board: this});
+          this.cells[x][y].set(cells_attr[x][y]);
         }
       }
     },
@@ -60,6 +57,8 @@ var _init = function(weiqi){
           this.cells[x][y] = new weiqi.Cell({x: x, y: y, board: this});
         }
       }
+      //TODO is this too frequently?
+      this.on('change', this.save);
     },
     blank_board: function(width) {
       var cells = [];
@@ -70,7 +69,12 @@ var _init = function(weiqi){
         }
       }
       return cells;
-    }
+    },
+    url: function(){
+      return this.urlRoot + '/' + this.id + '.' + 'json';
+    },
+    urlRoot: '/boards'
+
   });
 
   return weiqi

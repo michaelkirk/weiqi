@@ -1,11 +1,16 @@
 var _init = function(weiqi){
 
+
   weiqi.IllegalMoveError = function(message) {
       this.name = "IllegalMoveError";
       this.message = (message || "");
   }
   weiqi.IllegalMoveError.prototype = Error.prototype;
 
+  //FIXME I have to do this for models to work server side
+  //Why isn't Backbone available within the scope of the Cell 
+  //constructor?
+  var the_module = this;
   weiqi.Cell = this.Backbone.Model.extend({
     constructor: function(attributes, options) {
       //board isn't a backbone attribute of the cell 
@@ -13,7 +18,7 @@ var _init = function(weiqi){
       this.board = attributes.board;
       delete attributes.board;
 
-      Backbone.Model.apply(this, arguments);
+      the_module.Backbone.Model.apply(this, arguments);
     },
     initialize: function(attributes) {
       this.on("change:holds", this.update_board);
