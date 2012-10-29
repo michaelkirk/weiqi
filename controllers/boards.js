@@ -11,7 +11,7 @@ module.exports = function(app){
 
   boards.show = function(req, res){
     if(req.params.format == 'json') {
-      redis.get('boards:' + req.params.id, function(err, result) {
+      redis_client.get('boards:' + req.params.id, function(err, result) {
         res.set('Content-Type', 'application/json');
         res.send(result.toString());
       });
@@ -26,9 +26,9 @@ module.exports = function(app){
   }
 
   boards.create = function(req, res){
-    redis.incr("boards:id", function(err, id) {
+    redis_client.incr("boards:id", function(err, id) {
       var board = new weiqi.Board({ id: id });
-      redis.set('boards:'+ board.id,  JSON.stringify(board.attributes), function(err, result) {
+      redis_client.set('boards:'+ board.id,  JSON.stringify(board.attributes), function(err, result) {
         res.redirect(302, '/boards/' + board.id);
       });
     });
@@ -40,7 +40,7 @@ module.exports = function(app){
     //TODO see if it exists, else 404
     if(req.params.format == 'json') {
       attributes_string = JSON.stringify(req.body);
-      redis.set('boards:' + id, attributes_string, function(err, result) {
+      redis_client.set('boards:' + id, attributes_string, function(err, result) {
         res.status(200);
         res.set('Content-Type', 'application/json');
         res.send(attributes_string);
