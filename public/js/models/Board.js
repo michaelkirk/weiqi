@@ -1,6 +1,6 @@
 var _init = function(weiqi){
 
-  weiqi.Board = this.Backbone.Model.extend({
+  weiqi.Board = Backbone.Model.extend({
     defaults: {
       width: 19,
       move_count:0,

@@ -6,7 +6,7 @@ var _init = function(weiqi){
   }
   weiqi.IllegalMoveError.prototype = Error.prototype;
 
-  weiqi.Cell = this.Backbone.Model.extend({
+  weiqi.Cell = Backbone.Model.extend({
     constructor: function(attributes, options) {
       //board isn't a backbone attribute of the cell 
       //(this avoids issues while serializing)
