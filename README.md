@@ -22,9 +22,8 @@ Prerequisites
 ### npm
     $> curl http://npmjs.org/install.sh | sudo sh
 
-### Redis
-    $> sudo apt-get install redis-server
-
+### MongoDB
+    $> sudo apt-get install mongodb
 
 Install WeiQi
 -------------

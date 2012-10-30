@@ -21,6 +21,12 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser('yae2ieghiegh7Ahdie4U'));
 
+  var mongoose = require('mongoose'),
+    db_url = process.env.MONGOLAB_URI || "mongodb://localhost/weiqi_development";
+
+  db = mongoose.createConnection(db_url);
+  db.on('error', console.error.bind(console, 'connection error:'));
+
   //TODO doing this makes redis_client local, and not in the scope of the
   //boards controller. Is there a better way to do this? E.g. an explicit export
   //and then accessing it via app.redis_client?

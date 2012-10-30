@@ -2,6 +2,10 @@ extends ../layout
 
 block body
   h1 Boards
+    ul
+      each board in boards
+        li
+          a(href="boards/" + board._id) #{board._id}
 
   form(method="post", action="/boards")
     input(type="submit", value="start a new game")

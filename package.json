@@ -21,7 +21,7 @@
     "hiredis" : "latest",
     "cookie" : "latest",
     "connect-redis" : "latest",
-    "jasmine-node":"latest"
+    "mongoose" : "latest"
   },
   "devDependencies": {
     "node-inspector": "latest"
