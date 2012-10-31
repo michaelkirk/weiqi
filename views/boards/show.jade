@@ -12,8 +12,7 @@ block body
       });
     }
     $(function() {
-      var board = new weiqi.Board({ id: #{id} });
-      board.fetch();
+      var board = new weiqi.Board(!{board_json});
 
       var black_board_view = new weiqi.BoardView({model: board, el: $('#black .board')});
       var white_board_view = new weiqi.BoardView({model: board, el: $('#white .board')});

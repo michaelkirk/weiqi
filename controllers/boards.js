@@ -16,8 +16,11 @@ module.exports = function(app){
         res.send(result.toString());
       });
     } else if (req.params.format == undefined) {
-      res.render('boards/show', {
-        id: req.params.id
+      redis_client.get('boards:' + req.params.id, function(err, result) {
+        res.render('boards/show', {
+          id: req.params.id,
+          board_json: result.toString()
+        });
       });
     } else {
       res.status(404);

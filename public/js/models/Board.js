@@ -14,20 +14,28 @@ var _init = function(weiqi){
         throw new Error("attempting to accessing outside of game board");
       }
     },
-    parse: function(attributes) {
-      var cells_attr = attributes['cells'];
+    update_cells: function(cells_attributes) {
       for(x=0; x < this.get('width'); x++){
         for(y=0; y < this.get('width'); y++){
-          this.cells[x][y].set(cells_attr[x][y]);
+          this.cells[x][y].set(cells_attributes[x][y]);
         }
       }
     },
+    parse: function(attributes) {
+      this.update_cells(attributes['cells']);
+      return attributes;
+    },
     play: function(color, x, y) {
-      if(this.get("last_played") == color) { throw new weiqi.IllegalMoveError("It's not your turn.") }
-      this.get_cell(x,y).play(color);
-      this.set("last_played", color);
-      this.set("move_count", this.get('move_count') + 1)
-      return true;
+      if (this.get("last_played") == color) { throw new weiqi.IllegalMoveError("It's not your turn.") }
+      if (this.get_cell(x, y).play(color)) {
+        var cells_attr = this.get('cells');
+        cells_attr[x][y].holds = color;
+        this.set({ 
+          cells: cells_attr,
+          last_played: color,
+          move_count: this.get('move_count') + 1
+        });
+      }
     },
     play_black: function(x,y) {
       return this.play("black", x, y);
@@ -48,17 +56,23 @@ var _init = function(weiqi){
       return this.get('width');
     },
     initialize: function(attributes) {
-      this.set('cells', this.blank_board(this.get('width')));
-
+      if( this.get('cells') == undefined ) {
+        this.set({cells: this.blank_board(this.get('width'))},
+                 {silent: true});
+      }
+      
+      //Instantiate cell models from boards cell attributes
       this.cells = [];
       for(x=0; x < this.get('width'); x++){
         this.cells[x] = [];
         for(y=0; y < this.get('width'); y++){
-          this.cells[x][y] = new weiqi.Cell({x: x, y: y, board: this});
+          this.cells[x][y] = new weiqi.Cell($.extend({board: this}, this.get('cells')[x][y]));
         }
       }
       //TODO is this too frequently?
-      this.on('change', this.save);
+      this.on('change', function(board){
+        board.save();
+      });
 
       this.socket = site.socketClient;
       var board = this;
