@@ -42,11 +42,6 @@ describe("Cell", function() {
           }).toThrow();
         });
       });
-      it("should update the board's attributes", function() {
-        expect(board.get('cells')[1][2].holds).toBe(null);
-        cell.play("black")
-        expect(board.get('cells')[1][2].holds).toBe("black");
-      });
     });
     describe("when the cell is not empty", function() {
       beforeEach(function() {
