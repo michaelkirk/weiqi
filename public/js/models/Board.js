@@ -66,7 +66,7 @@ var _init = function(weiqi){
       for(x=0; x < this.get('width'); x++){
         this.cells[x] = [];
         for(y=0; y < this.get('width'); y++){
-          this.cells[x][y] = new weiqi.Cell($.extend({board: this}, this.get('cells')[x][y]));
+          this.cells[x][y] = new weiqi.Cell(_.extend({board: this}, this.get('cells')[x][y]));
         }
       }
       //TODO is this too frequently?
@@ -74,12 +74,16 @@ var _init = function(weiqi){
         board.save();
       });
 
-      this.socket = site.socketClient;
-      var board = this;
-      this.socket.on('board-update', function (data) {
-        console.log('boards-updated, refreshing local board');
-        board.fetch();
-      });
+      //TODO this only makes sense on client side, 
+      // is there a better way to do it?
+      if(typeof exports === "undefined"){
+        this.socket = site.socketClient;
+        var board = this;
+        this.socket.on('board-update', function (data) {
+          console.log('boards-updated, refreshing local board');
+          board.fetch();
+        });
+      }
     },
     blank_board: function(width) {
       var cells = [];
