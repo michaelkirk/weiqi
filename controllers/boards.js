@@ -41,6 +41,7 @@ module.exports = function(app){
     if(req.params.format == 'json') {
       attributes_string = JSON.stringify(req.body);
       redis_client.set('boards:' + id, attributes_string, function(err, result) {
+        app.io.sockets.emit('board-update');
         res.status(200);
         res.set('Content-Type', 'application/json');
         res.send(attributes_string);

@@ -64,7 +64,11 @@ var routes = require('./routes')(app);
 
 // set up our socket.io routes
 var server = http.createServer(app);
-var io = require('socket.io').listen(server)
+app.io = require('socket.io').listen(server)
+app.io.sockets.on('connection', function(socket) {
+  console.log('server got socket.io connection');
+  socket.emit('boards', { welcome_message: "Hello. I'll be sending you updates whenever boards are updated" });
+});
 
 // bind to a port
 server.listen(app.get('port'), function(){

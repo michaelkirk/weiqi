@@ -6,7 +6,7 @@ var _init = function (weiqi) {
   // a general app for the weiqi site
   weiqi.site = function(initCallback){
 
-  this.socketClient = io.connect('http://localhost::#socketIoPort#//weiqi');
+  this.socketClient = io.connect('http://::#socketIoPort#//weiqi');
 
    this.socketClient
       .of('/weiqi')

@@ -59,6 +59,13 @@ var _init = function(weiqi){
       }
       //TODO is this too frequently?
       this.on('change', this.save);
+
+      this.socket = site.socketClient;
+      var board = this;
+      this.socket.on('board-update', function (data) {
+        console.log('boards-updated, refreshing local board');
+        board.fetch();
+      });
     },
     blank_board: function(width) {
       var cells = [];
