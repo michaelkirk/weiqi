@@ -1,0 +1,29 @@
+extends ../layout
+
+block body 
+  <h1>Board: #{id}</h1>
+  script
+    function random_fill(board){
+      _.each(board.cells, function(columns) {
+        _.each(columns, function(cell) {
+          random = ['white', 'black', null][Math.round(Math.random() * 3)]
+          cell.set('holds', random);
+        });
+      });
+    }
+    $(function() {
+      var board = new weiqi.Board(!{board_json});
+
+      var black_board_view = new weiqi.BoardView({model: board, el: $('#black .board')});
+      var white_board_view = new weiqi.BoardView({model: board, el: $('#white .board')});
+      white_board_view.player_color = "white";
+    });
+  
+
+  #black
+    h2 black
+    .board
+  #white
+    h2 white
+    .board
+

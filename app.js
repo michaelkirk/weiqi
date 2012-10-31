@@ -21,19 +21,23 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser('yae2ieghiegh7Ahdie4U'));
 
+  //TODO doing this makes redis_client local, and not in the scope of the
+  //boards controller. Is there a better way to do this? E.g. an explicit export
+  //and then accessing it via app.redis_client?
+  //var redis_client;
   var redisStore = require('connect-redis')(express);
-  var radis;
+  var redis = require("redis");
   if (process.env.REDISTOGO_URL) {
     var rtg = require("url").parse(process.env.REDISTOGO_URL);
-    redis = require("redis").createClient(rtg.port, rtg.hostname);
+    redis_client = redis.createClient(rtg.port, rtg.hostname);
 
-    redis.auth(rtg.auth.split(":")[1]);
+    redis_client.auth(rtg.auth.split(":")[1]);
   } else {
-    redis = require("redis").createClient();
+    redis_client = redis.createClient();
   }
 
   app.use(express.session({
-    store: new redisStore({client: redis})   
+    store: new redisStore({client: redis_client})
   }));
   app.use(app.router);
   // app.use(require('less-middleware')({ src: __dirname + '/public' }));
@@ -60,9 +64,12 @@ var routes = require('./routes')(app);
 
 // set up our socket.io routes
 var server = http.createServer(app);
-var io = require('socket.io').listen(server)
+app.io = require('socket.io').listen(server)
+app.io.sockets.on('connection', function(socket) {
+  console.log('server got socket.io connection');
+  socket.emit('boards', { welcome_message: "Hello. I'll be sending you updates whenever boards are updated" });
+});
 
-debugger
 // bind to a port
 server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

@@ -15,35 +15,37 @@ Prerequisites
 -------------
 
 ### node
->  git clone https://github.com/joyent/node
->  cd node
->  ./configure && make && make install
+    $> git clone https://github.com/joyent/node
+    $> cd node
+    $> ./configure && make && make install
 
 ### npm
->  curl http://npmjs.org/install.sh | sudo sh
+    $> curl http://npmjs.org/install.sh | sudo sh
 
 ### Redis
->  sudo apt-get install redis-server
+    $> sudo apt-get install redis-server
 
 
 Install WeiQi
 -------------
 
->  git clone git@github.com:michaelkirk/weiqi.git && cd weiqi
->  npm install
->  node app.js
+    $> git clone git@github.com:michaelkirk/weiqi.git && cd weiqi
+    $> npm install
+    $> node app.js
 
 Tests
 =====
-To run the specs, point your browser to: file://<project directory>/spec/SpecRunner.html
+To run the specs, point your browser to: file://&lt;project directory&gt;/spec/SpecRunner.html
 
 Deployment
 ==========
 Add heroku to your git remotes once
->  git remote add heroku git@heroku.com:evening-meadow-5281.git
+
+    $> git remote add heroku git@heroku.com:evening-meadow-5281.git
 
 To deploy, push your branch to heroku
->  git pull # make sure you're up to date
->  git push heroku
+
+    $> git pull # make sure you're up to date
+    $> git push heroku
 
 

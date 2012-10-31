@@ -6,7 +6,6 @@
     this['weiqi'] = exports;
 
   weiqi.CellView = Backbone.View.extend({
-    tagName: "div",
     initialize: function(options) {
       this.board_view = options.board_view;
 
