@@ -1,6 +1,6 @@
 extends ../layout
 
-block body 
+block container
   script
     function random_fill(board){
       _.each(board.cells, function(columns) {
@@ -17,7 +17,10 @@ block body
       board_view.player_color = "#{player_color}";
     });
 
+      
   #app
-    h1 #{player_color}
+    .console
+      p you are
+      h1 #{player_color}
     .board
 
