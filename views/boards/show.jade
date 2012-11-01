@@ -1,7 +1,6 @@
 extends ../layout
 
 block body 
-  <h1>Board: #{id}</h1>
   script
     function random_fill(board){
       _.each(board.cells, function(columns) {
@@ -14,16 +13,11 @@ block body
     $(function() {
       var board = new weiqi.Board(!{board_json});
 
-      var black_board_view = new weiqi.BoardView({model: board, el: $('#black .board')});
-      var white_board_view = new weiqi.BoardView({model: board, el: $('#white .board')});
-      white_board_view.player_color = "white";
+      var board_view = new weiqi.BoardView({model: board, el: $('#app .board')});
+      board_view.player_color = "#{player_color}";
     });
-  
 
-  #black
-    h2 black
-    .board
-  #white
-    h2 white
+  #app
+    h1 #{player_color}
     .board
 
