@@ -10,31 +10,46 @@ module.exports = function(app){
   }
 
   boards.show = function(req, res){
-    if(req.params.format == 'json') {
-      redis_client.get('boards:' + req.params.id, function(err, result) {
-        res.set('Content-Type', 'application/json');
-        res.send(result.toString());
-      });
-    } else if (req.params.format == undefined) {
-      redis_client.get('boards:' + req.params.id, function(err, result) {
-        res.render('boards/show', {
-          id: req.params.id,
-          board_json: result.toString()
+
+    var board = new weiqi.Board({id: req.params.id})
+    board.fetch().then(
+    // success  
+    function(){
+      if(req.params.format == 'json') {
+        redis_client.get('boards:' + req.params.id, function(err, result) {
+          res.set('Content-Type', 'application/json');
+          res.send(board.toJSON());
         });
-      });
-    } else {
+      } else {
+        redis_client.get('boards:' + req.params.id, function(err, result) {
+          res.render('boards/show', {
+            id: req.params.id,
+            board_json: JSON.stringify(board.toJSON())
+          });
+        });
+      }
+    },
+    // Failure
+    function(){
       res.status(404);
       res.render('errors/404');
-    }
-  }
+    })
+
+  }// end boards.show
 
   boards.create = function(req, res){
-    redis_client.incr("boards:id", function(err, id) {
-      var board = new weiqi.Board({ id: id });
-      redis_client.set('boards:'+ board.id,  JSON.stringify(board.attributes), function(err, result) {
-        res.redirect(302, '/boards/' + board.id);
-      });
-    });
+    var board = new weiqi.Board()
+    promise = board.save()
+    promise.then(function(){
+      res.redirect(302, '/boards/' + board.id);
+    },
+    function(err){
+      console.log("ERROR?", arguments)
+
+      res.send("aaaaaaaaaaaaaaaaaaaaaaa"+arguments);
+
+    }
+    )
   }
 
   boards.update = function(req, res){
