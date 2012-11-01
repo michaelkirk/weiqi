@@ -19,13 +19,12 @@
     "redis" : "latest",
     "hiredis" : "latest",
     "cookie" : "latest",
-    "connect-redis" : "latest",
-    "backboneio": "latest",
-    "backbone-redis":"latest"
+    "connect-redis" : "latest"
   },
   "devDependencies": {
     "node-inspector": "latest",
-    "jasmine-node":"latest"
+    "jasmine-node": "latest",
+    "zombie": "latest"
   }
 
 }
