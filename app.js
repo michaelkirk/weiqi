@@ -25,16 +25,10 @@ app.configure(function(){
   //boards controller. Is there a better way to do this? E.g. an explicit export
   //and then accessing it via app.redis_client?
   //var redis_client;
+  //The other problem is that there is "offline" code that needs access to the
+  //redis_client without the express app. Here I have broken the client code out
   var redisStore = require('connect-redis')(express);
-  var redis = require("redis");
-  if (process.env.REDISTOGO_URL) {
-    var rtg = require("url").parse(process.env.REDISTOGO_URL);
-    redis_client = redis.createClient(rtg.port, rtg.hostname);
-
-    redis_client.auth(rtg.auth.split(":")[1]);
-  } else {
-    redis_client = redis.createClient();
-  }
+  var redis_client = require('./lib/persistence/redis/client.js')
 
   app.use(express.session({
     store: new redisStore({client: redis_client})
