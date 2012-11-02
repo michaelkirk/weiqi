@@ -20,7 +20,7 @@
       this.y = this.model.get("y") * 32.75 + y_offset;
 
       this.$el.addClass('jgo_c');
-      this.$el.attr('style', 'top: ' + this.y + 'px; left: ' + this.x + 'px;"')
+      this.$el.attr('style', 'top: ' + this.y + 'px; left: ' + this.x + 'px;')
     },
     events: {
       "click": "play"

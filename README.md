@@ -35,7 +35,11 @@ Install WeiQi
 
 Tests
 =====
-To run the specs, point your browser to: file://&lt;project directory&gt;/spec/SpecRunner.html
+To run the client specs, point your browser to: file://&lt;project directory&gt;/spec/SpecRunner.html
+To run the acceptance suite
+
+    $> node app.js & # server must be running
+    $> node spec/acceptance/board_features.js
 
 Deployment
 ==========
