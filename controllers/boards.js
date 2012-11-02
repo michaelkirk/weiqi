@@ -47,10 +47,7 @@ module.exports = function(app){
       res.redirect(302, '/boards/' + board.id + '/black');
     },
     function(err){
-      console.log("ERROR?", arguments)
-
-      res.send("aaaaaaaaaaaaaaaaaaaaaaa"+arguments);
-
+      res.send("Error");
     });
   }
 
