@@ -1,8 +1,7 @@
 Zombie = require('zombie');
 assert = require('assert');
 
-//TODO set root site path (site: "localhost:3000")
-browser = new Zombie();
+browser = new Zombie({ site: 'http://localhost:3000' });
 browser.on("error", function(error) {
   report("ERROR> " + error);
 })
@@ -26,7 +25,7 @@ function run_suite() {
 
 function test_server_up(){
   return browser
-    .visit("http://localhost:3000")
+    .visit("/")
     .then(function() {
       assert.ok(browser.success);
     })
@@ -37,7 +36,7 @@ function test_server_up(){
 
 function test_boards( ){
   return browser
-    .visit("http://localhost:3000/boards")
+    .visit("/boards")
     .then(function(){ 
       report("successfully loaded board creation button");
       return browser.pressButton("start a new game"); 
@@ -50,7 +49,7 @@ function test_boards( ){
       var board_id = browser.location.pathname.match(/^\/boards\/([0-9]+)$/)[1];
       return board_id
     })
-    .then(function(board_id) { return browser.visit("http://localhost:3000/boards/" + board_id); })
+    .then(function(board_id) { return browser.visit("/boards/" + board_id); })
     .then(function() {
       assert.ok(browser.query('#black .board .jgo_c:nth-child(24)'));
       report('successfully rendered new board.');
@@ -67,7 +66,7 @@ function test_boards( ){
       return board_id;
     })
     .then(function(board_id) {
-      return browser.visit("http://localhost:3000/boards/" + board_id);
+      return browser.visit("/boards/" + board_id);
     })
     .then(function(){
       assert.ok(browser.query('#black .board .jgo_c:nth-child(24).jgo_b'));
