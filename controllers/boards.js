@@ -9,9 +9,15 @@ module.exports = function(app){
     res.render('boards/list');
   }
 
+  function notFound(req, res) {
+    res.status(404);
+    res.render('errors/404');
+  }
+
   boards.show = function(req, res){
     if(req.params.format == 'json') {
       redis_client.get('boards:' + req.params.id, function(err, result) {
+        if( result == undefined) { return notFound(req, res); }
         res.set('Content-Type', 'application/json');
         res.send(result.toString());
       });
@@ -23,8 +29,7 @@ module.exports = function(app){
         });
       });
     } else {
-      res.status(404);
-      res.render('errors/404');
+      return notFound(req, res);
     }
   }
 
@@ -50,8 +55,7 @@ module.exports = function(app){
         res.send(attributes_string);
       });
     } else {
-      res.status(404);
-      res.render('errors/404');
+      return notFound(req, res);
     }
   }
 

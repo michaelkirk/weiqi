@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "node-inspector": "latest",
+    "mocha": "latest",
     "jasmine-node": "latest",
     "zombie": "latest"
   }
