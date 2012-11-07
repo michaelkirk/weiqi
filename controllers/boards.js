@@ -62,7 +62,9 @@ module.exports = function(app){
         res.redirect(302, '/boards/' + board.id + '/black');
       })
       .fail(function(err){
-        res.send("Error");
+        // TODO, we have a message here in `err.message` (I think)
+        // We probably need to log this..
+        res.send("Error saving board;");
       });
   }
 
