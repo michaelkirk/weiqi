@@ -5,8 +5,7 @@ module.exports = function(app) {
   var user = require('./controllers/users')(app);
   var board = require('./controllers/boards')(app);
   
-  // currently an app demo
-  app.get('/', index.index);
+  app.get('/', board.list);
 
   // user
   app.all('/users', user.list);
