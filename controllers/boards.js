@@ -19,7 +19,8 @@ module.exports = function(app){
       redis_client.get('boards:' + req.params.id, function(err, result) {
         res.render('boards/show', {
           id: req.params.id,
-          board_json: result.toString()
+          board_json: result.toString(),
+          player_color: req.params.player_color
         });
       });
     } else {
@@ -32,7 +33,7 @@ module.exports = function(app){
     redis_client.incr("boards:id", function(err, id) {
       var board = new weiqi.Board({ id: id });
       redis_client.set('boards:'+ board.id,  JSON.stringify(board.attributes), function(err, result) {
-        res.redirect(302, '/boards/' + board.id);
+        res.redirect(302, '/boards/' + board.id + '/black');
       });
     });
   }
