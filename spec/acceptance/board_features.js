@@ -24,7 +24,7 @@ describe("Weiqi", function() {
 });
 
 function board_id(browser){
-  return browser.location.pathname.match(/^\/boards\/([0-9]+)\/black$/)[1];
+  return browser.location.pathname.match(/^\/boards\/([a-f0-9\-]+)\/black$/)[1];
 }
 
 function board_url(board_id){
@@ -34,47 +34,6 @@ function board_path(board_id){
   return "/boards/" + board_id + "/black";
 }
 
-//function test_boards( ){
-
-  //return browser
-    //.visit("http://localhost:3000/boards")
-    //.then(function(){ 
-      //report("successfully loaded creation page");
-      //return browser.pressButton("start a new game"); 
-    //})
-    //.then(function(){
-      //assert.ok(browser.success);
-      //assert.ok(browser.redirected);
-      //assert.ok(browser.location.pathname.match(/^\/boards\/[0-9]+\/black$/));
-      //report('successfully redirected to new board.');
-      
-      //return board_id(browser);
-    //})
-    //.then(function(board_id) { return browser.visit(board_url(board_id)); })
-    //.then(function() {
-      //assert.ok(browser.query('#app .board .jgo_c:nth-child(24)'));
-      //report('successfully rendered new board.');
-    //})
-    //.then(function() { 
-      ////FIXME crashes server, subsequent tests still pass - which is pretty dubious.
-      //var cell_element = browser.querySelector('#app .board .jgo_c:nth-child(24)');
-      //return browser.fire('click', cell_element);
-    //})
-    //.then(function() {
-      //assert.ok(browser.query('#app .board .jgo_c:nth-child(24).jgo_b'));
-      //report('successfully placed a stone.');
-      //return board_id(browser);
-    //})
-    //.then(function(board_id) {
-      //return browser.visit(board_url(board_id));
-    //})
-    //.then(function(){
-      //assert.ok(browser.query('#black .board .jgo_c:nth-child(24).jgo_b'));
-      //report('successfully saved and reloaded the board intact');
-    //});
-//};
-//=======
-//
 describe("Boards", function() {
   it("should create a playable game", function(done) {
      browser
@@ -89,7 +48,7 @@ describe("Boards", function() {
         assert.ok(browser.success);
         assert.ok(browser.redirected);
         report('redirected to: ' + browser.location.pathname);
-        assert.ok(browser.location.pathname.match(/^\/boards\/[0-9]+\/black$/));
+        assert.ok(browser.location.pathname.match(/^\/boards\/[a-f0-9\-]+\/black$/));
         report('successfully redirected to new board.');
         return board_id(browser);
       })
@@ -104,7 +63,7 @@ describe("Boards", function() {
         report('trying to place a stone.');
         return browser.fire('click', cell_element);
       })
-      .then(function() {
+      .then(function() { //  <- FIXME this takes a long while (~10s) to fire.
         assert.ok(browser.success);
         assert.ok(browser.query('#app .board .jgo_c:nth-child(24).jgo_b'));
         report('successfully placed a stone.');
