@@ -20,8 +20,6 @@
     "hiredis" : "latest",
     "cookie" : "latest",
     "connect-redis" : "latest",
-    "backboneio": "latest",
-    "backbone-redis":"latest",
     "q":"latest",
     "node-uuid":"latest"
   },
