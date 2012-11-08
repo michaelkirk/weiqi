@@ -154,7 +154,7 @@ describe("Boards", function() {
       }).then(function() {
         // wait for white browser to get boards-updated notification
         // and re-render
-        return white_browser.wait(); // FAILS (usually, but not always), always works if you change it to white_browser.reload()
+        return white_browser.wait(); 
       }).then(function() {
         assert_piece_played(24, { browser: black_browser, color: "black" });
         assert_piece_played(24, { browser: white_browser, color: "black" });
