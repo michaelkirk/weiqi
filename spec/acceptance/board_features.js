@@ -1,7 +1,7 @@
 Zombie = require('zombie');
 assert = require('assert');
 
-browser = new Zombie({ site: 'http://localhost:3000', silent: true});
+var browser = new Zombie({ site: 'http://localhost:3000', silent: true});
 browser.on("error", function(error) {
   report("ERROR> " + error);
 })
@@ -71,7 +71,7 @@ function assert_piece_played(index, options) {
   report('stone found.');
 }
 
-function make_board(){
+function make_board(browser){
   // TODO replace with something like:
   //    return weiqi.Board.create();
   return browser.visit("/boards")
@@ -108,22 +108,7 @@ describe("Boards", function() {
   });
 
   it("should create a playable game", function(done) {
-     browser
-      .visit("/boards")
-      .then(function(){ 
-        assert.ok(browser.success);
-        assert.ok(browser.query("input[type='submit'][value='start a new game']"));
-        report('successfully rendered board creation form.');
-        return browser.pressButton("start a new game"); 
-      })
-      .then(function(){
-        assert.ok(browser.success);
-        assert.ok(browser.redirected);
-        report('redirected to: ' + browser.location.pathname);
-        assert.ok(browser.location.pathname.match(/^\/boards\/[a-f0-9\-]+\/black$/));
-        report('successfully redirected to new board.');
-        return board_id(browser);
-      })
+    make_board(browser)
       .then(function(board_id) { return browser.visit(board_path(board_id)); })
       .then(function() {
         assert.ok(browser.success);
@@ -156,11 +141,10 @@ describe("Boards", function() {
   });
 
 
-  it.only("should syndicate updates to everyone watching.", function(done) {
+  it("should syndicate updates to everyone watching.", function(done) {
     var black_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
     var white_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
-
-    make_board()
+    make_board(black_browser)
       .then(function(the_board_id) {
         return black_browser.visit(board_path(the_board_id, { color: "black" }))
       }).then(function() {
