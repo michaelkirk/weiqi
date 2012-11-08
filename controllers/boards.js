@@ -15,27 +15,6 @@ module.exports = function(app){
   }
 
   boards.show = function(req, res){
-
-    var board = new weiqi.Board({id: req.params.id})
-    board.fetch()
-      .then(function(){
-        if(req.params.format == 'json') {
-          res.set('Content-Type', 'application/json');
-          res.send(board.toJSON());
-        } else {
-          res.render('boards/show', {
-            id: req.params.id,
-            board_json: JSON.stringify(board.toJSON())
-          });
-        }
-      })
-    .fail(function(){
-      notFound(req, res);
-    });
-
-  }// end boards.show
-
-  boards.show = function(req, res){
     var board = new weiqi.Board({id: req.params.id})
     board.fetch()
       .then(function(){
@@ -76,7 +55,9 @@ module.exports = function(app){
         return board.save()
       })
       .then(function(){
-        app.io.sockets.emit('board-update');
+        res.on('finish', function(){
+          app.io.sockets.emit('board-update');
+        })
         if(req.params.format == 'json') {
           attributes_string = JSON.stringify(board.toJSON());
           res.status(200);

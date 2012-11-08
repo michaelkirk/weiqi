@@ -36,7 +36,7 @@ var _init = function(weiqi){
           move_count: this.get('move_count') + 1
         });
       }
-      return true;
+      return this.save();
     },
     play_black: function(x,y) {
       return this.play("black", x, y);
@@ -70,10 +70,6 @@ var _init = function(weiqi){
           this.cells[x][y] = new weiqi.Cell(_.extend({board: this}, this.get('cells')[x][y]));
         }
       }
-      //TODO is this too frequently?
-      this.on('change', function(board){
-        board.save();
-      });
 
       //TODO this only makes sense on client side, 
       // is there a better way to do it?
