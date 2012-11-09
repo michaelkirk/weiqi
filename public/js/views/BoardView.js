@@ -28,7 +28,7 @@
       ');
 
       this.share_template = _.template('\
-        <li><%= message %>\
+        <li class="<%= share_class %>"><%= message %>\
           <a href="<%= url %>"><%= url %></a>\
         </li>\
         ');
@@ -41,7 +41,13 @@
       this.$el.html(html);
 
       if (this.player_color == "white") {
-        $(".share", this.$el).append(this.share_template({message: 'send your oponent this url:', url: "black"}));
+        opponent_link_attributes = {
+          message: 'send your oponent this url:', 
+          url: this.model.black_player_url(), 
+          share_class: "black"
+        };
+        opponent_link_html = this.share_template(opponent_link_attributes);
+        $(".share", this.$el).append(opponent_link_html);
       }
 
       var board_view = this;

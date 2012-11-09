@@ -96,6 +96,9 @@ var _init = function(weiqi){
     url: function(){
       return this.urlRoot + '/' + this.id + '.' + 'json';
     },
+    black_player_url: function() {
+      return this.urlRoot + '/' + this.id + '/' + 'black';
+    },
     urlRoot: '/boards'
 
   });
