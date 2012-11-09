@@ -94,18 +94,30 @@ function make_board(browser){
 
 
 describe("Boards", function() {
-  it("should 404 when accessing a bogus board", function(done) {
-    browser
-      .visit("/boards/bogus-id-that-doesn't-exist/back")
-      .then(function() {
-        assert(false, "Should have 404'd");
-      })
-      .fail(function() {
-        assert(!browser.success);
-        assert.equal(browser.statusCode, '404');
+  describe("#show", function() {
+    it("should render the current players color", function(done) {
+      make_board(browser).then(function() {
+        assert.equal(browser.text("h1"), "white");
         done();
+      })
+      .fail(function(error){
+        report("test failure: " + error);
       });
-  });
+    });
+
+    it("should 404 when accessing a bogus board", function(done) {
+      browser
+        .visit("/boards/bogus-id-that-doesn't-exist/back")
+        .then(function() {
+          assert(false, "Should have 404'd");
+        })
+        .fail(function() {
+          assert(!browser.success);
+          assert.equal(browser.statusCode, '404');
+          done();
+        });
+    });
+  })
 
   it("should create a playable game", function(done) {
     make_board(browser)

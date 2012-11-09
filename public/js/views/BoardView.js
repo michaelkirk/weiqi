@@ -6,24 +6,35 @@
     this['weiqi'] = exports;
 
   weiqi.BoardView = Backbone.View.extend({
-    tagName: "div",
-    initialize: function() {
+    initialize: function(options) {
+      options = options || {}
+      this.player_color = options['player_color'];
       this.cells = [];
-      this.player_color = "black"; //TODO make this dynamic
       var board_view = this;
       _.each(this.model.cells, function(rows) {
         _.each(rows, function(cell) {
           board_view.cells.push(new weiqi.CellView({model: cell, board_view: board_view}));
         });
       });
+      this.template = _.template('\
+        <div class="console"> \
+          <p>you are</p> \
+          <h1><%= player_color %></h1> \
+        </div> \
+        <div class="board jgo_board"> \
+        </div> \
+      ');
 
-      this.$el.addClass('jgo_board');
       this.render();
     },
     render: function(){
-      board_view = this;
+      var template_attributes = _.extend({player_color: this.player_color}, this.model.toJSON());
+      var html = this.template(template_attributes);
+      this.$el.html(html);
+
+      var board_view = this;
       _.each(this.cells, function(cell_view) {
-        board_view.$el.append(cell_view.render());
+        $(".board", board_view.$el).append(cell_view.render());
       });
       return this.$el;
     }
