@@ -31,7 +31,7 @@ describe("BoardView", function() {
     beforeEach(function() {
       board = new weiqi.Board();
       $el = $('<div>');
-      board_view = new weiqi.BoardView({model: board, el: $el});
+      board_view = new weiqi.BoardView({model: board, el: $el, player_color: "black"});
     });
 
     describe("gameplay", function() {

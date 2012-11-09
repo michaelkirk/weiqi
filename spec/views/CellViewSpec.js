@@ -2,7 +2,7 @@ describe("CellView", function() {
   var board, board_view, cell, cell_view;
   beforeEach(function() {
     board = new weiqi.Board();
-    board_view = new weiqi.BoardView({model: board, el: $("<div>")});
+    board_view = new weiqi.BoardView({model: board, el: $("<div>"), player_color: "black"});
     cell = board.get_cell(0, 0);
     cell_view = new weiqi.CellView({model: cell, board_view: board_view});
   });
