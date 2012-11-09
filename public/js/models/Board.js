@@ -27,6 +27,8 @@ var _init = function(weiqi){
     },
     play: function(color, x, y) {
       if (this.get("last_played") == color) { throw new weiqi.IllegalMoveError("It's not your turn.") }
+      //black goes first
+      if (this.get("last_played") == undefined && color == "white") { throw new weiqi.IllegalMoveError("It's not your turn.") }
       if (this.get_cell(x, y).play(color)) {
         var cells_attr = this.get('cells');
         cells_attr[x][y].holds = color;

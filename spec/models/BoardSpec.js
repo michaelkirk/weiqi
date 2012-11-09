@@ -33,7 +33,7 @@ describe("Board", function() {
 
   describe("#clear", function() {
     it("should clear the board", function() {
-      board.play_white(5, 2);
+      board.play_black(5, 2);
       board.clear();
       _.each(board.cells, function(column) {
         _.each(column, function(cell) {
@@ -74,12 +74,19 @@ describe("Board", function() {
         board.play_white(5, 4);
       }).toThrow(new weiqi.IllegalMoveError('Can only play in empty cells.'));
     });
+
+    it("should not let white play first", function() {
+      expect(function() {
+        board.play_white(5, 4);
+      }).toThrow(new weiqi.IllegalMoveError("It's not your turn."));
+    });
+    
   });
 
   describe("counting moves", function() {
     it("move_count should increment with each move", function() {
-      board.play_white(2,4)
       board.play_black(4,4)
+      board.play_white(2,4)
       expect(board.get('move_count')).toEqual(2)
     });
   });
@@ -96,14 +103,13 @@ describe("Board", function() {
     });
 
     it("should be able to hydrate from the serialization", function() {
-      board.play_white(0, 1);
+      board.play_black(0, 1);
       expect(board.get_cell(0, 1).is_empty()).toBeFalsy();
       expect(board.get_cell(0, 0).is_empty()).toBeTruthy();
 
       var attributes = JSON.parse(JSON.stringify(board));
       
-      var new_board = new weiqi.Board();
-      new_board.parse(attributes);
+      var new_board = new weiqi.Board(attributes);
       expect(new_board.get_cell(0, 1).is_empty()).toBeFalsy();
       expect(new_board.get_cell(0, 0).is_empty()).toBeTruthy();
     });
