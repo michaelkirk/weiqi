@@ -36,7 +36,8 @@ var _init = function(weiqi){
           move_count: this.get('move_count') + 1
         });
       }
-      return this.save();
+      this.save();
+      return true;
     },
     play_black: function(x,y) {
       return this.play("black", x, y);
