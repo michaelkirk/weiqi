@@ -24,7 +24,7 @@ describe("Weiqi", function() {
 });
 
 function board_id(browser){
-  return browser.location.pathname.match(/^\/boards\/([a-f0-9\-]+)\/black$/)[1];
+  return browser.location.pathname.match(/^\/boards\/([a-f0-9\-]+)\/(black|white)$/)[1];
 }
 
 function board_url(board_id){
@@ -85,7 +85,7 @@ function make_board(browser){
       assert.ok(browser.success);
       assert.ok(browser.redirected);
       report('redirected to: ' + browser.location.pathname);
-      assert.ok(browser.location.pathname.match(/^\/boards\/[a-f0-9\-]+\/black$/));
+      assert.ok(browser.location.pathname.match(/^\/boards\/[a-f0-9\-]+\/white$/));
       report('successfully redirected to new board.');
       return board_id(browser);
     });
@@ -118,7 +118,7 @@ describe("Boards", function() {
       .then(function() {
         return play_piece(24);
       })
-      .then(function() { //  <- FIXME this takes a long while (~10s) to fire.
+      .then(function() {
         assert.ok(browser.success);
         assert_piece_played(24, { color: "black" });
         report('successfully placed a stone.');
