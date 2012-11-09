@@ -20,10 +20,18 @@
         <div class="console"> \
           <p>you are</p> \
           <h1><%= player_color %></h1> \
+          <ul class="share"> \
+          </ul> \
         </div> \
         <div class="board jgo_board"> \
         </div> \
       ');
+
+      this.share_template = _.template('\
+        <li><%= message %>\
+          <a href="<%= url %>"><%= url %></a>\
+        </li>\
+        ');
 
       this.render();
     },
@@ -31,6 +39,10 @@
       var template_attributes = _.extend({player_color: this.player_color}, this.model.toJSON());
       var html = this.template(template_attributes);
       this.$el.html(html);
+
+      if (this.player_color == "white") {
+        $(".share", this.$el).append(this.share_template({message: 'send your oponent this url:', url: "black"}));
+      }
 
       var board_view = this;
       _.each(this.cells, function(cell_view) {
