@@ -37,6 +37,35 @@ var _init = function(weiqi){
     is_empty: function() {
       return this.get('holds') == null;
     },
+
+    adjacent_cells: function() {
+      var adjacent = [];
+
+      if( this.get('x') > 0)
+        adjacent.push(this.board.cells[this.get('x') - 1][this.get('y')])
+      if( this.get('y') > 0)
+        adjacent.push(this.board.cells[this.get('x')][this.get('y') - 1])
+      if( this.get('x') < (this.board.get('width') - 1))
+        adjacent.push(this.board.cells[this.get('x') + 1][this.get('y')])
+      if( this.get('y') < (this.board.get('width') - 1))
+        adjacent.push(this.board.cells[this.get('x')][this.get('y') + 1])
+
+      return adjacent;
+    },
+
+    is_adjacent_to: function(other_cell) {
+      if (this.get('x') == other_cell.get('x')) {
+        if (Math.abs(this.get('y') - other_cell.get('y')) == 1) {
+          return true;
+        }
+      } else if (this.get('y') == other_cell.get('y')) {
+        if (Math.abs(this.get('x') - other_cell.get('x')) == 1) {
+          return true;
+        }
+      }
+
+      return false;
+    }
   });
 
   return weiqi;

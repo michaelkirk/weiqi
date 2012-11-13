@@ -81,6 +81,63 @@ describe("Board", function() {
       }).toThrow(new weiqi.IllegalMoveError("It's not your turn."));
     });
     
+    describe("liberties", function(){
+      it("should remove dead groups", function(){
+        board.play_black(0, 1);
+        board.play_white(1, 1);
+        board.play_black(2, 1);
+        board.play_white(9, 1);
+        board.play_black(1, 0);
+        board.play_white(9, 2);
+        board.play_black(1, 2);
+        expect(board.get_cell(1, 1).is_empty()).toBe(true);
+      });
+    });
+  });
+
+  describe("#stone_cell_groups", function() {
+    describe("when the board is empty", function() {
+      it("should be empty", function() {
+        expect(board.stone_cell_groups()).toEqual([]);
+      });
+    });
+    describe("when the board has one stone", function() {
+      it("should have a single group containing the stone", function() {
+        board.get_cell(0, 0).play("white");
+        expect(board.stone_cell_groups()).toEqual([new weiqi.StoneCellGroup([board.get_cell(0,0)])]);
+      });
+    });
+    describe("when the board has a bunch of disjoint stones", function() {
+      it("should group them all individually", function() {
+        board.get_cell(0, 0).play("white");
+        board.get_cell(2, 2).play("black");
+        board.get_cell(4, 4).play("white");
+        board.get_cell(6, 6).play("black");
+        expect(board.stone_cell_groups().length).toBe(4);
+      });
+    });
+    describe("when adjacent stones have the same color", function() {
+      it("should group them", function() {
+        //board.play_white(0, 0);
+        board.get_cell(0, 0).play("white");
+        //board.play_black(0, 1);
+        board.get_cell(9, 9).play("black" );
+        //board.play_white(1, 1);
+        board.get_cell(0, 1).play("white" );
+        expect(board.stone_cell_groups().length).toBe(2);
+      });
+    });
+    describe("when adjacent stones have a different color", function() {
+      it("should not group them", function() {
+        //board.play_white(0, 0);
+        board.get_cell(0, 0).play("white");
+        //board.play_black(0, 1);
+        board.get_cell(0, 1).play("black" );
+        //board.play_white(1, 1);
+        board.get_cell(9, 9).play("white" );
+        expect(board.stone_cell_groups().length).toBe(3);
+      });
+    });
   });
 
   describe("counting moves", function() {
@@ -112,6 +169,43 @@ describe("Board", function() {
       var new_board = new weiqi.Board(attributes);
       expect(new_board.get_cell(0, 1).is_empty()).toBeFalsy();
       expect(new_board.get_cell(0, 0).is_empty()).toBeTruthy();
+    });
+  });
+
+  describe("#stone_cells", function() {
+    describe("when the board is empty", function() {
+      it("should have no stone_cells", function() {
+        expect(board.stone_cells()).toEqual([]);
+      });
+    });
+    it("should return all the stone_cells on the board", function() {
+      //board.play_white(0, 0);
+      board.get_cell(0, 0).play("white");
+      
+      //board.play_black(0, 1);
+      board.get_cell(0, 1).play("black" );
+      
+      //board.play_white(1, 1);
+      board.get_cell(1, 1).play("white" );
+      
+      //board.play_black(0, 2);
+      board.get_cell(0, 2).play("black" );
+      
+      //board.play_white(18, 9);
+      board.get_cell(18, 9).play("white");
+      
+      //board.play_black(0, 3);
+      board.get_cell(0, 3).play("black");
+      
+      expect(board.stone_cells().length).toBe(6);
+
+      //spot checks
+      expect(
+        _.select(board.stone_cells(), function(stone_cell) { return stone_cell.get('x') == 0 })
+          .length).toBe(4);
+
+      var stone_cell = _.detect(board.stone_cells(), function(stone_cell) { return stone_cell.get('x') == 18 });
+      expect(stone_cell.get('y')).toBe(9);
     });
   });
 
