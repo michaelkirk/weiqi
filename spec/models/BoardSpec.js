@@ -117,9 +117,18 @@ describe("Board", function() {
 
   describe("#url", function(){
     describe("when it has an id", function() {
-      it("should append 'json'", function(){
+      it("should append '.json'", function(){
         var new_board = new weiqi.Board({id: 123});
         expect(new_board.url()).toBe("/boards/123.json");
+      });
+    });
+  });
+
+  describe("#black_player_url", function(){
+    describe("when it has an id", function() {
+      it("should append '/black'", function(){
+        var new_board = new weiqi.Board({id: 123});
+        expect(new_board.black_player_url()).toBe("/boards/123/black");
       });
     });
   });
