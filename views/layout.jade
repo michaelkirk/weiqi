@@ -17,7 +17,10 @@ html
           window.site = new weiqi.site(function(){console.log('done loading!')})
         })
       link(rel='stylesheet', href='/jgo/jgoboard.css', type="text/css")
+      link(rel='stylesheet', href='/css/reset.css', type="text/css")
+      link(rel='stylesheet', href='/css/weiqi.css', type="text/css")
 
   body
     block body
-      #body
+    #container
+      block container

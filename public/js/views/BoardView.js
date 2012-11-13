@@ -25,6 +25,7 @@
       _.each(this.cells, function(cell_view) {
         board_view.$el.append(cell_view.render());
       });
+      return this.$el;
     }
   });
 })();
