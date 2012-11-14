@@ -55,13 +55,27 @@ var _init = function(weiqi){
       }
     },
 
-    remove_dead_groups: function() {
+    remove_dead_groups: function(cell_just_played) {
+      var dead_groups = _.select(this.stone_cell_groups(), function(group) { return group.is_dead() } );
+
+      //don't kill just played piece just yet
+      var potential_suicide = _.detect(dead_groups, function(group) { return _.include(group.stone_cells, cell_just_played) });
+      if (potential_suicide) {
+        dead_groups = _.reject(dead_groups, function(group) { return _.include(group.stone_cells, cell_just_played) });
+      }
+
       _.each(
-        _.select(this.stone_cell_groups(), function(group) { return group.is_dead() }),
+        dead_groups,
         function(dead_group) {
           dead_group.remove_stones();
         }
       );
+
+      // If attacking group is still dead after removing any 
+      // dead stones, remove it
+      if (potential_suicide && potential_suicide.is_dead()){
+        potential_suicide.remove_stones();
+      }
     },
 
     /* return all stones in their connected groups */
@@ -119,7 +133,7 @@ var _init = function(weiqi){
           move_count: this.get('move_count') + 1
         });
       }
-      this.remove_dead_groups();
+      this.remove_dead_groups(this.get_cell(x,y));
       this.save();
       return true;
     },
@@ -138,8 +152,9 @@ var _init = function(weiqi){
           cell.set('holds', null);
         });
       });
-      this.set('move_count', 0)
-      this.set('last_played', null)
+      this.set('cells', this.blank_board(this.get('width')));
+      this.set('move_count', 0);
+      this.set('last_played', null);
     },
     width: function() {
       return this.get('width');

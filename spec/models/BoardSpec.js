@@ -80,7 +80,7 @@ describe("Board", function() {
         board.play_white(5, 4);
       }).toThrow(new weiqi.IllegalMoveError("It's not your turn."));
     });
-    
+
     describe("liberties", function(){
       it("should remove dead groups", function(){
         board.play_black(0, 1);
@@ -91,6 +91,43 @@ describe("Board", function() {
         board.play_white(9, 2);
         board.play_black(1, 2);
         expect(board.get_cell(1, 1).is_empty()).toBe(true);
+      });
+
+      it("should give first-strike to just-played piece", function(){
+        // Set up board thus
+        // .@O...
+        // @O....
+        // O.....
+        board.play_black(0, 1);
+        board.play_white(0, 2);
+        board.play_black(1, 0);
+        board.play_white(1, 1);
+        board.play_black(11, 11); // irrelevant
+        board.play_white(2, 0); 
+        board.play_black(11, 12); // irrelevant
+
+        // Playing W at 0,0 should remove the B stones, 
+        // but the W stone at 0,0 should remain
+        board.play_white(0, 0);
+        expect(board.get_cell(0, 1).is_empty()).toBe(true);
+        expect(board.get_cell(1, 0).is_empty()).toBe(true);
+        expect(board.get_cell(0, 0).is_empty()).toBe(false);
+      });
+
+      it("should clear legitimate suicides", function(){
+        // Set up board thus
+        // .@....
+        // @.....
+        // ......
+        board.play_black(0, 1);
+        board.play_white(10, 12); //irrelevant
+        board.play_black(1, 0);
+
+        // Playing W at 0,0 should remove the W stone 
+        board.play_white(0, 0);
+        expect(board.get_cell(0, 1).is_empty()).toBe(false);
+        expect(board.get_cell(1, 0).is_empty()).toBe(false);
+        expect(board.get_cell(0, 0).is_empty()).toBe(true);
       });
     });
   });
@@ -150,6 +187,8 @@ describe("Board", function() {
 
   describe("serialization", function() {
     it("should be able to serialize the board state to json", function() {
+      var attributes = JSON.parse(JSON.stringify(board.toJSON()));
+      expect(attributes.cells[0][0]['holds']).toEqual(null);
       board.play_black(0, 1);
       var attributes = JSON.parse(JSON.stringify(board.toJSON()));
       expect(attributes.width).toEqual(19);
