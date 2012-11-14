@@ -95,20 +95,19 @@ describe("Board", function() {
 
       it("should give first-strike to just-played piece", function(){
         // Set up board thus
-        // .@O...
-        // @O....
-        // O.....
-        board.play_black(0, 1);
-        board.play_white(0, 2);
-        board.play_black(1, 0);
-        board.play_white(1, 1);
-        board.play_black(11, 11); // irrelevant
-        board.play_white(2, 0); 
-        board.play_black(11, 12); // irrelevant
+        // .O@...
+        // O@....
+        // @.....
+        board.play_black(0, 2);
+        board.play_white(0, 1);
+        board.play_black(1, 1);
+        board.play_white(1, 0);
+        board.play_black(2, 0);
+        board.play_white(9, 9); // irrelevant
 
-        // Playing W at 0,0 should remove the B stones, 
-        // but the W stone at 0,0 should remain
-        board.play_white(0, 0);
+        // Playing B at 0,0 should remove the W stones, 
+        // but the B stone at 0,0 should remain
+        board.play_black(0, 0);
         expect(board.get_cell(0, 1).is_empty()).toBe(true);
         expect(board.get_cell(1, 0).is_empty()).toBe(true);
         expect(board.get_cell(0, 0).is_empty()).toBe(false);
@@ -141,7 +140,7 @@ describe("Board", function() {
     describe("when the board has one stone", function() {
       it("should have a single group containing the stone", function() {
         board.get_cell(0, 0).play("white");
-        expect(board.stone_cell_groups()).toEqual([new weiqi.StoneCellGroup([board.get_cell(0,0)])]);
+        expect(board.stone_cell_groups()).toEqual([new weiqi.Board.Group([board.get_cell(0,0)])]);
       });
     });
     describe("when the board has a bunch of disjoint stones", function() {
@@ -262,6 +261,24 @@ describe("Board", function() {
       it("should append '/black'", function(){
         var new_board = new weiqi.Board({id: 123});
         expect(new_board.black_player_url()).toBe("/boards/123/black");
+      });
+    });
+  });
+
+  describe(".Group", function() {
+    describe("#merge", function() {
+      it("should combine the stone cells between the two groups", function() {
+        var board = new weiqi.Board(),
+        a = new weiqi.Cell({ board: board }),
+        b = new weiqi.Cell({ board: board }),
+        c = new weiqi.Cell({ board: board }),
+        d = new weiqi.Cell({ board: board });
+
+        var first_stone_cell_group = new weiqi.Board.Group([a]);
+        var second_stone_cell_group = new weiqi.Board.Group([c, d]);
+        var combined_stone_cell_group = first_stone_cell_group.merge(second_stone_cell_group);
+
+        expect(combined_stone_cell_group.stone_cells.length).toBe(3);
       });
     });
   });

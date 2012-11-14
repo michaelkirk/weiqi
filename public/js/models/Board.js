@@ -1,43 +1,4 @@
 var _init = function(weiqi){
-  weiqi.StoneCellGroup = Backbone.Model.extend({
-    constructor: function(stone_cells) {
-      this.stone_cells = stone_cells;
-    },
-
-    //Any group which has a stone with an empty adjacent cell is alive.
-    is_alive: function() {
-      return _.detect(this.stone_cells, function(stone_cell) {
-        return _.detect(stone_cell.adjacent_cells(), function(adjacent_cell) {
-          return adjacent_cell.is_empty();
-        }) != null;
-      }) != null;
-    },
-
-    is_connected_to: function(foreign_stone_cell) {
-      return _.detect(this.stone_cells, function(group_stone_cell) {
-        // Stones are in the same group if they are the same color and adjacent
-        return group_stone_cell.get('holds') == foreign_stone_cell.get('holds')
-        && group_stone_cell.is_adjacent_to(foreign_stone_cell)
-      }) != null;
-    },
-
-    is_dead: function() {
-      return !this.is_alive();
-    },
-
-    merge: function(other_group) {
-      return new weiqi.StoneCellGroup(this.stone_cells.concat(other_group.stone_cells));
-    },
-
-    remove_stones: function() {
-      _.each(this.stone_cells, function(stone_cell) {
-        stone_cell.set({ holds: null });
-        var cells_attr = stone_cell.board.get('cells');
-        cells_attr[stone_cell.get('x')][stone_cell.get('y')].holds = null;
-        stone_cell.board.set({ cells: cells_attr });
-      });
-    },
-  });
 
   weiqi.Board = Backbone.Model.extend({
     defaults: {
@@ -92,7 +53,7 @@ var _init = function(weiqi){
         });
 
         //Combine all adjacent groups with this stone
-        var combined_group = _.reduce(adjacent_groups, function(a, b) { return a.merge(b) }, new weiqi.StoneCellGroup([stone_cell]));
+        var combined_group = _.reduce(adjacent_groups, function(a, b) { return a.merge(b) }, new weiqi.Board.Group([stone_cell]));
 
         //Add those groups plus the new stone_cell back in as a single group
         groups.push(combined_group)
@@ -201,8 +162,49 @@ var _init = function(weiqi){
     black_player_url: function() {
       return this.urlRoot + '/' + this.id + '/' + 'black';
     },
-    urlRoot: '/boards'
+    urlRoot: '/boards',
 
+  });
+
+  // Helper class for computing liberties
+  weiqi.Board.Group = Backbone.Model.extend({
+    constructor: function(stone_cells) {
+      this.stone_cells = stone_cells;
+    },
+
+    //Any group which has a stone with an empty adjacent cell is alive.
+    is_alive: function() {
+      return _.detect(this.stone_cells, function(stone_cell) {
+        return _.detect(stone_cell.adjacent_cells(), function(adjacent_cell) {
+          return adjacent_cell.is_empty();
+        }) != null;
+      }) != null;
+    },
+
+    is_connected_to: function(foreign_stone_cell) {
+      return _.detect(this.stone_cells, function(group_stone_cell) {
+        // Stones are in the same group if they are the same color and adjacent
+        return group_stone_cell.get('holds') == foreign_stone_cell.get('holds')
+        && group_stone_cell.is_adjacent_to(foreign_stone_cell)
+      }) != null;
+    },
+
+    is_dead: function() {
+      return !this.is_alive();
+    },
+
+    merge: function(other_group) {
+      return new weiqi.Board.Group(this.stone_cells.concat(other_group.stone_cells));
+    },
+
+    remove_stones: function() {
+      _.each(this.stone_cells, function(stone_cell) {
+        stone_cell.set({ holds: null });
+        var cells_attr = stone_cell.board.get('cells');
+        cells_attr[stone_cell.get('x')][stone_cell.get('y')].holds = null;
+        stone_cell.board.set({ cells: cells_attr });
+      });
+    },
   });
 
   return weiqi
