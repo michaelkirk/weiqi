@@ -77,9 +77,9 @@ function make_board(the_browser){
   return the_browser.visit("/boards")
     .then(function(){
       assert.ok(the_browser.success);
-      assert.ok(the_browser.query("input[type='submit'][value='start a new game']"));
+      assert.ok(the_browser.query("input[type='submit'][value='start a game']"));
       report('successfully rendered board creation form.');
-      return the_browser.pressButton("start a new game"); 
+      return the_browser.pressButton("start a game"); 
     })
     .then(function(){
       assert.ok(the_browser.success);

@@ -1,10 +1,9 @@
 extends ../layout
 
 block container
-  #app
-    .console
-      h1 Weiqi
+  #app.front
+    h1 Weiqi
     .start
       form(method="post", action="/boards")
-        input(type="submit", value="start a new game")
+        input(type="submit", value="start a game")
 
