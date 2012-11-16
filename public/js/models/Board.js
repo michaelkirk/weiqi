@@ -11,20 +11,18 @@ var _init = function(weiqi){
   weiqi.MoveCollection = Backbone.Collection.extend({
     model: weiqi.Move,
     initialize: function(moves, options){
-      this.board = options.board
-      this.on('add', this.sync_to_board, this)
+      this.board = options.board;
+      this.on('add', this.sync_to_board, this);
     },
     sync_to_board: function(){
       // keep the board state up to date with each move
-      this.board.set('moves', this.toJSON())
+      this.board.set('moves', this.toJSON());
     },
-
   })
 
   weiqi.Board = Backbone.Model.extend({
     defaults: {
       width: 19,
-      move_count:0,
       last_played: null
     },
 
@@ -112,9 +110,8 @@ var _init = function(weiqi){
         this.set({ 
           cells: cells_attr,
           last_played: color,
-          move_count: this.get('move_count') + 1
         });
-        var new_move = new weiqi.Move({x:x, y:y, color:color})
+        var new_move = new weiqi.Move(this.get_cell(x, y).toJSON())
         this.moves.add(new_move)
         // Here, instead of saving the board we could do `return new_move.save()`
       }
@@ -138,7 +135,7 @@ var _init = function(weiqi){
         });
       });
       this.set('cells', this.blank_board(this.get('width')));
-      this.set('move_count', 0);
+      this.moves.reset()
       this.set('last_played', null);
     },
     width: function() {
@@ -164,8 +161,8 @@ var _init = function(weiqi){
       var board = this;
       this.on('board-updated', function(){
         // listen: when the board is updated from the other player 
-        var updated_moves = this.board.get('moves')
-        this.reset(updated_moves)
+        var updated_moves = board.get('moves')
+        board.moves.reset(updated_moves)
       })
 
       //TODO this only makes sense on client side, 
@@ -175,8 +172,8 @@ var _init = function(weiqi){
         var board = this;
         this.socket.on('board-update', function (data) {
           board.fetch().done(function(){
-            console.log('boards-updated, refreshing local board');
             board.trigger('board-updated', board)
+            console.log('boards-updated for move ' + board.moves.length + ', refreshing local board');
           })
         });
       }
