@@ -1,5 +1,24 @@
 var _init = function(weiqi){
 
+  weiqi.Move = Backbone.Model.extend({
+    defaults: {
+      x: null,
+      y: null,
+      color: null,
+    } 
+  })
+
+  weiqi.MoveCollection = Backbone.Collection.extend({
+    model: weiqi.Move,
+    initialize: function(moves, options){
+      this.board = options.board
+      this.on('add', this.update_board, this)
+    },
+    update_board: function(){
+      this.board.set('moves', this.toJSON())
+    }
+  })
+
   weiqi.Board = Backbone.Model.extend({
     defaults: {
       width: 19,
@@ -93,6 +112,9 @@ var _init = function(weiqi){
           last_played: color,
           move_count: this.get('move_count') + 1
         });
+        var new_move = new weiqi.Move({x:x, y:y, color:color})
+        this.moves.add(new_move)
+        // Here, instead of saving the board we could do `return new_move.save()`
       }
       this.remove_dead_groups(this.get_cell(x,y));
       this.save();
@@ -135,14 +157,25 @@ var _init = function(weiqi){
         }
       }
 
+      // Record Moves,
+      this.moves = new weiqi.MoveCollection([], {board: this})
+      var board = this;
+      this.on('board-updated', function(){
+        // for now just updated the moves
+        // later we can listen for an event that receives the latest move
+        this.moves.reset(this.get('moves'))
+      })
+
       //TODO this only makes sense on client side, 
       // is there a better way to do it?
       if(typeof exports === "undefined"){
         this.socket = site.socketClient;
         var board = this;
         this.socket.on('board-update', function (data) {
-          console.log('boards-updated, refreshing local board');
-          board.fetch();
+          board.fetch().done(function(){
+            console.log('boards-updated, refreshing local board');
+            board.trigger('board-updated', board)
+          })
         });
       }
     },
