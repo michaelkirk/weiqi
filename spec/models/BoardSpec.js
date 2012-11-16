@@ -180,7 +180,7 @@ describe("Board", function() {
     it("move_count should increment with each move", function() {
       board.play_black(4,4)
       board.play_white(2,4)
-      expect(board.get('move_count')).toEqual(2)
+      expect(board.moves.length).toEqual(2)
     });
   });
 
