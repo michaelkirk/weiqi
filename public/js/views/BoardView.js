@@ -33,12 +33,27 @@
         </li>\
         ');
 
+      _.bindAll(this, "update_turn");
+      this.model.bind("change", this.update_turn);
+
       this.render();
+    },
+    update_turn: function() {
+      if(this.model.whose_turn() == this.player_color) {
+        console.log("your turn");
+        this.$el.addClass("your-turn");
+      } else {
+        console.log("not your turn");
+        this.$el.removeClass("your-turn");
+      }
     },
     render: function(){
       var template_attributes = _.extend({player_color: this.player_color}, this.model.toJSON());
       var html = this.template(template_attributes);
       this.$el.html(html);
+      this.$el.addClass(this.player_color);
+
+      this.update_turn();
 
       if (this.player_color == "white") {
         opponent_link_attributes = {

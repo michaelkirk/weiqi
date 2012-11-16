@@ -9,6 +9,32 @@ describe("BoardView", function() {
     });
   });
 
+  describe("#whose_turn", function() {
+    var board;
+    beforeEach(function(){
+      board = new weiqi.Board();
+    });
+
+    describe("when no one has gone yet", function() {
+      it("should be black", function() {
+        expect(board.whose_turn()).toBe("black");
+      });
+    });
+    describe("when white has just gone", function() {
+      it("should be black", function() {
+        board.play_black(0,0);
+        board.play_white(0,1);
+        expect(board.whose_turn()).toBe("black");
+      });
+    });
+    describe("when black has just gone", function() {
+      it("should be white", function() {
+        board.play_black(0,0);
+        expect(board.whose_turn()).toBe("white");
+      });
+    });
+  })
+
   describe("#render", function() {
     var board = new weiqi.Board();
     var $el = $('<div>');

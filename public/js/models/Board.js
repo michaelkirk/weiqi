@@ -25,10 +25,17 @@ var _init = function(weiqi){
       this.update_cells(attributes['cells']);
       return attributes;
     },
-    play: function(color, x, y) {
-      if (this.get("last_played") == color) { throw new weiqi.IllegalMoveError("It's not your turn.") }
+    whose_turn: function() {
       //black goes first
-      if (this.get("last_played") == undefined && color == "white") { throw new weiqi.IllegalMoveError("It's not your turn.") }
+      if (this.get("last_played") == undefined || this.get("last_played") == "white") { 
+        return "black";
+      } else {
+        return "white";
+      }
+    },
+    play: function(color, x, y) {
+      if (this.whose_turn() != color) { throw new weiqi.IllegalMoveError("It's not your turn.") }
+
       if (this.get_cell(x, y).play(color)) {
         var cells_attr = this.get('cells');
         cells_attr[x][y].holds = color;

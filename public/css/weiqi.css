@@ -81,3 +81,12 @@ h1 {
   position:relative;
   top:1px;
 }
+
+.black.your-turn .board {
+  cursor: url('/jgo/normal/black.png') 15 15, default;
+}
+
+.white.your-turn .board {
+  cursor: url('/jgo/normal/white.png') 15 15, default;
+}
+
