@@ -12,11 +12,13 @@ var _init = function(weiqi){
     model: weiqi.Move,
     initialize: function(moves, options){
       this.board = options.board
-      this.on('add', this.update_board, this)
+      this.on('add', this.sync_to_board, this)
     },
-    update_board: function(){
+    sync_to_board: function(){
+      // keep the board state up to date with each move
       this.board.set('moves', this.toJSON())
-    }
+    },
+
   })
 
   weiqi.Board = Backbone.Model.extend({
@@ -158,12 +160,12 @@ var _init = function(weiqi){
       }
 
       // Record Moves,
-      this.moves = new weiqi.MoveCollection([], {board: this})
+      this.moves = new weiqi.MoveCollection((this.get('moves') || []), {board: this})
       var board = this;
       this.on('board-updated', function(){
-        // for now just updated the moves
-        // later we can listen for an event that receives the latest move
-        this.moves.reset(this.get('moves'))
+        // listen: when the board is updated from the other player 
+        var updated_moves = this.board.get('moves')
+        this.reset(updated_moves)
       })
 
       //TODO this only makes sense on client side, 
