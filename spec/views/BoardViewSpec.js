@@ -9,10 +9,36 @@ describe("BoardView", function() {
     });
   });
 
+  describe("#whose_turn", function() {
+    var board;
+    beforeEach(function(){
+      board = new weiqi.Board();
+    });
+
+    describe("when no one has gone yet", function() {
+      it("should be black", function() {
+        expect(board.whose_turn()).toBe("black");
+      });
+    });
+    describe("when white has just gone", function() {
+      it("should be black", function() {
+        board.play_black(0,0);
+        board.play_white(0,1);
+        expect(board.whose_turn()).toBe("black");
+      });
+    });
+    describe("when black has just gone", function() {
+      it("should be white", function() {
+        board.play_black(0,0);
+        expect(board.whose_turn()).toBe("white");
+      });
+    });
+  })
+
   describe("#render", function() {
     var board = new weiqi.Board();
     var $el = $('<div>');
-    var board_view = new weiqi.BoardView({model: board, el: $el});
+    var board_view = new weiqi.BoardView({ model: board, el: $el });
 
     it("should render each of it's cells", function() {
       spyOn(board_view.cells[0], 'render');
@@ -24,6 +50,24 @@ describe("BoardView", function() {
       expect(board_view.cells[0].render).toHaveBeenCalled();
       expect(board_view.cells[20].render).toHaveBeenCalled();
     });
+
+    describe("when it's the white player's board", function() {
+      var board_view = new weiqi.BoardView({ model: board, el: $el, player_color: "white" });
+      it("should render a link to invite an opponent", function() {
+        expect(
+          $('.share .black a', board_view.render()).length
+        ).toEqual(1);
+      });
+    })
+    describe("when it's the black player's board", function() {
+    var board_view = new weiqi.BoardView({ model: board, el: $el, player_color: "black" });
+      it("should not render a link to invite an opponent", function() {
+        expect(
+          $('.share a', board_view.render()).length
+        ).toEqual(0);
+      });
+    });
+
   });
 
   describe("integration tests", function() {
@@ -31,7 +75,7 @@ describe("BoardView", function() {
     beforeEach(function() {
       board = new weiqi.Board();
       $el = $('<div>');
-      board_view = new weiqi.BoardView({model: board, el: $el});
+      board_view = new weiqi.BoardView({model: board, el: $el, player_color: "black"});
     });
 
     describe("gameplay", function() {

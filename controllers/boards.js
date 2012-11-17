@@ -38,7 +38,7 @@ module.exports = function(app){
     var board = new weiqi.Board()
     board.save()
       .then(function(){
-        res.redirect(302, '/boards/' + board.id + '/black');
+        res.redirect(302, '/boards/' + board.id + '/white');
       })
       .fail(function(err){
         // TODO, we have a message here in `err.message` (I think)
