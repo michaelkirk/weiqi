@@ -20,6 +20,7 @@ module.exports = function(app){
       .then(function(){
         if(req.params.format == 'json') {
           res.set('Content-Type', 'application/json');
+          res.set('Cache-Control', 'no-cache');
           res.send(board.toJSON());
         } else {
           res.render('boards/show', {
