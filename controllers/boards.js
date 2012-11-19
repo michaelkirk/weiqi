@@ -48,11 +48,11 @@ module.exports = function(app){
       });
   }
 
-  boards.update = function(req, res){
+  boards.play = function(req, res) {
     var board = new weiqi.Board({id: req.params.id});
     board.fetch()
       .then(function(){
-        board.set(req.body)
+        board.play(req.body.color, req.body.x, req.body.y);
         return board.save()
       })
       .then(function(){

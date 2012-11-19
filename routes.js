@@ -20,7 +20,7 @@ module.exports = function(app) {
   app.post('/boards', board.create);
   app.get('/boards/:id.:format', board.show);
   app.get('/boards/:id/:player_color', board.show);
-  app.put('/boards/:id.:format', board.update);
+  app.post('/boards/:id.:format/moves', board.play);
 
   function NotFound(msg){
     this.name = 'NotFound';

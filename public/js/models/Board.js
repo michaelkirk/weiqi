@@ -83,6 +83,9 @@ var _init = function(weiqi){
         return "white";
       }
     },
+    post_move: function(color, x, y) {
+      return $.post(this.url() + '/moves', { color: color, x: x, y: y, board_id: this.id });
+    },
     play: function(color, x, y) {
       if (this.whose_turn() != color) { throw new weiqi.IllegalMoveError("It's not your turn.") }
 
@@ -103,7 +106,16 @@ var _init = function(weiqi){
       }
 
       this.remove_dead_groups(this.get_cell(x,y));
-      this.save();
+
+      if(this.is_client_side()) {
+        this.post_move(color, x, y).then(function() {
+          console.log("successfully posted move");
+        }).fail(function() {
+          console.log("failed to post move");
+        });
+      } else { //server side
+        this.save();
+      }
       return true;
     },
     play_black: function(x,y) {
@@ -166,6 +178,9 @@ var _init = function(weiqi){
       return this.urlRoot + '/' + this.id + '/' + 'black';
     },
     urlRoot: '/boards',
+    is_client_side: function() {
+      return typeof exports === "undefined"
+    }
 
   });
 
