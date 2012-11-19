@@ -111,9 +111,10 @@ var _init = function(weiqi){
           cells: cells_attr,
           last_played: color,
         });
-        var new_move = new weiqi.Move(this.get_cell(x, y).toJSON())
+        var new_move = new weiqi.Move({x: x, y: y, color: color})
         this.moves.add(new_move)
-        // Here, instead of saving the board we could do `return new_move.save()`
+        // Here, instead of saving the board
+        // we could do `return new_move.save()`
       }
       this.remove_dead_groups(this.get_cell(x,y));
       this.save();
