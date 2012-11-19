@@ -177,11 +177,24 @@ describe("Board", function() {
   });
 
   describe("counting moves", function() {
-    it("move_count should increment with each move", function() {
+    it("the number of moves should increment with each move", function() {
       board.play_black(4,4)
       board.play_white(2,4)
       expect(board.moves.length).toEqual(2)
     });
+
+    it("the moves should retain their order and values", function() {
+      board.play_black(4,4)
+      board.play_white(2,4)
+      expect(board.moves.length).toEqual(2)
+      expect(board.moves.models[0].attributes.x).toEqual(4)
+      expect(board.moves.models[0].attributes.y).toEqual(4)
+      expect(board.moves.models[0].attributes.color).toEqual('black')
+      expect(board.moves.models[1].attributes.x).toEqual(2)
+      expect(board.moves.models[1].attributes.y).toEqual(4)
+      expect(board.moves.models[1].attributes.color).toEqual('white')
+    });
+
   });
 
   describe("serialization", function() {
