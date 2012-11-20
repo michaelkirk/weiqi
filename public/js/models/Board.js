@@ -124,12 +124,12 @@ var _init = function(weiqi){
         var new_move = new weiqi.Move({x: x, y: y, color: color})
         this.moves.add(new_move)
         console.log(new_move.toJSON(),'right before')
-        new_move.save()
       }
       // TODO, what happens if the above `if` returns false?
+      // for now, assume that the if never fails
       this.remove_dead_groups(this.get_cell(x,y));
-      this.save();
-      return true;
+      // this.save();
+      return new_move.save();
     },
     play_black: function(x,y) {
       return this.play("black", x, y);

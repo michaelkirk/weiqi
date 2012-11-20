@@ -26,15 +26,25 @@ module.exports = function(app){
     var board = new weiqi.Board({id: req.params.board_id})
     board.fetch()
       .then(function(){
-        var move = new weiqi.Move(req.body);
-        move.save().then(function(){
+        //see if the board throws an error
+        var move_promise = board.play(req.body.color, req.body.x, req.body.y)
+        move_promise.then(function(){
           res.set('Content-Type', 'application/json');
-          res.send(move.toJSON());
+          res.send(board.moves.last().toJSON());
+          // TODO, this becomes a move, 
+          // and just push the move json down the socket.
+          // At this point we know the move is valid, save the board!
+          board.save().then(function(){
+            app.io.sockets.emit('board-update');
+          })
+        }).fail(function(err){
+          res.status(500);
+          res.send('move failed', err);
         })
-        // TODO move save fails
       })
     .fail(function(err){
-      return notFound(req, res);
+       res.status(500);
+       res.send('move failed', err);
     });
   }
 
