@@ -188,7 +188,9 @@ var _init = function(weiqi){
       return cells;
     },
     url: function(){
-      return this.urlRoot + '/' + this.id + '.' + 'json';
+      if(this.id)
+        return this.urlRoot + '/' + this.id + '.' + 'json';
+      return this.urlRoot
     },
     black_player_url: function() {
       return this.urlRoot + '/' + this.id + '/' + 'black';
