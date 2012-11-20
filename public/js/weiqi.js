@@ -15,6 +15,7 @@ var _init = function (weiqi) {
           console.log('connecting to /weiqi')
         })
       var board = this.board;
+      window.board = board
       this.socketClient.on('board-update', function (data) {
         board.fetch().done(function(){
           board.trigger('board-updated', board)

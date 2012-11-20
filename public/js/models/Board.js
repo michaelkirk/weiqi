@@ -5,15 +5,25 @@ var _init = function(weiqi){
       x: null,
       y: null,
       color: null,
-    } 
+    }, 
+    url: function(){
+      var base = '/boards/' + this.collection.board.id + '/moves';
+      if(this.id)
+        return base + '/' + this.id;
+      return base;
+    },
   })
 
   weiqi.MoveCollection = Backbone.Collection.extend({
     model: weiqi.Move,
     initialize: function(moves, options){
       this.board = options.board;
+      this.on('add', this.set_board_attributes, this);
       this.on('add', this.sync_to_board, this);
     },
+    set_board_attributes: function(move){
+      move.set({'num':this.length, 'board_id':this.board.id});
+    }, 
     sync_to_board: function(){
       // keep the board state up to date with each move
       this.board.set('moves', this.toJSON());
@@ -113,9 +123,10 @@ var _init = function(weiqi){
         });
         var new_move = new weiqi.Move({x: x, y: y, color: color})
         this.moves.add(new_move)
-        // Here, instead of saving the board
-        // we could do `return new_move.save()`
+        console.log(new_move.toJSON(),'right before')
+        new_move.save()
       }
+      // TODO, what happens if the above `if` returns false?
       this.remove_dead_groups(this.get_cell(x,y));
       this.save();
       return true;
@@ -166,8 +177,6 @@ var _init = function(weiqi){
         board.moves.reset(updated_moves)
       })
 
-      //TODO this only makes sense on client side, 
-      // is there a better way to do it?
     },
     blank_board: function(width) {
       var cells = [];
