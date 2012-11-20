@@ -40,8 +40,10 @@
     },
     update_turn: function() {
       if(this.model.whose_turn() == this.player_color) {
+        console.log("your turn");
         this.$el.addClass("your-turn");
       } else {
+        console.log("not your turn");
         this.$el.removeClass("your-turn");
       }
     },
