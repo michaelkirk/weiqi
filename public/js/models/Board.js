@@ -123,7 +123,6 @@ var _init = function(weiqi){
         });
         var new_move = new weiqi.Move({x: x, y: y, color: color})
         this.moves.add(new_move)
-        console.log(new_move.toJSON(),'right before')
       }
       // TODO, what happens if the above `if` returns false?
       // for now, assume that the if never fails
