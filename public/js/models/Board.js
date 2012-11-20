@@ -168,16 +168,6 @@ var _init = function(weiqi){
 
       //TODO this only makes sense on client side, 
       // is there a better way to do it?
-      if(typeof exports === "undefined"){
-        this.socket = site.socketClient;
-        var board = this;
-        this.socket.on('board-update', function (data) {
-          board.fetch().done(function(){
-            board.trigger('board-updated', board)
-            console.log('boards-updated for move ' + board.moves.length + ', refreshing local board');
-          })
-        });
-      }
     },
     blank_board: function(width) {
       var cells = [];
