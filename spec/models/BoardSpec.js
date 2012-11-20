@@ -4,9 +4,12 @@ if(!(typeof exports == "undefined")){
 }
 
 describe("Board", function() {
-  var board = new weiqi.Board();
-  beforeEach(function() {
-    board.clear();
+  var board = null;
+  beforeEach(function(done) {
+    board = new weiqi.Board();
+    board.save().done(function(){
+      done() 
+    })    
   });
 
   it("should be 19 cells wide by default", function() {
@@ -43,23 +46,32 @@ describe("Board", function() {
     });
   });
 
-  describe("game play", function() {
+  describe("game play", function(done) {
     it("should let you alternate", function() {
-      expect(board.play_black(4,4)).toEqual(true);
-      expect(board.play_white(2,4)).toEqual(true);
+
+      var failSpy = jasmine.createSpy();
+
+      board.play_black(4,4).done(done).fail(failSpy)
+      board.play_white(2,4).done(done).fail(failSpy)
+
+      expect(failSpy).not.toHaveBeenCalled()
+
     });
 
     it("shouldn't let you play the same color twice in a row", function() {
-      expect(board.play_black(4,4)).toEqual(true);
+
+      board.play_black(4,4)
       expect(function() {
         board.play_black(2,4);
       }).toThrow(new weiqi.IllegalMoveError("It's not your turn."));
     });
 
     it("it should let you play a color, clear the board, and play that color again", function() {
-      expect(board.play_black(4,4)).toEqual(true);
+
+      board.play_black(4,4)
       board.clear()
-      expect(board.play_black(4,4)).toEqual(true);
+      expect(board.play_black(4,4)).toBeTruthy();
+
     });
 
     it("should let you play on an empty cell", function() {
