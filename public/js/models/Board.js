@@ -134,17 +134,6 @@ var _init = function(weiqi){
           this.cells[x][y] = new weiqi.Cell(_.extend({board: this}, this.get('cells')[x][y]));
         }
       }
-
-      //TODO this only makes sense on client side, 
-      // is there a better way to do it?
-      if(typeof exports === "undefined"){
-        this.socket = site.socketClient;
-        var board = this;
-        this.socket.on('board-update', function (data) {
-          console.log('boards-updated, refreshing local board');
-          board.fetch();
-        });
-      }
     },
     blank_board: function(width) {
       var cells = [];
