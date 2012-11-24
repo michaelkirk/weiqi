@@ -7,23 +7,25 @@ var _init = function (weiqi) {
   weiqi.game = function(board_json, player_color){
       this.board = new weiqi.Board(board_json);
       this.board_view = new weiqi.BoardView({model: this.board, el: $('#app'), player_color: player_color});
+      window.board = board;
 
       this.socketClient = io.connect('http://::#socketIoPort#//weiqi');
       this.socketClient
         .of('/weiqi')
         .on('connecting', function () {
           console.log('connecting to /weiqi')
-        })
+      })
       var board = this.board;
-      window.board = board
-      this.socketClient.on('board-update', function (data) {
-        board.fetch().done(function(){
-          board.trigger('board-updated', board)
-          console.log('boards-updated for move ' + board.moves.length + ', refreshing local board');
-        })
-      });
 
-  }
+      this.socketClient.on('board-update', function(move_data){
+          var incoming_move = new weiqi.Move(move_data);
+          board.trigger('board-updated', incoming_move);
+          if(incoming_move.get('color') != board.get('last_played')){
+            incoming_move.apply_to(board);
+          }
+          console.log('boards-updated for move ' + board.moves.length + ', refreshing local board');
+      });
+  };
 
   // a test rig to experiment with socket.io
   weiqi.chat = function(path){

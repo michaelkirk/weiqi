@@ -35,7 +35,7 @@ module.exports = function(app){
           // and just push the move json down the socket.
           // At this point we know the move is valid, save the board!
           board.save().then(function(){
-            app.io.sockets.emit('board-update');
+            app.io.sockets.emit('board-update', board.moves.last().toJSON());
           })
         }).fail(function(err){
           res.status(500);

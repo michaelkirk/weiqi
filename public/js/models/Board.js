@@ -12,6 +12,9 @@ var _init = function(weiqi){
         return base + '/' + this.id;
       return base;
     },
+    apply_to: function(board){
+      board.play(this.get('color'), this.get('x'), this.get('y'));
+    }
   })
 
   weiqi.MoveCollection = Backbone.Collection.extend({
@@ -124,8 +127,10 @@ var _init = function(weiqi){
         var new_move = new weiqi.Move({x: x, y: y, color: color})
         this.moves.add(new_move)
       }
-      // TODO, what happens if the above `if` returns false?
-      // for now, assume that the if never fails
+      else{
+        // TODO  why is this `else` taken?
+        // TODO, what happens if the above `if` returns false?
+      }
       this.remove_dead_groups(this.get_cell(x,y));
       // this.save();
       return new_move.save();
@@ -170,11 +175,6 @@ var _init = function(weiqi){
       // Record Moves,
       this.moves = new weiqi.MoveCollection((this.get('moves') || []), {board: this})
       var board = this;
-      this.on('board-updated', function(){
-        // listen: when the board is updated from the other player 
-        var updated_moves = board.get('moves')
-        board.moves.reset(updated_moves)
-      })
 
     },
     blank_board: function(width) {
