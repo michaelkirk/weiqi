@@ -23,6 +23,7 @@ module.exports = function(app) {
   // board
   app.get('/boards', board.list);
   app.post('/boards', board.create);
+  app.post('/boards.:format', board.create);
   app.get('/boards/:id.:format', board.show);
   app.get('/boards/:id/:player_color', board.show);
   app.put('/boards/:id.:format', board.update);
