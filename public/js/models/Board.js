@@ -1,9 +1,41 @@
 var _init = function(weiqi){
 
+  weiqi.Move = Backbone.Model.extend({
+    defaults: {
+      x: null,
+      y: null,
+      color: null,
+    }, 
+    url: function(){
+      var base = '/boards/' + this.collection.board.id + '/moves';
+      if(this.id)
+        return base + '/' + this.id;
+      return base;
+    },
+    apply_to: function(board){
+      board.play(this.get('color'), this.get('x'), this.get('y'));
+    }
+  })
+
+  weiqi.MoveCollection = Backbone.Collection.extend({
+    model: weiqi.Move,
+    initialize: function(moves, options){
+      this.board = options.board;
+      this.on('add', this.set_board_attributes, this);
+      this.on('add', this.sync_to_board, this);
+    },
+    set_board_attributes: function(move){
+      move.set({'num':this.length, 'board_id':this.board.id});
+    }, 
+    sync_to_board: function(){
+      // keep the board state up to date with each move
+      this.board.set('moves', this.toJSON());
+    },
+  })
+
   weiqi.Board = Backbone.Model.extend({
     defaults: {
       width: 19,
-      move_count:0,
       last_played: null
     },
 
@@ -91,12 +123,17 @@ var _init = function(weiqi){
         this.set({ 
           cells: cells_attr,
           last_played: color,
-          move_count: this.get('move_count') + 1
         });
+        var new_move = new weiqi.Move({x: x, y: y, color: color})
+        this.moves.add(new_move)
+      }
+      else{
+        // TODO  why is this `else` taken?
+        // TODO, what happens if the above `if` returns false?
       }
       this.remove_dead_groups(this.get_cell(x,y));
-      this.save();
-      return true;
+      // this.save();
+      return new_move.save();
     },
     play_black: function(x,y) {
       return this.play("black", x, y);
@@ -114,7 +151,7 @@ var _init = function(weiqi){
         });
       });
       this.set('cells', this.blank_board(this.get('width')));
-      this.set('move_count', 0);
+      this.moves.reset()
       this.set('last_played', null);
     },
     width: function() {
@@ -134,6 +171,10 @@ var _init = function(weiqi){
           this.cells[x][y] = new weiqi.Cell(_.extend({board: this}, this.get('cells')[x][y]));
         }
       }
+
+      // Record Moves,
+      this.moves = new weiqi.MoveCollection((this.get('moves') || []), {board: this})
+
     },
     blank_board: function(width) {
       var cells = [];
@@ -146,7 +187,10 @@ var _init = function(weiqi){
       return cells;
     },
     url: function(){
-      return this.urlRoot + '/' + this.id + '.' + 'json';
+      var suffix = '.' + 'json';
+      if(this.id)
+        return this.urlRoot + '/' + this.id + suffix;
+      return this.urlRoot + suffix
     },
     black_player_url: function() {
       return this.urlRoot + '/' + this.id + '/' + 'black';

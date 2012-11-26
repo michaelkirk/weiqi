@@ -4,10 +4,25 @@ if(!(typeof exports == "undefined")){
 }
 
 describe("Board", function() {
-  var board = new weiqi.Board();
+  var board = null;
+  var black = null;
+  var white = null;
+
   beforeEach(function() {
-    board.clear();
+    var boardLoaded = false;
+    runs(function(){
+      board = new weiqi.Board();
+      board.save().done(function(){
+        black = new weiqi.game(board.toJSON(), "black");
+        white = new weiqi.game(board.toJSON(), "white");
+        boardLoaded = true;
+      });
+    });
+    waitsFor(function(){
+      return boardLoaded;
+    }, 'the tests to be set up', 1500)
   });
+
 
   it("should be 19 cells wide by default", function() {
     expect(board.get('width')).toEqual(19);
@@ -43,23 +58,32 @@ describe("Board", function() {
     });
   });
 
-  describe("game play", function() {
+  describe("game play", function(done) {
     it("should let you alternate", function() {
-      expect(board.play_black(4,4)).toEqual(true);
-      expect(board.play_white(2,4)).toEqual(true);
+
+      var failSpy = jasmine.createSpy();
+
+      board.play_black(4,4).done(done).fail(failSpy)
+      board.play_white(2,4).done(done).fail(failSpy)
+
+      expect(failSpy).not.toHaveBeenCalled()
+
     });
 
     it("shouldn't let you play the same color twice in a row", function() {
-      expect(board.play_black(4,4)).toEqual(true);
+
+      board.play_black(4,4)
       expect(function() {
         board.play_black(2,4);
       }).toThrow(new weiqi.IllegalMoveError("It's not your turn."));
     });
 
     it("it should let you play a color, clear the board, and play that color again", function() {
-      expect(board.play_black(4,4)).toEqual(true);
+
+      board.play_black(4,4)
       board.clear()
-      expect(board.play_black(4,4)).toEqual(true);
+      expect(board.play_black(4,4)).toBeTruthy();
+
     });
 
     it("should let you play on an empty cell", function() {
@@ -129,6 +153,36 @@ describe("Board", function() {
         expect(board.get_cell(0, 0).is_empty()).toBe(true);
       });
     });
+    describe('moves', function(){
+      it("should accumulate a list of moves", function(){
+        board.play_black(0, 1);
+        board.play_white(10, 12);
+        board.play_black(1, 0);
+        board.play_white(0, 0);
+        expect(board.moves.length).toBe(4)
+ 
+      });
+      it("should order the moves in the way they were played", function(){
+        var moves = [
+          {color:'black', x:0,  y:1}, 
+          {color:'white', x:10, y:12}, 
+          {color:'black', x:1,  y:0}, 
+          {color:'white', x:0,  y:0} 
+        ];
+        moves = _(moves).map(function(move_data){
+          return new weiqi.Move(move_data);
+        });
+        _(moves).each(function(move){
+          move.apply_to(board)
+        });
+        expect(moves.length).toBe(board.moves.length);
+        for(i=0; i<moves.length; i++){
+          expect(moves[i].get('x')).toBe(board.moves.models[i].get('x'));
+          expect(moves[i].get('y')).toBe(board.moves.models[i].get('y'));
+          expect(moves[i].get('color')).toBe(board.moves.models[i].get('color'));
+        };
+      });
+    });
   });
 
   describe("#stone_cell_groups", function() {
@@ -177,11 +231,24 @@ describe("Board", function() {
   });
 
   describe("counting moves", function() {
-    it("move_count should increment with each move", function() {
+    it("the number of moves should increment with each move", function() {
       board.play_black(4,4)
       board.play_white(2,4)
-      expect(board.get('move_count')).toEqual(2)
+      expect(board.moves.length).toEqual(2)
     });
+
+    it("the moves should retain their order and values", function() {
+      board.play_black(4,4)
+      board.play_white(2,4)
+      expect(board.moves.length).toEqual(2)
+      expect(board.moves.models[0].attributes.x).toEqual(4)
+      expect(board.moves.models[0].attributes.y).toEqual(4)
+      expect(board.moves.models[0].attributes.color).toEqual('black')
+      expect(board.moves.models[1].attributes.x).toEqual(2)
+      expect(board.moves.models[1].attributes.y).toEqual(4)
+      expect(board.moves.models[1].attributes.color).toEqual('white')
+    });
+
   });
 
   describe("serialization", function() {

@@ -4,8 +4,17 @@ if(!(typeof exports == "undefined")){
 }
 
 describe("Cell", function() {
-  var board = new weiqi.Board();
-  var cell = new weiqi.Cell({x:1, y:2, board: board});
+
+  var board = null;
+  cell = new weiqi.Cell({x:1, y:2, board: board});
+
+  beforeEach(function(done) {
+    board = new weiqi.Board();
+    board.save().done(function(){
+      cell.set({board: board})
+      done() 
+    })    
+  });
 
   describe("#is_empty", function() {
     it("should start as empty", function() {

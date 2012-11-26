@@ -50,6 +50,8 @@ app.locals({
 
 app.configure('development', function(){
   app.use(express.errorHandler());
+  app.use('/spec',express.static(path.join(__dirname, 'spec')));
+  app.use('/jasmine',express.static(path.join(__dirname, 'lib/jasmine-1.1.0')));
 });
 
 // build weiqi routes

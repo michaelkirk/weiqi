@@ -4,6 +4,7 @@ module.exports = function(app) {
   var index = require('./controllers/index')(app);
   var user = require('./controllers/users')(app);
   var board = require('./controllers/boards')(app);
+  var move = require('./controllers/moves')(app);
   
   app.get('/', board.list);
 
@@ -15,13 +16,18 @@ module.exports = function(app) {
   app.get('/users/:id/edit', user.edit);
   app.put('/users/:id/edit', user.update);
 
+  // move
+  app.get('/boards/:board_id/moves/:move_id', move.show);
+  app.post('/boards/:board_id/moves', move.create);
+
   // board
   app.get('/boards', board.list);
   app.post('/boards', board.create);
+  app.post('/boards.:format', board.create);
   app.get('/boards/:id.:format', board.show);
   app.get('/boards/:id/:player_color', board.show);
   app.put('/boards/:id.:format', board.update);
-
+  
   function NotFound(msg){
     this.name = 'NotFound';
     Error.call(this, msg);

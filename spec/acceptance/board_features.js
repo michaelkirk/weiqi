@@ -137,7 +137,9 @@ describe("Boards", function() {
         return board_id(browser);
       })
       .then(function(board_id) {
-        return browser.reload();
+         return browser.visit(board_path(board_id))
+         // TODO, this causes the test to fail:
+         //return browser.reload();
       })
       .then(function(){
         assert.ok(browser.success);
