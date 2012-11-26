@@ -5,12 +5,24 @@ if(!(typeof exports == "undefined")){
 
 describe("Board", function() {
   var board = null;
-  beforeEach(function(done) {
-    board = new weiqi.Board();
-    board.save().done(function(){
-      done() 
-    })    
+  var black = null;
+  var white = null;
+
+  beforeEach(function() {
+    var boardLoaded = false;
+    runs(function(){
+      board = new weiqi.Board();
+      board.save().done(function(){
+        black = new weiqi.game(board.toJSON(), "black");
+        white = new weiqi.game(board.toJSON(), "white");
+        boardLoaded = true;
+      });
+    });
+    waitsFor(function(){
+      return boardLoaded;
+    }, 'the tests to be set up', 1500)
   });
+
 
   it("should be 19 cells wide by default", function() {
     expect(board.get('width')).toEqual(19);
