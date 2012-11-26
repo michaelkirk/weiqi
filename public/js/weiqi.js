@@ -7,7 +7,7 @@ var _init = function (weiqi) {
   weiqi.game = function(board_json, player_color){
       this.board = new weiqi.Board(board_json);
       this.board_view = new weiqi.BoardView({model: this.board, el: $('#app'), player_color: player_color});
-      window.board = board;
+      window.game = this;
 
       this.socketClient = io.connect('http://::#socketIoPort#//weiqi');
       this.socketClient

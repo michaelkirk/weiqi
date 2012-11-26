@@ -174,7 +174,6 @@ var _init = function(weiqi){
 
       // Record Moves,
       this.moves = new weiqi.MoveCollection((this.get('moves') || []), {board: this})
-      var board = this;
 
     },
     blank_board: function(width) {
