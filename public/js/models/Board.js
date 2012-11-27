@@ -87,16 +87,21 @@ var _init = function(weiqi){
       if (this.whose_turn() != color) { throw new weiqi.IllegalMoveError("It's not your turn.") }
 
       var move = new weiqi.Move({x: x, y: y, color: color, num: this.moves.length});
-      if (this.get_cell(x, y).play(color)) {
-        this.moves.add(move);
-        var cells_attr = this.get('cells');
-        cells_attr[x][y].holds = color;
-        this.set({ 
-          cells: cells_attr,
-          last_played: color,
-          move_count: this.get('move_count') + 1
-        });
+      if (this.moves.is_same_as_last_move(move)) {
+        throw new weiqi.IllegalMoveError("Forbidden by the rule of ko.") 
+      } else {
+        if (this.get_cell(x, y).play(color)) {
+          this.moves.add(move);
+          var cells_attr = this.get('cells');
+          cells_attr[x][y].holds = color;
+          this.set({ 
+            cells: cells_attr,
+            last_played: color,
+            move_count: this.get('move_count') + 1
+          });
+        }
       }
+
       this.remove_dead_groups(this.get_cell(x,y));
       this.save();
       return true;

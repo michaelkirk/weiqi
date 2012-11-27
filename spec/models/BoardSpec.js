@@ -174,6 +174,77 @@ describe("Board", function() {
     });
   });
 
+  describe("rule of ko", function(){
+    it("shouldn't let you play the same move twice in a row", function(){
+      // Set up board thus
+      // .@O...
+      // @..O..
+      // .@O...
+      board.play_black(1, 0);
+      board.play_white(2, 0);
+      board.play_black(0, 1);
+      board.play_white(3, 1);
+      board.play_black(1, 2);
+      board.play_white(2, 2);
+
+      // black moves
+      // .@O...
+      // @.@O..
+      // .@O...
+      board.play_black(2, 1);
+      
+      // white captures black
+      // .@O...
+      // @O.O..
+      // .@O...
+      board.play_white(1, 1);
+      expect(board.get_cell(2, 1).is_empty()).toBeTruthy();
+
+      // black attempts to go captures white back
+      // .@O...
+      // @.@O..
+      // .@O...
+      // but is denied by the rule of ko
+      expect(function() {
+        board.play_black(2, 1);
+      }).toThrow(new weiqi.IllegalMoveError("Forbidden by the rule of ko."));
+
+      //black wasn't placed
+      expect(board.get_cell(2, 1).is_empty()).toBeTruthy();
+
+      //white is still there
+      expect(board.get_cell(1, 1).get('holds')).toBe("white");
+
+      //it's still blacks turn
+      expect(board.whose_turn()).toBe("black");
+
+      //So, black can play somewhere else
+      // .@O@..
+      // @O.O..
+      // .@O...
+      board.play_black(3, 0);
+
+      //and white can do something irrelevant.
+      // .@O@..
+      // @O.O..
+      // .@O..O
+      board.play_white(5, 2);
+
+      // And now, black can make her move to capture white
+      // which was previously denied by the rule of ko
+      // .@O@..
+      // @.@O..
+      // .@O..O
+      board.play_black(2, 1);
+
+      //black was placed
+      expect(board.get_cell(2, 1).get('holds')).toBe("black");
+
+      //white was captured
+      expect(board.get_cell(1, 1).is_empty()).toBeTruthy();
+    });
+  });
+
   describe("#stone_cell_groups", function() {
     describe("when the board is empty", function() {
       it("should be empty", function() {
