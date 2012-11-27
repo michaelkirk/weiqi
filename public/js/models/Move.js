@@ -19,7 +19,8 @@ var _init = function(weiqi){
       this.board.set('moves', this.toJSON());
     },
     is_same_as_last_move: function(move){
-      var last_move = _(this.models.reverse()).detect(function(last_move) { return last_move.get('color') == move.get('color') });
+      var moves = _.clone(this.models).reverse();
+      var last_move = _(moves).detect(function(last_move) { return last_move.get('color') == move.get('color') });
       if (last_move
           && last_move.get('x') == move.get('x') 
           && last_move.get('y') == move.get('y')) { 
