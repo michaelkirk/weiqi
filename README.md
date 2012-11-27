@@ -39,9 +39,9 @@ To run the client specs, point your browser to: file://&lt;project directory&gt;
 
     $> node app.js & # server must be running
 
-To run the acceptance suite
-    $> sudo npm install -g mocha
-    $> make test
+To run the casper acceptance suite
+
+    $> make casper_specs
 
 Deployment
 ==========
