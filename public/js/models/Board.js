@@ -72,6 +72,7 @@ var _init = function(weiqi){
 
     parse: function(attributes) {
       this.update_cells(attributes['cells']);
+      this.moves.reset(attributes['moves']);
       return attributes;
     },
     whose_turn: function() {
@@ -85,7 +86,9 @@ var _init = function(weiqi){
     play: function(color, x, y) {
       if (this.whose_turn() != color) { throw new weiqi.IllegalMoveError("It's not your turn.") }
 
+      var move = new weiqi.Move({x: x, y: y, color: color, num: this.moves.length});
       if (this.get_cell(x, y).play(color)) {
+        this.moves.add(move);
         var cells_attr = this.get('cells');
         cells_attr[x][y].holds = color;
         this.set({ 
@@ -116,6 +119,7 @@ var _init = function(weiqi){
       this.set('cells', this.blank_board(this.get('width')));
       this.set('move_count', 0);
       this.set('last_played', null);
+      this.moves.reset();
     },
     width: function() {
       return this.get('width');
@@ -134,6 +138,11 @@ var _init = function(weiqi){
           this.cells[x][y] = new weiqi.Cell(_.extend({board: this}, this.get('cells')[x][y]));
         }
       }
+
+      if( this.get('moves') == undefined ) {
+        this.set({ moves: [] }, { silent: true });
+      }
+      this.moves = new weiqi.MoveCollection(this.get('moves'), { board: this });
     },
     blank_board: function(width) {
       var cells = [];

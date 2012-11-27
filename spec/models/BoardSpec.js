@@ -131,6 +131,49 @@ describe("Board", function() {
     });
   });
 
+  describe('#moves', function(){
+    it("should accumulate a list of moves", function(){
+      board.play_black(0, 1);
+      board.play_white(10, 12);
+      board.play_black(1, 0);
+      board.play_white(0, 0);
+      expect(board.moves.length).toBe(4)
+
+    });
+    it("should order the moves in the way they were played", function(){
+      var moves = [
+        {color:'black', x:0,  y:1}, 
+        {color:'white', x:10, y:12}, 
+        {color:'black', x:1,  y:0}, 
+        {color:'white', x:0,  y:0} 
+      ];
+      _(moves).each(function(move){
+        board.play(move['color'], move['x'], move['y']);
+      });
+      expect(moves.length).toBe(board.moves.length);
+      for(i=0; i<moves.length; i++){
+        expect(moves[i]['x']).toBe(board.moves.models[i].get('x'));
+        expect(moves[i]['y']).toBe(board.moves.models[i].get('y'));
+        expect(moves[i]['color']).toBe(board.moves.models[i].get('color'));
+      };
+    });
+    it("should instantiate moves when syncing", function() {
+      var moves = [
+        {color:'black', x:0,  y:1}, 
+        {color:'white', x:10, y:12}, 
+        {color:'black', x:1,  y:0}, 
+      ];
+      _(moves).each(function(move){
+        board.play(move['color'], move['x'], move['y']);
+      });
+
+      var new_board = new weiqi.Board();
+      expect(new_board.moves.length).toBe(0);
+      new_board.parse(board.toJSON());
+      expect(new_board.moves.length).toBe(3);
+    });
+  });
+
   describe("#stone_cell_groups", function() {
     describe("when the board is empty", function() {
       it("should be empty", function() {
