@@ -16,6 +16,10 @@ var _init = function (weiqi) {
         })
       var board = this.board;
       this.socketClient.on('board-update', function (data) {
+        var event = document.createEvent("HTMLEvents");
+        event.initEvent("board-update", true, true);
+        dispatchEvent(event);
+
         board.fetch().done(function(){
           board.trigger('board-updated', board)
           console.log('boards-updated, refreshing local board');
