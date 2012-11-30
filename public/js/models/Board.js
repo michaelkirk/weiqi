@@ -103,8 +103,8 @@ var _init = function(weiqi){
       }
 
       this.remove_dead_groups(this.get_cell(x,y));
-      this.save();
-      return true;
+
+      return move.save()
     },
     play_black: function(x,y) {
       return this.play("black", x, y);
@@ -165,7 +165,7 @@ var _init = function(weiqi){
     black_player_url: function() {
       return this.urlRoot + '/' + this.id + '/' + 'black';
     },
-    urlRoot: '/boards',
+    urlRoot: '/boards'
 
   });
 
