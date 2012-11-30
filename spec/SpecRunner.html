@@ -21,6 +21,15 @@
   <script type="text/javascript" src="../public/js/views/BoardView.js"></script>
   <script type="text/javascript" src="../public/js/views/CellView.js"></script>
 
+  <script type="text/javascript" src="../node_modules/q/q.js"></script>
+  <script type="text/javascript">
+  function _mockedSync() {
+    // return a simulated XHR promise in 0 ms;
+    return Q.delay(0);
+  }
+  Backbone.sync = _mockedSync;
+  </script>
+
   <!-- include spec files here... -->
   <script type="text/javascript" src="SpecHelper.js"></script>
   <script type="text/javascript" src="models/CellSpec.js"></script>
