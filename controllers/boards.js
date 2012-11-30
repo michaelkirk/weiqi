@@ -52,8 +52,9 @@ module.exports = function(app){
     var board = new weiqi.Board({id: req.params.id});
     board.fetch()
       .then(function(){
-        board.play(req.body.color, req.body.x, req.body.y);
-        return board.save()
+        return board.play(req.body.color, req.body.x, req.body.y);
+      }).then(function(){
+        return board.save();
       })
       .then(function(){
         res.on('finish', function(){
