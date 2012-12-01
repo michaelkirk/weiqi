@@ -1,10 +1,16 @@
 var _init = function(weiqi){
+
   weiqi.Move = Backbone.Model.extend({
     defaults: {
       x: null,
       y: null,
       color: null,
+    },
+
+    url: function(){
+      return this.collection.board.url() + '/moves'
     }
+
   });
 
   weiqi.MoveCollection = Backbone.Collection.extend({

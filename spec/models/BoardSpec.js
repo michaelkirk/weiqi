@@ -45,21 +45,21 @@ describe("Board", function() {
 
   describe("game play", function() {
     it("should let you alternate", function() {
-      expect(board.play_black(4,4)).toEqual(true);
-      expect(board.play_white(2,4)).toEqual(true);
+      expect(board.play_black(4,4)).toBeTruthy();
+      expect(board.play_white(2,4)).toBeTruthy();
     });
 
     it("shouldn't let you play the same color twice in a row", function() {
-      expect(board.play_black(4,4)).toEqual(true);
+      expect(board.play_black(4,4)).toBeTruthy();
       expect(function() {
         board.play_black(2,4);
       }).toThrow(new weiqi.IllegalMoveError("It's not your turn."));
     });
 
     it("it should let you play a color, clear the board, and play that color again", function() {
-      expect(board.play_black(4,4)).toEqual(true);
+      expect(board.play_black(4,4)).toBeTruthy();
       board.clear()
-      expect(board.play_black(4,4)).toEqual(true);
+      expect(board.play_black(4,4)).toBeTruthy();
     });
 
     it("should let you play on an empty cell", function() {
