@@ -6,24 +6,21 @@ var _init = function (weiqi) {
   // a simple game app
   weiqi.game = function(board_json, player_color){
       this.board = new weiqi.Board(board_json);
+      var board = this.board;
       this.board_view = new weiqi.BoardView({model: this.board, el: $('#app'), player_color: player_color});
 
       this.socketClient = io.connect('http://::#socketIoPort#//weiqi');
-      this.socketClient
-        .of('/weiqi')
-        .on('connecting', function () {
-          console.log('connecting to /weiqi')
-        })
-      var board = this.board;
+
+      this.socketClient.emit('join board', board.id);
+
       this.socketClient.on('board-update', function (data) {
         var event = document.createEvent("HTMLEvents");
         event.initEvent("board-update", true, true);
         dispatchEvent(event);
 
         board.fetch().done(function(){
-          board.trigger('board-updated', board)
-          console.log('boards-updated, refreshing local board');
-        })
+          board.trigger('board-updated', board);
+        });
       });
 
   }

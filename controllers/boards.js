@@ -57,8 +57,8 @@ module.exports = function(app){
       })
       .then(function(){
         res.on('finish', function(){
-          app.io.sockets.emit('board-update');
-        })
+          app.io.sockets.in(board.id).emit('board-update');
+        });
         if(req.params.format == 'json') {
           attributes_string = JSON.stringify(board.toJSON());
           res.status(200);
