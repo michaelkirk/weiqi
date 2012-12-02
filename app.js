@@ -60,8 +60,9 @@ var routes = require('./routes')(app);
 var server = http.createServer(app);
 app.io = require('socket.io').listen(server)
 app.io.sockets.on('connection', function(socket) {
-  console.log('server got socket.io connection');
-  socket.emit('boards', { welcome_message: "Hello. I'll be sending you updates whenever boards are updated" });
+  socket.on('join board', function(board_id) {
+    socket.join(board_id);
+  });
 });
 
 // bind to a port
