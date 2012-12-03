@@ -20,6 +20,7 @@ module.exports = function(app){
       .then(function(){
         if(req.params.format == 'json') {
           res.set('Content-Type', 'application/json');
+          res.set('Cache-Control', 'no-cache');
           res.send(board.toJSON());
         } else {
           res.render('boards/show', {
@@ -47,17 +48,18 @@ module.exports = function(app){
       });
   }
 
-  boards.update = function(req, res){
+  boards.play = function(req, res) {
     var board = new weiqi.Board({id: req.params.id});
     board.fetch()
       .then(function(){
-        board.set(req.body)
-        return board.save()
+        return board.play(req.body.color, req.body.x, req.body.y);
+      }).then(function(){
+        return board.save();
       })
       .then(function(){
         res.on('finish', function(){
-          app.io.sockets.emit('board-update');
-        })
+          app.io.sockets.in(board.id).emit('board-update');
+        });
         if(req.params.format == 'json') {
           attributes_string = JSON.stringify(board.toJSON());
           res.status(200);

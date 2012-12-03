@@ -166,10 +166,41 @@ describe("Boards", function() {
       }).then(function() {
         // wait for white browser to get boards-updated notification
         // and re-render
-        return white_browser.wait(); 
+        return white_browser.wait();
       }).then(function() {
         assert_piece_played(24, { browser: black_browser, color: "black" });
         assert_piece_played(24, { browser: white_browser, color: "black" });
+        done();
+      }).fail(function(error) {
+        report("test failure: " + error);
+      });
+  });
+
+  it("should only syndicate to browsers watching the game", function(done) {
+    var black_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
+    var other_game_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
+    
+    //initialize to false, verify at the end that it's still false
+    other_game_browser.was_updated = false;
+
+    make_board(other_game_browser)
+      .then(function() {
+        // after loading the page, listen for board-updates.
+        other_game_browser.window.frames.addEventListener('board-update', function() {
+          other_game_browser.was_updated = true;
+        });
+      }).then(function() {
+        return make_board(black_browser);
+      }).then(function(the_board_id) {
+        return black_browser.visit(board_path(the_board_id, { color: "black" }))
+      }).then(function() {
+        return play_piece(24, { browser: black_browser });
+      }).then(function() {
+        // wait for browser to send board-update notification
+        return black_browser.wait();
+      }).then(function() {
+        // wait for browser to get any board-update notification
+        assert(! other_game_browser.was_updated, "other game should not receive board-update");
         done();
       }).fail(function(error) {
         report("test failure: " + error);

@@ -3,46 +3,26 @@
 
 var _init = function (weiqi) {
 
-  // a general app for the weiqi site
-  weiqi.site = function(initCallback){
-
-  this.socketClient = io.connect('http://::#socketIoPort#//weiqi');
-
-   this.socketClient
-      .of('/weiqi')
-      .on('connecting', function () {
-        console.log('connecting to /weiqi')
-      })
-      .on('connect', function () {
-         console.log('connected to /weiqi');
-         if(typeof initCallback == 'function')
-           // so we are connected, 
-           // is there anything we want to do immediately?
-           initCallback();
-      })
-      .on('connect_failed', function () {console.log('connection failed')})
-      .on('disconnect', function() {
-          console.log('client of:"/weiqi" - disconnected')
-      })
-      .on('error', function(e) {
-          console.log('client of:"/weiqi" - error', e)
-      })
-      .on('anything', function(data, callback) {
-        console.log('anything', data, callback)
-      })
-      .on('news', function(msg, callback) {
-        console.log("recvd. message: ", msg)
-        setTimeout(function() {
-          console.log('sending pong');
-          callback('pong');
-        }, 1000);
-      });
-  }
-
   // a simple game app
-  weiqi.game = function(boardId){
-    this.socketClient = socketClient;
-    this.board = new weiqi.Board();
+  weiqi.game = function(board_json, player_color){
+      this.board = new weiqi.Board(board_json);
+      var board = this.board;
+      this.board_view = new weiqi.BoardView({model: this.board, el: $('#app'), player_color: player_color});
+
+      this.socketClient = io.connect('http://::#socketIoPort#//weiqi');
+
+      this.socketClient.emit('join board', board.id);
+
+      this.socketClient.on('board-update', function (data) {
+        var event = document.createEvent("HTMLEvents");
+        event.initEvent("board-update", true, true);
+        dispatchEvent(event);
+
+        board.fetch().done(function(){
+          board.trigger('board-updated', board);
+        });
+      });
+
   }
 
   // a test rig to experiment with socket.io

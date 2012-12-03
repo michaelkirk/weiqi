@@ -72,6 +72,7 @@ var _init = function(weiqi){
 
     parse: function(attributes) {
       this.update_cells(attributes['cells']);
+      this.moves.reset(attributes['moves']);
       return attributes;
     },
     whose_turn: function() {
@@ -85,18 +86,25 @@ var _init = function(weiqi){
     play: function(color, x, y) {
       if (this.whose_turn() != color) { throw new weiqi.IllegalMoveError("It's not your turn.") }
 
-      if (this.get_cell(x, y).play(color)) {
-        var cells_attr = this.get('cells');
-        cells_attr[x][y].holds = color;
-        this.set({ 
-          cells: cells_attr,
-          last_played: color,
-          move_count: this.get('move_count') + 1
-        });
+      var move = new weiqi.Move({x: x, y: y, color: color, num: this.moves.length});
+      if (this.moves.is_same_as_last_move(move)) {
+        throw new weiqi.IllegalMoveError("Forbidden by the rule of ko.") 
+      } else {
+        if (this.get_cell(x, y).play(color)) {
+          this.moves.add(move);
+          var cells_attr = this.get('cells');
+          cells_attr[x][y].holds = color;
+          this.set({ 
+            cells: cells_attr,
+            last_played: color,
+            move_count: this.get('move_count') + 1
+          });
+        }
       }
+
       this.remove_dead_groups(this.get_cell(x,y));
-      this.save();
-      return true;
+
+      return move.save()
     },
     play_black: function(x,y) {
       return this.play("black", x, y);
@@ -116,6 +124,7 @@ var _init = function(weiqi){
       this.set('cells', this.blank_board(this.get('width')));
       this.set('move_count', 0);
       this.set('last_played', null);
+      this.moves.reset();
     },
     width: function() {
       return this.get('width');
@@ -135,16 +144,10 @@ var _init = function(weiqi){
         }
       }
 
-      //TODO this only makes sense on client side, 
-      // is there a better way to do it?
-      if(typeof exports === "undefined"){
-        this.socket = site.socketClient;
-        var board = this;
-        this.socket.on('board-update', function (data) {
-          console.log('boards-updated, refreshing local board');
-          board.fetch();
-        });
+      if( this.get('moves') == undefined ) {
+        this.set({ moves: [] }, { silent: true });
       }
+      this.moves = new weiqi.MoveCollection(this.get('moves'), { board: this });
     },
     blank_board: function(width) {
       var cells = [];
@@ -162,7 +165,7 @@ var _init = function(weiqi){
     black_player_url: function() {
       return this.urlRoot + '/' + this.id + '/' + 'black';
     },
-    urlRoot: '/boards',
+    urlRoot: '/boards'
 
   });
 

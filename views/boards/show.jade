@@ -3,8 +3,7 @@ extends ../layout
 block container
   script
     $(function() {
-      var board = new weiqi.Board(!{board_json});
-      var board_view = new weiqi.BoardView({model: board, el: $('#app'), player_color: "#{player_color}"});
+      new weiqi.game(!{board_json}, "#{player_color}");
     });
 
   #app
