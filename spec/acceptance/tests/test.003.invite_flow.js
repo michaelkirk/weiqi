@@ -8,7 +8,7 @@ casper.then(function(){
   black_url = casper.evaluate(function(){
     return $('ul.share li a').attr('href')
   });
-  casper.open(opponent_url)
+  casper.open(black_url)
 });
 
 
