@@ -1,5 +1,7 @@
 node_url = 'http://localhost:3000/'
 
+casper.start(node_url)
+
 // record a reference to the number of asserts
 var make_board_asserts = 2;
 function make_board(casper){
