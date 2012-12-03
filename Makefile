@@ -1,12 +1,9 @@
 SHELL = /bin/bash
 PHANTOM_BIN = phantomjs-1.7.0-linux-i686/
 
-
-test:
-	mocha spec/acceptance/*.js --reporter spec -t 10s
-
-debug:
-	mocha spec/acceptance/*.js --reporter spec -t 0 --debug-brk
+test: phantom casper
+	export PATH=spec/vendor/casperjs/bin:spec/vendor/phantomjs-1.7.0-linux-i686/bin:$$PATH && \
+	casperjs test spec/acceptance/board_features.casper.js
 
 phantom:
 	if [ ! -d spec/vendor/phantomjs-1.7.0 ]; then \
@@ -23,7 +20,4 @@ casper:
 			cd spec/vendor/casperjs; \
 			git checkout tags/1.0.0-RC4; \
 	fi 
-
-casper_specs: phantom casper
-	/bin/bash spec/run_casper_specs.sh
 	 
