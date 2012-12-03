@@ -3,7 +3,11 @@ PHANTOM_BIN = phantomjs-1.7.0-linux-i686/
 
 test: phantom casper
 	export PATH=spec/vendor/casperjs/bin:spec/vendor/phantomjs-1.7.0-linux-i686/bin:$$PATH && \
-	casperjs test spec/acceptance/board_features.casper.js
+	casperjs \
+	test spec/acceptance/tests/ \
+	--includes=spec/acceptance/inc.js \
+	--pre=spec/acceptance/pre.js \
+	--post=spec/acceptance/post.js
 
 phantom:
 	if [ ! -d spec/vendor/phantomjs-1.7.0 ]; then \
