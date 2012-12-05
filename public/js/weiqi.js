@@ -22,7 +22,7 @@ var _init = function (weiqi) {
           board.trigger('board-updated', board);
         });
       });
-
+      return this
   }
 
   // a test rig to experiment with socket.io
