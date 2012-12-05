@@ -35,7 +35,7 @@ Install WeiQi
 
 Tests
 =====
-To run the client specs, point your browser to: file://&lt;project directory&gt;/spec/SpecRunner.html
+To run the client specs, point your browser to: file://&lt;project directory&gt;/spec/jasmine/SpecRunner.html
 
     $> node app.js & # server must be running
 
