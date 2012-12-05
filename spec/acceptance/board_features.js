@@ -91,8 +91,6 @@ function make_board(the_browser){
     });
 };
 
-
-
 describe("Boards", function() {
   describe("#show", function() {
     it("should render the current players color", function(done) {
