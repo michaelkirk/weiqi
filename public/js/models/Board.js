@@ -7,7 +7,7 @@ var _init = function(weiqi){
       last_played: null
     },
 
-    get_cell: function(x,y) {
+    get_cell: function(x, y) {
       if(x < this.get('width') && y < this.get('width')){
         return this.cells[x][y];
       }
@@ -63,8 +63,8 @@ var _init = function(weiqi){
     },
 
     update_cells: function(cells_attributes) {
-      for(x=0; x < this.get('width'); x++){
-        for(y=0; y < this.get('width'); y++){
+      for(var x = 0; x < this.get('width'); x++){
+        for(var y = 0; y < this.get('width'); y++){
           this.cells[x][y].set(cells_attributes[x][y]);
         }
       }
@@ -137,9 +137,9 @@ var _init = function(weiqi){
       
       //Instantiate cell models from boards cell attributes
       this.cells = [];
-      for(x=0; x < this.get('width'); x++){
+      for(var x = 0; x < this.get('width'); x++){
         this.cells[x] = [];
-        for(y=0; y < this.get('width'); y++){
+        for(var y = 0; y < this.get('width'); y++){
           this.cells[x][y] = new weiqi.Cell(_.extend({board: this}, this.get('cells')[x][y]));
         }
       }
@@ -151,9 +151,9 @@ var _init = function(weiqi){
     },
     blank_board: function(width) {
       var cells = [];
-      for(x=0; x < width; x++){
+      for(var x = 0; x < width; x++){
         cells[x] = [];
-        for(y=0; y < width; y++){
+        for(var y = 0; y < width; y++){
           cells[x][y] = {x: x, y: y, holds: null};
         }
       }
