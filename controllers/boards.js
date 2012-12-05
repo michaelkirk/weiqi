@@ -1,5 +1,5 @@
 var underscore = require("underscore");
-require('../lib/weiqi-models.js')
+var weiqi = require('../lib/weiqi-models.js')
 
 module.exports = function(app){
 
