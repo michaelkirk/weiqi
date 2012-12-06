@@ -22,28 +22,34 @@ module.exports = function(app){
   }
 
   boards.show = function(req, res){
-    var board = new weiqi.Board({id: req.params.id})
-    board.fetch()
-      .then(function(){
-        if(req.params.format == 'json') {
-          res.set('Content-Type', 'application/json');
-          res.set('Cache-Control', 'no-cache');
-          res.send(board.toJSON());
-        } else {
-          res.render('boards/show', {
-            id: req.params.id,
-            board_json: JSON.stringify(board.toJSON()),
-            player_color: req.params.player_color
-          });
-        }
-      }).fail(function(error){
-        if (error instanceof weiqi.RecordNotFoundError) {
-          return render_not_found(res);
-        } else {
-          return render_error(error, res);
-        }
-      });
-  }// end boards.show
+
+    var player, board_id, board;
+
+    player = new weiqi.Player({ id: req.params.id });
+    player.fetch().then(function() {
+      board_id = player.get('board_id');
+      board = new weiqi.Board({ id: board_id });
+      return board.fetch();
+    }).then(function() {
+      if(req.params.format == 'json') {
+        res.set('Content-Type', 'application/json');
+        res.set('Cache-Control', 'no-cache');
+        res.send(board.toJSON());
+      } else {
+        res.render('boards/show', {
+          id: req.params.id,
+          board_json: JSON.stringify(board.toJSON()),
+          player_color: req.params.player_color
+        });
+      }
+    }).fail(function(error){
+      if (error instanceof weiqi.RecordNotFoundError) {
+        return render_not_found(res);
+      } else {
+        return render_error(error, res);
+      }
+    });
+  }; // end boards.show
 
   boards.create = function(req, res){
     var board = new weiqi.Board()
