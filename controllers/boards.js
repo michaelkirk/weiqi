@@ -29,6 +29,7 @@ module.exports = function(app){
     player.fetch().then(function() {
       board_id = player.get('board_id');
       board = new weiqi.Board({ id: board_id });
+      console.log('board: ' + board_id);
       return board.fetch();
     }).then(function() {
       if(req.params.format == 'json') {
@@ -39,7 +40,7 @@ module.exports = function(app){
         res.render('boards/show', {
           id: req.params.id,
           board_json: JSON.stringify(board.toJSON()),
-          player_color: req.params.player_color
+          player_color: player.color
         });
       }
     }).fail(function(error){
@@ -56,6 +57,9 @@ module.exports = function(app){
     board.save()
       .then(function(){
         res.redirect(302, '/boards/' + board.id + '/white');
+        return board.white_player_id();
+      }).then(function(white_player_id) {
+        res.redirect(302, '/boards/' + white_player_id);
       }).fail(function(error){
         return render_error(error, res);
       });
@@ -83,7 +87,7 @@ module.exports = function(app){
         }
       }).fail(function(error){
         return render_error(error, res);
-      })
+      });
   }
 
   return boards;
