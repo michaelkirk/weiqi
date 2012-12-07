@@ -91,8 +91,6 @@ function make_board(the_browser){
     });
 };
 
-
-
 describe("Boards", function() {
   describe("#show", function() {
     it("should render the current players color", function(done) {
@@ -213,27 +211,53 @@ describe("Boards", function() {
     return "http://localhost:3000" + node._attributes.href._nodeValue
   };
 
-  it("should have an invitation flow", function(done) {
-    var black_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
-    var white_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
-    make_board(white_browser)
-      .then(function(board_id) {
-        var invite_black_url = extract_link_from_node(white_browser.query("#app .share .black a"));
-        return black_browser.visit(invite_black_url)
-      })
-      .then(function() {
-        return play_piece(24, { browser: black_browser });
-      })
-      .then(function() {
-        return white_browser.wait();
-      })
-      .then(function() {
-        assert_piece_played(24, { color: "black", browser: white_browser });
-        done();
-      })
-      .fail(function(error) {
-        report("test failure: " + error);
-      });
+  describe.only("invitiation flow", function() {
+    it("should have an invitation flow", function(done) {
+      var black_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
+      var white_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
+      make_board(white_browser)
+        .then(function(board_id) {
+          var invite_black_url = extract_link_from_node(white_browser.query("#app .share .black a"));
+          return black_browser.visit(invite_black_url);
+        })
+        .then(function() {
+          return play_piece(24, { browser: black_browser });
+        })
+        .then(function() {
+          return white_browser.wait();
+        })
+        .then(function() {
+          assert_piece_played(24, { color: "black", browser: white_browser });
+          done();
+        })
+        .fail(function(error) {
+          report("test failure: " + error);
+        });
+    });
+
+    it("should only allow the first person to visit the invitation url", function(done) {
+      var black_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
+      var white_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
+      var test_world = {};
+      make_board(white_browser)
+        .then(function(board_id) {
+          test_world.invite_black_url = extract_link_from_node(white_browser.query("#app .share .black a"));
+          return black_browser.visit(test_world.invite_black_url);
+        })
+        .then(function() {
+          return white_browser.visit(test_world.invite_black_url);
+        })
+        .then(function() {
+          //assert that white player was denied.
+          debugger
+          assert.ok(white_browser.text("#app").match(/already claimed/), "only first visit should claim an invitation");
+          done();
+        })
+        .fail(function(error) {
+          report("test failure: " + error);
+        });
+    });
+
   });
 });
 

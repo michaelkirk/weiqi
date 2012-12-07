@@ -1,5 +1,5 @@
 var underscore = require("underscore");
-require('../lib/weiqi-models.js')
+var weiqi = require('../lib/weiqi-models.js')
 
 module.exports = function(app){
 
@@ -15,33 +15,40 @@ module.exports = function(app){
   }
 
   boards.show = function(req, res){
-    var board = new weiqi.Board({id: req.params.id})
-    board.fetch()
-      .then(function(){
-        if(req.params.format == 'json') {
-          res.set('Content-Type', 'application/json');
-          res.set('Cache-Control', 'no-cache');
-          res.send(board.toJSON());
-        } else {
-          res.render('boards/show', {
-            id: req.params.id,
-            board_json: JSON.stringify(board.toJSON()),
-            player_color: req.params.player_color
-          });
-        }
-      })
-    .fail(function(){
+    var player, board_id, board;
+
+    player = new weiqi.Player({ id: req.params.id });
+    player.fetch().then(function() {
+      board_id = player.get('board_id');
+      board = new weiqi.Board({ id: board_id });
+      console.log('board: ' + board_id);
+      return board.fetch();
+    }).then(function() {
+      if(req.params.format == 'json') {
+        res.set('Content-Type', 'application/json');
+        res.set('Cache-Control', 'no-cache');
+        res.send(board.toJSON());
+      } else {
+        res.render('boards/show', {
+          id: req.params.id,
+          board_json: JSON.stringify(board.toJSON()),
+          player_color: player.color
+        });
+      }
+    }).fail(function(err){
+      console.log(err);
       return notFound(req, res);
     });
-  }// end boards.show
+  }; // end boards.show
 
   boards.create = function(req, res){
     var board = new weiqi.Board()
     board.save()
       .then(function(){
-        res.redirect(302, '/boards/' + board.id + '/white');
-      })
-      .fail(function(err){
+        return board.white_player_id();
+      }).then(function(white_player_id) {
+        res.redirect(302, '/boards/' + white_player_id);
+      }).fail(function(err){
         // TODO, we have a message here in `err.message` (I think)
         // We probably need to log this..
         res.send("Error saving board;");
