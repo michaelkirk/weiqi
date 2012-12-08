@@ -211,7 +211,7 @@ describe("Boards", function() {
     return "http://localhost:3000" + node._attributes.href._nodeValue
   };
 
-  describe.only("invitiation flow", function() {
+  describe("invitiation flow", function() {
     it("should have an invitation flow", function(done) {
       var black_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
       var white_browser = new Zombie({ site: 'http://localhost:3000', silent: false});

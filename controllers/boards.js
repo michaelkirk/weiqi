@@ -22,7 +22,6 @@ module.exports = function(app){
   }
 
   boards.show = function(req, res){
-
     var player, board_id, board;
 
     player = new weiqi.Player({ id: req.params.id });
@@ -56,7 +55,6 @@ module.exports = function(app){
     var board = new weiqi.Board()
     board.save()
       .then(function(){
-        res.redirect(302, '/boards/' + board.id + '/white');
         return board.white_player_id();
       }).then(function(white_player_id) {
         res.redirect(302, '/boards/' + white_player_id);
