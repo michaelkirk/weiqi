@@ -364,8 +364,8 @@ describe("Board", function() {
   describe("#url", function(){
     describe("when it has an id", function() {
       it("should append '.json'", function(){
-        var new_board = new weiqi.Board({id: 123});
-        expect(new_board.url()).toBe("/boards/123.json");
+        var new_board = new weiqi.Board({id: 123}, { player_id: "34f" });
+        expect(new_board.url()).toBe("/boards/34f.json");
       });
     });
   });
@@ -373,8 +373,8 @@ describe("Board", function() {
   describe("#black_player_url", function(){
     describe("when it has an id", function() {
       it("should append '/black'", function(){
-        var new_board = new weiqi.Board({id: 123});
-        expect(new_board.black_player_url()).toBe("/boards/123/black");
+        var new_board = new weiqi.Board({id: 123}, { black_player_id: "78a" });
+        expect(new_board.black_player_url()).toBe("/boards/78a");
       });
     });
   });

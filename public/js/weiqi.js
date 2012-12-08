@@ -4,8 +4,8 @@
 var _init = function (weiqi) {
 
   // a simple game app
-  weiqi.game = function(board_json, player_color){
-      this.board = new weiqi.Board(board_json);
+  weiqi.game = function(board_json, black_player_id, player_id, player_color){
+      this.board = new weiqi.Board(board_json, { black_player_id: black_player_id, player_id: player_id });
       var board = this.board;
       this.board_view = new weiqi.BoardView({model: this.board, el: $('#app'), player_color: player_color});
 
