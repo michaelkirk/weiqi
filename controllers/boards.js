@@ -3,7 +3,8 @@ require('../lib/weiqi-models.js')
 
 module.exports = function(app){
 
-  function notFound(req, res) {
+  function render_not_found(res) {
+    console.log("rendered not found");
     res.status(404);
     res.render('errors/404');
   }
@@ -36,7 +37,11 @@ module.exports = function(app){
           });
         }
       }).fail(function(error){
-        return render_error(error, res);
+        if (error instanceof weiqi.RecordNotFoundError) {
+          return render_not_found(res);
+        } else {
+          return render_error(error, res);
+        }
       });
   }// end boards.show
 
@@ -68,7 +73,7 @@ module.exports = function(app){
           res.set('Content-Type', 'application/json');
           res.send(attributes_string);
         } else {
-          return notFound(req, res);
+          return render_not_found(res);
         }
       }).fail(function(error){
         return render_error(error, res);
