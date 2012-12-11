@@ -3,9 +3,16 @@ var weiqi = require('../lib/weiqi-models.js')
 
 module.exports = function(app){
 
-  function notFound(req, res) {
+  function render_not_found(res) {
+    console.log("rendered not found");
     res.status(404);
     res.render('errors/404');
+  }
+
+  function render_error(error, res) {
+    console.log("rendered error: " + error);
+    res.status(500);
+    res.render('errors/500', { error: error });
   }
 
   boards = {};
@@ -29,10 +36,13 @@ module.exports = function(app){
             player_color: req.params.player_color
           });
         }
-      })
-    .fail(function(){
-      return notFound(req, res);
-    });
+      }).fail(function(error){
+        if (error instanceof weiqi.RecordNotFoundError) {
+          return render_not_found(res);
+        } else {
+          return render_error(error, res);
+        }
+      });
   }// end boards.show
 
   boards.create = function(req, res){
@@ -40,11 +50,8 @@ module.exports = function(app){
     board.save()
       .then(function(){
         res.redirect(302, '/boards/' + board.id + '/white');
-      })
-      .fail(function(err){
-        // TODO, we have a message here in `err.message` (I think)
-        // We probably need to log this..
-        res.send("Error saving board;");
+      }).fail(function(error){
+        return render_error(error, res);
       });
   }
 
@@ -66,11 +73,10 @@ module.exports = function(app){
           res.set('Content-Type', 'application/json');
           res.send(attributes_string);
         } else {
-          return notFound(req, res);
+          return render_not_found(res);
         }
-      }).fail(function(err){
-          res.status(500);
-          res.render('errors/500');
+      }).fail(function(error){
+        return render_error(error, res);
       })
   }
 
