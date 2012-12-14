@@ -13,7 +13,7 @@ casper.then(function(){
   var page = phantom_play_piece(24, black_url);
 });
 
-casper.waitUntilVisible('#app .board .jgo_c:nth-child(24).jgo_b')
+casper.waitUntilVisible(cell_selector(24, {color: 'black'}))
 
 casper.then(function(){
   assert_piece_played(24, {casper:casper, color:'black'})
