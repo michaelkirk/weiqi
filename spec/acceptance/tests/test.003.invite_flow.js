@@ -13,12 +13,7 @@ casper.then(function(){
   var page = phantom_play_piece(24, black_url);
 });
 
-casper.waitFor(function(){
-  // the white play sits around until there is an indication that a move is made.
-  return this.evaluate(function(){
-    return window.game.board.moves.length > 0;
-  })
-})
+casper.waitUntilVisible('#app .board .jgo_c:nth-child(24).jgo_b')
 
 casper.then(function(){
   assert_piece_played(24, {casper:casper, color:'black'})
