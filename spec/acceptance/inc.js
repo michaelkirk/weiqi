@@ -57,10 +57,10 @@ function class_for_color(color) {
 };
 
 function cell_selector(index, options){
-  var sel = '#app .board .jgo_c:nth-child(' + index + ').'
+  var sel = '#app .board .jgo_c:nth-child(' + index + ')'
   // select the cell with a specific color stone?
-  if(options.color)
-    return sel + class_for_color(options.color);
+  if(options && options.color)
+    return sel + '.' + class_for_color(options.color);
   return sel;
 };
 
@@ -68,12 +68,10 @@ function assert_piece_played(index, options) {
   options = options || {};
 
   var casper = options['casper'] || casper;
-  var color = options['color'];
-  var color_class = class_for_color(color);
-  var query_string = '#app .board .jgo_c:nth-child(' + index + ').' + color_class;
+  var selector_string = cell_selector(index, options);
 
-  casper.test.comment('searching for stone at ' + query_string);
-  casper.test.assertExists(query_string, "Discovered stone at cell "+ index);
+  casper.test.comment('searching for stone at ' + selector_string);
+  casper.test.assertExists(selector_string, "Discovered stone at cell "+ index);
   casper.test.comment('stone found.');
 }
 
