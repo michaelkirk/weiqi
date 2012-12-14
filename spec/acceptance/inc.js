@@ -41,9 +41,9 @@ function board_url(board_id, options){
 function play_piece(index, casper) {
   casper.then(function(){
     casper.test.comment('trying to place a stone on ' + board_id(casper));
-    casper.click('#app .board .jgo_c:nth-child(' + index + ')');
+    casper.click(cell_selector(index));
   });
-  casper.waitForSelector('#app .board .jgo_c:nth-child(' + index + ').' + class_for_color(board_color(casper)));
+  casper.waitForSelector(cell_selector(index, {color:board_color(casper)}));
 };
 
 function class_for_color(color) {
