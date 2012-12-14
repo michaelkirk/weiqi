@@ -4,26 +4,13 @@ casper.then(function(){
   make_board(casper);
 });
 
-var black_url = null;
+var black_url;
 casper.then(function(){
   black_url = casper.evaluate(function(){
-    return $('ul.share li a').attr('href')
+    return $('ul.share li a').attr('href');
   });
-
   // manipulate a black board
-  // here we break out into the pure phantom.js API
-  // TODO, wrap this in a function in inc.js, 
-  var black_player_page = require('webpage').create();
-  casper.test.comment('Trying to open ' + node_url + black_url)
-  black_player_page.open(node_url + black_url.slice(1), function (status) {
-      if (status !== 'success') {
-          console.log('Unable to access network');
-      } else {
-          var clicked_cell = black_player_page.evaluate(function () {
-              return $('#app .board .jgo_c:nth-child(24)').click();
-          });
-      }
-  });
+  var page = phantom_play_piece(24, black_url);
 });
 
 casper.waitFor(function(){

@@ -44,6 +44,22 @@ function play_piece(index, casper) {
   casper.waitForSelector('#app .board .jgo_c:nth-child(' + index + ').' + class_for_color(board_color(casper)))
 }
 
+function phantom_play_piece(index, url, page){
+  var player_page = page || require('webpage').create();
+  var full_url = node_url + url.slice(1) // remove the leading slash
+  casper.test.comment('Trying to open ' + full_url)
+  player_page.open(full_url, function (status) {
+      if (status !== 'success') {
+          console.log('Unable to access network');
+      } else {
+          var clicked_cell = player_page.evaluate(function (index) {
+              console.log('clicking!')
+              return $('#app .board .jgo_c:nth-child('+index+')').click();
+          }, index); // send the index in as a parameter here since closures do not cross page threshholds
+      }
+  });
+}
+
 function class_for_color(color) {
   if (color == "white") {
     return "jgo_w";
