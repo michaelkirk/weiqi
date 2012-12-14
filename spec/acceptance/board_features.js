@@ -81,8 +81,6 @@ function make_board(the_browser){
     })
     .then(function(){
       assert.ok(the_browser.success);
-      assert.ok(the_browser.redirected);
-      report('redirected to: ' + the_browser.location.pathname);
       assert.ok(the_browser.location.pathname.match(/^\/boards\/[a-f0-9\-]+$/));
       report('successfully redirected to new board.');
       return player_id(the_browser);
