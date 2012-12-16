@@ -30,7 +30,7 @@ casper.then(function(){
 casper.then(function(){
   this.test.comment('it should create a playable game');
   var curr_id = board_id(casper);
-  casper.test.assertExists('#app .board .jgo_c:nth-child(24)', 'the cell exists');
+  casper.test.assertExists(cell_selector(24), 'the cell exists');
 });
 
 // TODO, why is does this need to be wrapped in a .then block?
