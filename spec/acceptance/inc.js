@@ -78,6 +78,7 @@ function assert_piece_played(index, options) {
 /*
  * Phantom JS API
  */
+
 function phantom_play_piece(index, url, page){
   var player_page = page || require('webpage').create();
   var full_url = node_url + url.slice(1) // remove the leading slash
@@ -91,4 +92,5 @@ function phantom_play_piece(index, url, page){
           }, index); // send the index in as a parameter here since closures do not cross page threshholds
       }
   });
+  return player_page
 };
