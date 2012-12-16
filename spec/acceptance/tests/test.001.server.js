@@ -2,7 +2,7 @@ casper.test.comment('test if the server is running');
 
 casper.start(node_url, function(){
   this.test.assert(this.getCurrentUrl() == node_url);
-  console.log(this.getCurrentUrl())
+  casper.test.comment(this.getCurrentUrl())
 });
 
 
