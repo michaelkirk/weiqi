@@ -75,6 +75,13 @@ function assert_piece_played(index, options) {
   casper.test.comment('stone found.');
 }
 
+function get_invite_url(casper){
+  // assume casper is at the initial white player board show view
+  return casper.evaluate(function(){
+      return $('ul.share li a').attr('href');
+  });
+}
+
 /*
  * Phantom JS API
  */

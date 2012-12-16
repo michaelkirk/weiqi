@@ -6,10 +6,8 @@ casper.then(function(){
 
 var black_url;
 casper.then(function(){
-  black_url = casper.evaluate(function(){
-    return $('ul.share li a').attr('href');
-  });
-  // manipulate a black board
+  black_url = get_invite_url(casper)
+  // create a phantom page and play a piece
   var page = phantom_play_piece(24, black_url);
 });
 
