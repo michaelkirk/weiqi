@@ -4,6 +4,7 @@ module.exports = function(app) {
   var index = require('./controllers/index')(app);
   var user = require('./controllers/users')(app);
   var board = require('./controllers/boards')(app);
+  var invitations = require('./controllers/invitations');
   
   app.get('/', board.list);
 
@@ -21,6 +22,9 @@ module.exports = function(app) {
   app.get('/boards/:id.:format', board.show);
   app.get('/boards/:id', board.show);
   app.post('/boards/:id.:format/moves', board.play);
+
+  // invitations
+  app.get('/invitations/:id', invitations.show);
 
   function NotFound(msg){
     this.name = 'NotFound';

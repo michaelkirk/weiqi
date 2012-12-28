@@ -28,10 +28,7 @@ module.exports = function(app){
     player.fetch().then(function() {
       board_id = player.get('board_id');
       board = new weiqi.Board({ id: board_id });
-      console.log('board: ' + board_id);
       return board.fetch();
-    }).then(function() {
-      return board.find_black_player_id()
     }).then(function(black_player_id) {
       if(req.params.format == 'json') {
         res.set('Content-Type', 'application/json');
@@ -43,7 +40,6 @@ module.exports = function(app){
           board_json: JSON.stringify(board.toJSON()),
           player_color: player.get('color'),
           player_id: player.id,
-          black_player_id: black_player_id
         });
       }
     }).fail(function(error){

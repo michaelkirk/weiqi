@@ -370,12 +370,10 @@ describe("Board", function() {
     });
   });
 
-  describe("#black_player_url", function(){
-    describe("when it has an id", function() {
-      it("should append '/black'", function(){
-        var new_board = new weiqi.Board({id: 123}, { black_player_id: "78a" });
-        expect(new_board.black_player_url()).toBe("/boards/78a");
-      });
+  describe("#invitation_url", function(){
+    it("should be", function(){
+      var new_board = new weiqi.Board({id: 123, invitation_id: '789'});
+      expect(new_board.invitation_url()).toBe("/invitations/789");
     });
   });
 

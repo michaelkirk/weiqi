@@ -132,7 +132,6 @@ var _init = function(weiqi){
     initialize: function(attributes, options) {
       options || (options = {});
       this.player_id = options.player_id;
-      this.black_player_id = options.black_player_id;
 
       if( this.get('cells') == undefined ) {
         this.set({cells: this.blank_board(this.get('width'))},
@@ -166,8 +165,8 @@ var _init = function(weiqi){
     url: function(){
       return this.urlRoot + '/' + this.player_id + '.' + 'json';
     },
-    black_player_url: function() {
-      return this.urlRoot + '/' + this.black_player_id;
+    invitation_url: function() {
+      return "/invitations/" + this.get('invitation_id');
     },
     urlRoot: '/boards'
 

@@ -26,6 +26,20 @@ describe("Board", function() {
         console.log("failure:" + error);
       });
     });
+
+    it("should create an invitation", function(done) {
+      var board = new weiqi.Board();
+      board.save().then(function() {
+        assert(board.get('invitation_id'), 'invitation id not set');
+        var invitation = new weiqi.Invitation({ id: board.get('invitation_id') });
+        invitation.fetch().then(function() {
+          assert.equal(invitation.get('board_id'), board.id, "invitation's board_id didn't match board's id");
+          done();
+        });
+      }).fail(function(error) {
+        console.log("failure:" + error);
+      });
+    });
   });
 
   describe("#find_white_player_id", function() {

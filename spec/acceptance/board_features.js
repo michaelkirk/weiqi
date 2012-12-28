@@ -253,7 +253,6 @@ describe("Boards", function() {
         })
         .then(function() {
           //assert that white player was denied.
-          debugger
           assert.ok(white_browser.text("#app").match(/already claimed/), "only first visit should claim an invitation");
           done();
         })
