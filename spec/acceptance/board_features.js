@@ -251,12 +251,17 @@ describe("Boards", function() {
         .then(function() {
           return white_browser.visit(test_world.invite_black_url);
         })
-        .then(function() {
-          //assert that white player was denied.
-          assert.ok(white_browser.text("#app").match(/already claimed/), "only first visit should claim an invitation");
-          done();
-        })
-        .fail(function(error) {
+        .then(
+          function() {
+            assert.fail("should have failed");
+          },
+          function() {
+            //assert that white player was denied.
+            debugger
+            assert.ok(white_browser.text("body").match(/already claimed/), "only first visit should claim an invitation");
+            done();
+          }
+        ).fail(function(error) {
           report("test failure: " + error);
         });
     });
