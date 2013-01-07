@@ -13,14 +13,12 @@ var _init = function (weiqi) {
 
       this.socketClient.emit('join board', board.id);
 
-      this.socketClient.on('board-update', function (data) {
+      this.socketClient.on('board-update', function (move_data) {
         var event = document.createEvent("HTMLEvents");
         event.initEvent("board-update", true, true);
         dispatchEvent(event);
-
-        board.fetch().done(function(){
-          board.trigger('board-updated', board);
-        });
+        if(!board.moves.is_same_as_last_move(new weiqi.Move(move_data)))
+          board.play(move_data.color, move_data.x, move_data.y, true)
       });
 
   }
