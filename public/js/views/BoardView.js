@@ -13,7 +13,9 @@
       var board_view = this;
       _.each(this.model.cells, function(rows) {
         _.each(rows, function(cell) {
-          board_view.cells.push(new weiqi.CellView({model: cell, board_view: board_view}));
+          var cellView = new weiqi.CellView({model: cell, board_view: board_view});
+          board_view.cells.push(cellView);
+          cell.view = cellView;
         });
       });
       this.template = _.template('\
@@ -36,15 +38,32 @@
         ');
 
       _.bindAll(this, "update_turn");
-      this.model.bind("change", this.update_turn);
+      this.model.bind("play", this.update_turn);
 
       this.render();
     },
-    update_turn: function() {
+
+    update_turn: function(move, previous_move) {
       if(this.model.whose_turn() == this.player_color) {
         this.$el.addClass("your-turn");
       } else {
         this.$el.removeClass("your-turn");
+      }
+
+      console.log(move, previous_move)
+      if(move){
+        var cell = this.model.get_cell(move.get('x'), move.get('y'));
+          debugger
+        if(cell.get('holds') == "white")
+          cell.view.$el.css('border','solid 1px black')
+        else
+          cell.view.$el.css('border','solid 1px white')
+      }
+
+      if(previous_move){
+        var prev_cell = this.model.get_cell(previous_move.get('x'), previous_move.get('y'));
+        prev_cell.view.$el.css('border', 'none');
+        prev_cell.view.$el.css('border', 'none');
       }
     },
     render: function(){
