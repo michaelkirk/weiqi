@@ -129,12 +129,15 @@ var _init = function(weiqi){
     width: function() {
       return this.get('width');
     },
-    initialize: function(attributes) {
+    initialize: function(attributes, options) {
+      options || (options = {});
+      this.player_id = options.player_id;
+
       if( this.get('cells') == undefined ) {
         this.set({cells: this.blank_board(this.get('width'))},
                  {silent: true});
       }
-      
+     
       //Instantiate cell models from boards cell attributes
       this.cells = [];
       for(var x = 0; x < this.get('width'); x++){
@@ -160,10 +163,10 @@ var _init = function(weiqi){
       return cells;
     },
     url: function(){
-      return this.urlRoot + '/' + this.id + '.' + 'json';
+      return this.urlRoot + '/' + this.player_id + '.' + 'json';
     },
-    black_player_url: function() {
-      return this.urlRoot + '/' + this.id + '/' + 'black';
+    invitation_url: function() {
+      return "/invitations/" + this.get('invitation_id');
     },
     urlRoot: '/boards'
 
