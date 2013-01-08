@@ -373,7 +373,7 @@ describe("Board", function() {
   describe("#invitation_url", function(){
     it("should be", function(){
       var new_board = new weiqi.Board({id: 123, invitation_id: '789'});
-      expect(new_board.invitation_url()).toBe("/invitations/789");
+      expect(new_board.invitation_url()).toBe("file:///invitations/789");
     });
   });
 

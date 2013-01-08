@@ -114,9 +114,7 @@ describe("Boards", function() {
   });
 
   function extract_link_from_node(node) {
-    // This is a pretty specific hack
-    // which currently only works with relative URLs
-    return "http://localhost:3000" + node._attributes.href._nodeValue
+    return node._attributes.href._nodeValue
   };
 
   function extract_invite_url(browser) {
