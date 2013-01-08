@@ -172,6 +172,10 @@ var _init = function(weiqi){
 
   });
 
+  function get_origin_from_location(location) {
+    return 
+  }
+
   // Helper class for computing liberties
   weiqi.Board.Group = Backbone.Model.extend({
     constructor: function(stone_cells) {

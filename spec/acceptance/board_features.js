@@ -40,16 +40,16 @@ function play_piece(index, options) {
 
   var playing_browser = options['browser'] || browser;
 
-  var cell_element = playing_browser.querySelector('#app .board .jgo_c:nth-child(' + index + ')');
+  var cell_element = playing_browser.querySelector('#app .board .cell:nth-child(' + index + ')');
   report('trying to place a stone.');
   return playing_browser.fire('click', cell_element);
 }
 
 function class_for_color(color) {
   if (color == "white") {
-    return "jgo_w";
+    return "white";
   } else if (color == "black") {
-    return "jgo_b";
+    return "black";
   } else {
     throw Error("unknown color: " + color);
   }
@@ -62,7 +62,7 @@ function assert_piece_played(index, options) {
   var playing_browser = options['browser'] || browser;
   var color = options['color'];
   var color_class = class_for_color(color);
-  var query_string = '#app .board .jgo_c:nth-child(24).' + color_class;
+  var query_string = '#app .board .cell:nth-child(24).' + color_class;
 
   report('searching for stone at ' + query_string);
   assert.ok(playing_browser.query(query_string), "couldn't find stone");
@@ -133,7 +133,7 @@ describe("Boards", function() {
       .then(function(player_id) { return follow_invite(browser) })
       .then(function() {
         assert.ok(browser.success);
-        assert.ok(browser.query('#app .board .jgo_c:nth-child(24)'));
+        assert.ok(browser.query('#app .board .cell:nth-child(24)'));
         report('successfully rendered new board.');
       })
       .then(function() {
