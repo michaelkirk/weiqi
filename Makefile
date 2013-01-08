@@ -1,5 +1,5 @@
 test:
-	mocha --recursive spec/lib/  --reporter spec -t 10s
+	mocha --recursive spec/lib/  --reporter spec
 
 acceptance:
 	mocha spec/acceptance/*.js --reporter spec -t 10s

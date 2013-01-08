@@ -56,7 +56,7 @@
       if (this.player_color == "white") {
         opponent_link_attributes = {
           message: 'send your oponent this url:', 
-          url: this.model.black_player_url(), 
+          url: this.model.invitation_url(), 
           share_class: "black"
         };
         opponent_link_html = this.share_template(opponent_link_attributes);

@@ -23,18 +23,16 @@ describe("Weiqi", function() {
   });
 });
 
-function board_id(browser){
-  return browser.location.pathname.match(/^\/boards\/([a-f0-9\-]+)\/(black|white)$/)[1];
+function player_id(browser){
+  return browser.location.pathname.match(/^\/boards\/([a-f0-9\-]+)$/)[1];
 }
 
-function board_url(board_id){
-  return "http://localhost:3000" + board_path(board_id);
+function board_url(player_id){
+  return "http://localhost:3000" + board_path(player_id);
 }
 
-function board_path(board_id, options){
-  var options = options || {};
-  var color = options['color'] || "black";
-  return "/boards/" + board_id + "/" + color;
+function board_path(player_id){
+  return "/boards/" + player_id;
 }
 
 function play_piece(index, options) {
@@ -83,11 +81,9 @@ function make_board(the_browser){
     })
     .then(function(){
       assert.ok(the_browser.success);
-      assert.ok(the_browser.redirected);
-      report('redirected to: ' + the_browser.location.pathname);
-      assert.ok(the_browser.location.pathname.match(/^\/boards\/[a-f0-9\-]+\/white$/));
+      assert.ok(the_browser.location.pathname.match(/^\/boards\/[a-f0-9\-]+$/));
       report('successfully redirected to new board.');
-      return board_id(the_browser);
+      return player_id(the_browser);
     });
 };
 
@@ -115,11 +111,26 @@ describe("Boards", function() {
           done();
         });
     });
-  })
+  });
+
+  function extract_link_from_node(node) {
+    // This is a pretty specific hack
+    // which currently only works with relative URLs
+    return "http://localhost:3000" + node._attributes.href._nodeValue
+  };
+
+  function extract_invite_url(browser) {
+    return extract_link_from_node(browser.query("#app .share .black a"));
+  }
+  
+  function follow_invite(browser) {
+    var invite_black_url = extract_invite_url(browser);
+    return browser.visit(invite_black_url);
+  }
 
   it("should create a playable game", function(done) {
     make_board(browser)
-      .then(function(board_id) { return browser.visit(board_path(board_id)); })
+      .then(function(player_id) { return follow_invite(browser) })
       .then(function() {
         assert.ok(browser.success);
         assert.ok(browser.query('#app .board .jgo_c:nth-child(24)'));
@@ -132,9 +143,9 @@ describe("Boards", function() {
         assert.ok(browser.success);
         assert_piece_played(24, { color: "black" });
         report('successfully placed a stone.');
-        return board_id(browser);
+        return player_id(browser);
       })
-      .then(function(board_id) {
+      .then(function(player_id) {
         return browser.reload();
       })
       .then(function(){
@@ -154,11 +165,9 @@ describe("Boards", function() {
   it("should syndicate updates to everyone watching.", function(done) {
     var black_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
     var white_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
-    make_board(black_browser)
-      .then(function(the_board_id) {
-        return black_browser.visit(board_path(the_board_id, { color: "black" }))
-      }).then(function() {
-        return white_browser.visit(board_path(board_id(black_browser), { color: "white" }));
+    make_board(white_browser)
+      .then(function(the_player_id) {
+        return black_browser.visit(extract_invite_url(white_browser));
       }).then(function() {
         return play_piece(24, { browser: black_browser });
       }).then(function() {
@@ -189,8 +198,8 @@ describe("Boards", function() {
         });
       }).then(function() {
         return make_board(black_browser);
-      }).then(function(the_board_id) {
-        return black_browser.visit(board_path(the_board_id, { color: "black" }))
+      }).then(function(the_player_id) {
+        return follow_invite(black_browser);
       }).then(function() {
         return play_piece(24, { browser: black_browser });
       }).then(function() {
@@ -205,33 +214,58 @@ describe("Boards", function() {
       });
   });
 
-  function extract_link_from_node(node) {
-    // This is a pretty specific hack
-    // which currently only works with relative URLs
-    return "http://localhost:3000" + node._attributes.href._nodeValue
-  };
 
-  it("should have an invitation flow", function(done) {
-    var black_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
-    var white_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
-    make_board(white_browser)
-      .then(function(board_id) {
-        var invite_black_url = extract_link_from_node(white_browser.query("#app .share .black a"));
-        return black_browser.visit(invite_black_url)
-      })
-      .then(function() {
-        return play_piece(24, { browser: black_browser });
-      })
-      .then(function() {
-        return white_browser.wait();
-      })
-      .then(function() {
-        assert_piece_played(24, { color: "black", browser: white_browser });
-        done();
-      })
-      .fail(function(error) {
-        report("test failure: " + error);
-      });
+  describe("invitiation flow", function() {
+    it("should have an invitation flow", function(done) {
+      var black_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
+      var white_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
+      make_board(white_browser)
+        .then(function(player_id) {
+          var invite_black_url = extract_invite_url(white_browser);
+          return black_browser.visit(invite_black_url);
+        })
+        .then(function() {
+          return play_piece(24, { browser: black_browser });
+        })
+        .then(function() {
+          return white_browser.wait();
+        })
+        .then(function() {
+          assert_piece_played(24, { color: "black", browser: white_browser });
+          done();
+        })
+        .fail(function(error) {
+          report("test failure: " + error);
+        });
+    });
+
+    it("should only allow the first person to visit the invitation url", function(done) {
+      var black_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
+      var white_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
+      var test_world = {};
+      make_board(white_browser)
+        .then(function(player_id) {
+          test_world.invite_black_url = extract_invite_url(white_browser);
+          return black_browser.visit(test_world.invite_black_url);
+        })
+        .then(function() {
+          return white_browser.visit(test_world.invite_black_url);
+        })
+        .then(
+          function() {
+            assert.fail("should have failed");
+          },
+          function() {
+            //assert that white player was denied.
+            debugger
+            assert.ok(white_browser.text("body").match(/already claimed/), "only first visit should claim an invitation");
+            done();
+          }
+        ).fail(function(error) {
+          report("test failure: " + error);
+        });
+    });
+
   });
 });
 
