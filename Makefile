@@ -10,3 +10,9 @@ debug:
 debug_acceptance:
 	mocha spec/acceptance/*.js --reporter spec -t 0 --debug-brk
 
+server:
+	node-supervisor app.js
+
+debug_server:
+	node-supervisor --debug app.js 
+

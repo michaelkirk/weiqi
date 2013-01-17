@@ -25,7 +25,7 @@
           <ul class="share"> \
           </ul> \
         </div> \
-        <div class="board jgo_board board<%= width %>"> \
+        <div class="board board<%= width %>"> \
         </div> \
       ');
       
