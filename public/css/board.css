@@ -1,6 +1,7 @@
 .board {
   margin: 20px;
   background-color: #e5dbc8;
+  border-radius: 4px;
   border: solid #a49688 1px;
   border-bottom-width: 2px;
   border-right-width: 2px;
