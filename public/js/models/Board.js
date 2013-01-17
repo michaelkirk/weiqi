@@ -71,6 +71,7 @@ var _init = function(weiqi){
     },
 
     parse: function(attributes) {
+      console.log("width attribute was: " + attributes.width);
       this.update_cells(attributes['cells']);
       this.moves.reset(attributes['moves']);
       return attributes;
