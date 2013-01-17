@@ -29,7 +29,8 @@ module.exports = function(app){
       board_id = player.get('board_id');
       board = new weiqi.Board({ id: board_id });
       return board.fetch();
-    }).then(function(black_player_id) {
+    }).then(function() {
+      console.log("board width in controller is " + board.get('width'));
       if(req.params.format == 'json') {
         res.set('Content-Type', 'application/json');
         res.set('Cache-Control', 'no-cache');
@@ -52,7 +53,8 @@ module.exports = function(app){
   }; // end boards.show
 
   boards.create = function(req, res){
-    var board = new weiqi.Board()
+    var board = new weiqi.Board({ width: req.body.board_size });
+    console.log(board.get('width'));
     board.save()
       .then(function(){
         return board.find_white_player_id();
@@ -62,6 +64,7 @@ module.exports = function(app){
         return render_error(error, res);
       });
   }
+
   boards.play = function(req, res) {
     var player, board;
     player = new weiqi.Player({ id: req.params.id });
