@@ -1,0 +1,47 @@
+.board {
+  margin: 20px;
+  background-color: #e5dbc8;
+  border: solid #a49688 1px;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+  box-shadow: 2px 2px 15px #888;
+  position: relative;
+}
+
+.board19 {
+  background: url(/img/board19.jpg);
+  width: 700px;
+  height: 700px;
+}
+
+/*.black .cell:nth-of-type(2), #black .cell:nth-of-type(3), #black .cell:nth-of-type(4), #black .cell:nth-of-type(5), #black .cell:nth-of-type(6), #black .cell:nth-of-type(7), #black .cell:nth-of-type(11), #black .cell:nth-of-type(13), #black .cell:nth-of-type(21), #black .cell:nth-of-type(23), #black .cell:nth-of-type(24), #black .cell:nth-of-type(25), #black .cell:nth-of-type(27), #black .cell:nth-of-type(28), #black .cell:nth-of-type(33), #black .cell:nth-of-type(34), #black .cell:nth-of-type(35), #black .cell:nth-of-type(37), #black .cell:nth-of-type(41), #black .cell:nth-of-type(45), #black .cell:nth-of-type(49), #black .cell:nth-of-type(53), #black .cell:nth-of-type(60), #black .cell:nth-of-type(64), #black .cell:nth-of-type(66), #black .cell:nth-of-type(67), #black .cell:nth-of-type(70), #black .cell:nth-of-type(78), #black .cell:nth-of-type(86), #black .cell:nth-of-type(88), #black .cell:nth-of-type(90), #black .cell:nth-of-type(98), #black .cell:nth-of-type(104), #black .cell:nth-of-type(110), #black .cell:nth-of-type(115), #black .cell:nth-of-type(117), #black .cell:nth-of-type(119), #black .cell:nth-of-type(121), #black .cell:nth-of-type(124), #black .cell:nth-of-type(125), #black .cell:nth-of-type(127), #black .cell:nth-of-type(128), #black .cell:nth-of-type(133), #black .cell:nth-of-type(135), #black .cell:nth-of-type(136), #black .cell:nth-of-type(137), #black .cell:nth-of-type(140), #black .cell:nth-of-type(148), #black .cell:nth-of-type(149), #black .cell:nth-of-type(154), #black .cell:nth-of-type(160), #black .cell:nth-of-type(164), #black .cell:nth-of-type(166), #black .cell:nth-of-type(167), #black .cell:nth-of-type(169), #black .cell:nth-of-type(171), #black .cell:nth-of-type(172), #black .cell:nth-of-type(182), #black .cell:nth-of-type(184), #black .cell:nth-of-type(187), #black .cell:nth-of-type(190), #black .cell:nth-of-type(193), #black .cell:nth-of-type(197), #black .cell:nth-of-type(199), #black .cell:nth-of-type(200), #black .cell:nth-of-type(201), #black .cell:nth-of-type(203), #black .cell:nth-of-type(204), #black .cell:nth-of-type(207), #black .cell:nth-of-type(208), #black .cell:nth-of-type(216), #black .cell:nth-of-type(218), #black .cell:nth-of-type(229), #black .cell:nth-of-type(231), #black .cell:nth-of-type(233), #black .cell:nth-of-type(234), #black .cell:nth-of-type(239), #black .cell:nth-of-type(256), #black .cell:nth-of-type(260), #black .cell:nth-of-type(263), #black .cell:nth-of-type(264), #black .cell:nth-of-type(265), #black .cell:nth-of-type(270), #black .cell:nth-of-type(271), #black .cell:nth-of-type(276), #black .cell:nth-of-type(278), #black .cell:nth-of-type(279), #black .cell:nth-of-type(286), #black .cell:nth-of-type(289), #black .cell:nth-of-type(291), #black .cell:nth-of-type(305), #black .cell:nth-of-type(306), #black .cell:nth-of-type(310), #black .cell:nth-of-type(316), #black .cell:nth-of-type(320), #black .cell:nth-of-type(323), #black .cell:nth-of-type(325), #black .cell:nth-of-type(333), #black .cell:nth-of-type(335), #black .cell:nth-of-type(338), #black .cell:nth-of-type(354), #black .cell:nth-of-type(359), #black .cell:nth-of-type(360) {*/
+  /*background: url(/img/pieces/black1.png);*/
+/*}*/
+
+.black.cell {
+  background: url(/img/pieces/black1.png);
+  background-repeat: no-repeat;
+}
+.white.cell {
+  background: url(/img/pieces/white1.png);
+  background-repeat: no-repeat;
+}
+
+.board .cell {
+  position: absolute;
+  height: 37px;
+  width: 37px;
+}
+
+/*.white .cell:nth-of-type(2), #white .cell:nth-of-type(3), #white .cell:nth-of-type(4), #white .cell:nth-of-type(5), #white .cell:nth-of-type(6), #white .cell:nth-of-type(7), #white .cell:nth-of-type(11), #white .cell:nth-of-type(13), #white .cell:nth-of-type(21), #white .cell:nth-of-type(23), #white .cell:nth-of-type(24), #white .cell:nth-of-type(25), #white .cell:nth-of-type(27), #white .cell:nth-of-type(28), #white .cell:nth-of-type(33), #white .cell:nth-of-type(34), #white .cell:nth-of-type(35), #white .cell:nth-of-type(37), #white .cell:nth-of-type(41), #white .cell:nth-of-type(45), #white .cell:nth-of-type(49), #white .cell:nth-of-type(53), #white .cell:nth-of-type(60), #white .cell:nth-of-type(64), #white .cell:nth-of-type(66), #white .cell:nth-of-type(67), #white .cell:nth-of-type(70), #white .cell:nth-of-type(78), #white .cell:nth-of-type(86), #white .cell:nth-of-type(88), #white .cell:nth-of-type(90), #white .cell:nth-of-type(98), #white .cell:nth-of-type(104), #white .cell:nth-of-type(110), #white .cell:nth-of-type(115), #white .cell:nth-of-type(117), #white .cell:nth-of-type(119), #white .cell:nth-of-type(121), #white .cell:nth-of-type(124), #white .cell:nth-of-type(125), #white .cell:nth-of-type(127), #white .cell:nth-of-type(128), #white .cell:nth-of-type(133), #white .cell:nth-of-type(135), #white .cell:nth-of-type(136), #white .cell:nth-of-type(137), #white .cell:nth-of-type(140), #white .cell:nth-of-type(148), #white .cell:nth-of-type(149), #white .cell:nth-of-type(154), #white .cell:nth-of-type(160), #white .cell:nth-of-type(164), #white .cell:nth-of-type(166), #white .cell:nth-of-type(167), #white .cell:nth-of-type(169), #white .cell:nth-of-type(171), #white .cell:nth-of-type(172), #white .cell:nth-of-type(182), #white .cell:nth-of-type(184), #white .cell:nth-of-type(187), #white .cell:nth-of-type(190), #white .cell:nth-of-type(193), #white .cell:nth-of-type(197), #white .cell:nth-of-type(199), #white .cell:nth-of-type(200), #white .cell:nth-of-type(201), #white .cell:nth-of-type(203), #white .cell:nth-of-type(204), #white .cell:nth-of-type(207), #white .cell:nth-of-type(208), #white .cell:nth-of-type(216), #white .cell:nth-of-type(218), #white .cell:nth-of-type(229), #white .cell:nth-of-type(231), #white .cell:nth-of-type(233), #white .cell:nth-of-type(234), #white .cell:nth-of-type(239), #white .cell:nth-of-type(256), #white .cell:nth-of-type(260), #white .cell:nth-of-type(263), #white .cell:nth-of-type(264), #white .cell:nth-of-type(265), #white .cell:nth-of-type(270), #white .cell:nth-of-type(271), #white .cell:nth-of-type(276), #white .cell:nth-of-type(278), #white .cell:nth-of-type(279), #white .cell:nth-of-type(286), #white .cell:nth-of-type(289), #white .cell:nth-of-type(291), #white .cell:nth-of-type(305), #white .cell:nth-of-type(306), #white .cell:nth-of-type(310), #white .cell:nth-of-type(316), #white .cell:nth-of-type(320), #white .cell:nth-of-type(323), #white .cell:nth-of-type(325), #white .cell:nth-of-type(333), #white .cell:nth-of-type(335), #white .cell:nth-of-type(338), #white .cell:nth-of-type(354), #white .cell:nth-of-type(359), #white .cell:nth-of-type(360) {*/
+  /*background: url(/img/pieces/white1.png);*/
+/*}*/
+
+.black.your-turn .board {
+  cursor: url(/img/pieces/black1.png) 15 15, default;
+}
+
+.white.your-turn .board {
+  cursor: url('/img/pieces/white1.png') 15 15, default;
+}
+
