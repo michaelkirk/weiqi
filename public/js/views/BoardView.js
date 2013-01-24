@@ -53,17 +53,20 @@
       console.log(move, previous_move)
       if(move){
         var cell = this.model.get_cell(move.get('x'), move.get('y'));
-          debugger
+        var overlay = cell.view.$el.find('.jgo_m');
         if(cell.get('holds') == "white")
-          cell.view.$el.css('border','solid 1px black')
+          $(overlay).addClass("circle_b");
         else
-          cell.view.$el.css('border','solid 1px white')
+          $(overlay).addClass("circle_w");
       }
 
       if(previous_move){
         var prev_cell = this.model.get_cell(previous_move.get('x'), previous_move.get('y'));
-        prev_cell.view.$el.css('border', 'none');
-        prev_cell.view.$el.css('border', 'none');
+        var overlay = prev_cell.view.$el.find('.jgo_m');
+        if(prev_cell.get('holds') == "white")
+          overlay.removeClass("circle_b");
+        else
+          overlay.removeClass("circle_w");
       }
     },
     render: function(){
