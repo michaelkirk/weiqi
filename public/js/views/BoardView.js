@@ -40,17 +40,22 @@
       _.bindAll(this, "update_turn");
       this.model.bind("play", this.update_turn);
 
+      if(this.model.moves.last())
+        // since we are setting up the board 
+        // pass the previous move in as the fake "new move"
+        this.update_turn(this.model.moves.last(), null);
+
       this.render();
     },
 
     update_turn: function(move, previous_move) {
+
       if(this.model.whose_turn() == this.player_color) {
         this.$el.addClass("your-turn");
       } else {
         this.$el.removeClass("your-turn");
       }
 
-      console.log(move, previous_move)
       if(move){
         var cell = this.model.get_cell(move.get('x'), move.get('y'));
         var overlay = cell.view.$el.find('.jgo_m');
