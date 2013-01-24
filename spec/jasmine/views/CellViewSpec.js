@@ -27,4 +27,31 @@ describe("CellView", function() {
     });
   });
 
+  describe("marking last plays", function() {
+    it("should mark a black circle if white played last", function() {
+      board.play_black(0,0);
+      board.play_white(0,1);
+      var cell_view = board.get_cell(0, 1).view;
+      expect(cell_view.$el.find('.jgo_m').hasClass('circle_b')).toBeTruthy()
+    });
+    it("should mark a white circle if black played last", function() {
+      board.play_black(0,0);
+      board.play_white(0,1);
+      board.play_black(0,2);
+      var cell_view = board.get_cell(0, 2).view;
+      expect(cell_view.$el.find('.jgo_m').hasClass('circle_w')).toBeTruthy()
+    });
+    it("should should remove a mark after playing yet another piece", function() {
+      board.play_black(0,0);
+      board.play_white(0,1);
+      // check the very first piece
+      var cell_view = board.get_cell(0, 0).view;
+      expect(cell_view.$el.find('.jgo_m').hasClass('circle_w')).toBeFalsy()
+      board.play_black(0,2);
+      // check the second to last 
+      cell_view = board.get_cell(0, 1).view;
+      expect(cell_view.$el.find('.jgo_m').hasClass('circle_b')).toBeFalsy()
+    });
+  });
+
 });
