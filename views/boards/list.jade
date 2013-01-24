@@ -2,8 +2,9 @@ extends ../layout
 
 block container
   #app.front
-    h1 Weiqi
     .start
-      form(method="post", action="/boards")
-        input(type="submit", value="start a game")
+      h1 Weiqi
 
+      form(method="post", action="/boards")
+        input(type="hidden", name="board_size", value=19)
+        input(type="submit", value="start a big game")

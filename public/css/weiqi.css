@@ -1,26 +1,54 @@
 body {
   font-family: Helvetica, Arial, Sans;
-  background-color: #dfdfdf;
+  min-height: 800px;
+  width: 100%;
+}
+
+html {
+  background: white url(/img/billie_holiday.png);
+}
+
+.console .banner {
+  color: #444;
 }
 
 #container {
-  border-left: solid #aaa 1px;
-  border-right: solid #aaa 1px;
   min-height: 100%;
-  background-color: white;
-  width: 960px;
+  width: 1020px;
   margin-left: auto;
   margin-right: auto;
 }
 
+.board {
+  float: right;
+}
+
+.console .banner p {
+  position: relative;
+  font-size: 20px;
+  font-weight: 800;
+  top: 35px;
+}
+
+.black .console .banner p {
+  letter-spacing: 3px;
+  left: 87px;
+}
+
+.white .console .banner p {
+  left: -1px;
+}
+
 .console {
   float: right;
-  width: 252px;
+  width: 200px;
   padding: 30px;
 }
 
 #app.front h1 {
-  margin-top: 200px;
+  margin-top: 100px;
+  font-size: 140px;
+  color: #333;
 }
 
 h1 {
@@ -29,6 +57,7 @@ h1 {
   text-align: center;
   font-size: 90px;
   font-weight: 800;
+  text-shadow: 0px 0px 1px black;
 }
 
 .start {
@@ -80,13 +109,5 @@ h1 {
 .start:active input[type=submit]{
   position:relative;
   top:1px;
-}
-
-.black.your-turn .board {
-  cursor: url('/jgo/normal/black.png') 15 15, default;
-}
-
-.white.your-turn .board {
-  cursor: url('/jgo/normal/white.png') 15 15, default;
 }
 
