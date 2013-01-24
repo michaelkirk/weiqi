@@ -21,6 +21,7 @@
 
       this.$el.addClass('cell');
       this.$el.attr('style', 'top: ' + this.y + 'px; left: ' + this.x + 'px;')
+      this.$el.append($('<div class="jgo_m" style="height:30px; width:30px;"></div>'));
     },
     events: {
       "click": "play"
