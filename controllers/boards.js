@@ -28,7 +28,9 @@ module.exports = function(app){
     player.fetch().then(function() {
       board_id = player.get('board_id');
       board = new weiqi.Board({ id: board_id });
-      return board.fetch();
+      return board.fetch().then(function(json){
+        console.log('these widths should match', board.get('width'), json.width)
+      });
     }).then(function() {
       console.log("board width in controller is " + board.get('width'));
       if(req.params.format == 'json') {
