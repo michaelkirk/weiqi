@@ -18,6 +18,7 @@ var _init = function (weiqi) {
         event.initEvent("board-update", true, true);
         dispatchEvent(event);
         if(!board.moves.is_same_as_last_move(new weiqi.Move(move_data)))
+          // this is a received replay of an opponent move
           board.play(move_data.color, move_data.x, move_data.y, true)
       });
 
