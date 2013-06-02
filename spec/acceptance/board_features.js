@@ -214,9 +214,6 @@ describe("Boards", function() {
       });
   });
 
-
-
-
   it("should syndicate updates to everyone watching.", function(done) {
     var black_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
     var white_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
@@ -312,7 +309,6 @@ describe("Boards", function() {
           },
           function() {
             //assert that white player was denied.
-            debugger
             assert.ok(white_browser.text("body").match(/already claimed/), "only first visit should claim an invitation");
             done();
           }

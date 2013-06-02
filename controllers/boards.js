@@ -30,7 +30,6 @@ module.exports = function(app){
       board = new weiqi.Board({ id: board_id });
       return board.fetch();
     }).then(function(fetched_board) {
-      console.log("board width in controller is " + board.get('width'));
       if(req.params.format == 'json') {
         res.set('Content-Type', 'application/json');
         res.set('Cache-Control', 'no-cache');
@@ -54,7 +53,6 @@ module.exports = function(app){
 
   boards.create = function(req, res){
     var board = new weiqi.Board({ width: req.body.board_size });
-    console.log(board.get('width'));
     board.save()
       .then(function(){
         return board.find_white_player_id();
@@ -77,7 +75,6 @@ module.exports = function(app){
       board.play(req.body.color, req.body.x, req.body.y);
       return board.save();
     }).then(function(saved_board){
-      debugger
       res.on('finish', function(){
         app.io.sockets.in(saved_board.id).emit('board-update');
       });

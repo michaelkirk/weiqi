@@ -31,13 +31,15 @@ Install WeiQi
 
     $> git clone git@github.com:michaelkirk/weiqi.git && cd weiqi
     $> npm install
-    $> node app.js
+    $> sudo npm install supervisor -g
+    $> make server
+
 
 Tests
 =====
 To run the client specs, point your browser to: file://&lt;project directory&gt;/spec/jasmine/SpecRunner.html
 
-    $> node app.js & # server must be running
+    $> make server &
 
 To run the acceptance suite
     $> sudo npm install -g mocha
