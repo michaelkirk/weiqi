@@ -30,6 +30,7 @@ module.exports = function(app){
       board = new weiqi.Board({ id: board_id });
       return board.fetch();
     }).then(function(fetched_board) {
+      fetched_board.id = board_id;
       if(req.params.format == 'json') {
         res.set('Content-Type', 'application/json');
         res.set('Cache-Control', 'no-cache');
