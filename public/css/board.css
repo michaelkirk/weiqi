@@ -18,8 +18,8 @@
 .board9 {
   background: url(/img/board9.jpg);
   background-position: -6px -6px;
-  width: 375px;
-  height: 375px;
+  width: 370px;
+  height: 370px;
 }
 
 .black.cell {
