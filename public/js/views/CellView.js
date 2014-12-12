@@ -13,13 +13,13 @@
       _.bindAll(this, "render");
       this.model.bind("change", this.render);
 
-      x_offset = 30;
-      y_offset = 35;
+      x_offset = 28;
+      y_offset = 28;
 
-      this.x = this.model.get("x") * 31 + x_offset;
-      this.y = this.model.get("y") * 32.75 + y_offset;
+      this.x = this.model.get("x") * 33.9 + x_offset;
+      this.y = this.model.get("y") * 33.9 + y_offset;
 
-      this.$el.addClass('jgo_c');
+      this.$el.addClass('cell');
       this.$el.attr('style', 'top: ' + this.y + 'px; left: ' + this.x + 'px;')
     },
     events: {
@@ -36,16 +36,16 @@
     },
     render: function() {
       if(this.model.get('holds') == 'black') {
-        this.$el.removeClass('jgo_w');
-        this.$el.addClass('jgo_b');
+        this.$el.removeClass('white');
+        this.$el.addClass('black');
       }
       else if(this.model.get('holds') == 'white') {
-        this.$el.removeClass('jgo_b');
-        this.$el.addClass('jgo_w');
+        this.$el.removeClass('black');
+        this.$el.addClass('white');
       }
       else if (this.model.get('holds') == null) {
-        this.$el.removeClass('jgo_w');
-        this.$el.removeClass('jgo_b');
+        this.$el.removeClass('black');
+        this.$el.removeClass('white');
       }
       return this.$el;
     }

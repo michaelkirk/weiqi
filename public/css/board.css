@@ -1,0 +1,47 @@
+.board {
+  margin: 20px;
+  background-color: #e5dbc8;
+  border-radius: 4px;
+  border: solid #a49688 1px;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+  box-shadow: 2px 2px 15px #888;
+  position: relative;
+}
+
+.board19 {
+  background: url(/img/board19.jpg);
+  width: 700px;
+  height: 700px;
+}
+
+.board9 {
+  background: url(/img/board9.jpg);
+  background-position: -6px -6px;
+  width: 370px;
+  height: 370px;
+}
+
+.black.cell {
+  background: url(/img/pieces/black1.png);
+  background-repeat: no-repeat;
+}
+.white.cell {
+  background: url(/img/pieces/white1.png);
+  background-repeat: no-repeat;
+}
+
+.board .cell {
+  position: absolute;
+  height: 37px;
+  width: 37px;
+}
+
+.black.your-turn .board {
+  cursor: url(/img/pieces/black1.png) 15 15, default;
+}
+
+.white.your-turn .board {
+  cursor: url('/img/pieces/white1.png') 15 15, default;
+}
+

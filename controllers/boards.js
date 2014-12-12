@@ -29,15 +29,16 @@ module.exports = function(app){
       board_id = player.get('board_id');
       board = new weiqi.Board({ id: board_id });
       return board.fetch();
-    }).then(function(black_player_id) {
+    }).then(function(fetched_board) {
+      fetched_board.id = board_id;
       if(req.params.format == 'json') {
         res.set('Content-Type', 'application/json');
         res.set('Cache-Control', 'no-cache');
-        res.send(board.toJSON());
+        res.send(JSON.stringify(fetched_board));
       } else {
         res.render('boards/show', {
           id: req.params.id,
-          board_json: JSON.stringify(board.toJSON()),
+          board_json: JSON.stringify(fetched_board),
           player_color: player.get('color'),
           player_id: player.id,
         });
@@ -52,7 +53,7 @@ module.exports = function(app){
   }; // end boards.show
 
   boards.create = function(req, res){
-    var board = new weiqi.Board()
+    var board = new weiqi.Board({ width: req.body.board_size });
     board.save()
       .then(function(){
         return board.find_white_player_id();
@@ -62,6 +63,7 @@ module.exports = function(app){
         return render_error(error, res);
       });
   }
+
   boards.play = function(req, res) {
     var player, board;
     player = new weiqi.Player({ id: req.params.id });
@@ -69,15 +71,16 @@ module.exports = function(app){
       var board_id = player.get('board_id');
       board = new weiqi.Board({ id: board_id });
       return board.fetch();
-    }).then(function(){
+    }).then(function(fetched_board){
+      board.set(fetched_board);
       board.play(req.body.color, req.body.x, req.body.y);
       return board.save();
-    }).then(function(){
+    }).then(function(saved_board){
       res.on('finish', function(){
-        app.io.sockets.in(board.id).emit('board-update');
+        app.io.sockets.in(saved_board.id).emit('board-update');
       });
       if(req.params.format == 'json') {
-        attributes_string = JSON.stringify(board.toJSON());
+        attributes_string = JSON.stringify(saved_board);
         res.status(200);
         res.set('Content-Type', 'application/json');
         res.send(attributes_string);

@@ -17,16 +17,18 @@
         });
       });
       this.template = _.template('\
+        <div class="board board<%= width %>"> \
+        </div> \
         <div class="console"> \
-          <p>you are</p> \
-          <h1><%= player_color %></h1> \
+          <div class="banner"> \
+            <p>you are</p> \
+            <h1><%= player_color %></h1> \
+          </div> \
           <ul class="share"> \
           </ul> \
         </div> \
-        <div class="board jgo_board"> \
-        </div> \
       ');
-
+      
       this.share_template = _.template('\
         <li class="<%= share_class %>"><%= message %>\
           <a href="<%= url %>"><%= url %></a>\
