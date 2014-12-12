@@ -69,6 +69,25 @@ function assert_piece_played(index, options) {
   report('stone found.');
 }
 
+function make_small_board(the_browser){
+  // TODO replace with something like:
+  //    return weiqi.Board.create();
+  return the_browser.visit("/boards")
+    .then(function(){
+      assert.ok(the_browser.success);
+      var button_text = 'start a small game'
+      assert.ok(the_browser.query("input[type='submit'][value='"+ button_text + "']"));
+      report('successfully rendered board creation form.');
+      return the_browser.pressButton(button_text); 
+    })
+    .then(function(){
+      assert.ok(the_browser.success);
+      assert.ok(the_browser.location.pathname.match(/^\/boards\/[a-f0-9\-]+$/));
+      report('successfully redirected to new board.');
+      return player_id(the_browser);
+    });
+};
+
 function make_board(the_browser){
   // TODO replace with something like:
   //    return weiqi.Board.create();
@@ -129,7 +148,7 @@ describe("Boards", function() {
     return browser.visit(invite_black_url);
   }
 
-  it("should create a playable game", function(done) {
+  it("should create a large playable game", function(done) {
     make_board(browser)
       .then(function(player_id) { return follow_invite(browser) })
       .then(function() {
@@ -162,6 +181,38 @@ describe("Boards", function() {
       });
   });
 
+  it("should create a small playable game", function(done) {
+    make_small_board(browser)
+      .then(function(player_id) { return follow_invite(browser) })
+      .then(function() {
+        assert.ok(browser.success);
+        assert.ok(browser.query('#app .board .cell:nth-child(24)'));
+        report('successfully rendered new board.');
+      })
+      .then(function() {
+        return play_piece(24);
+      })
+      .then(function() {
+        assert.ok(browser.success);
+        assert_piece_played(24, { color: "black" });
+        report('successfully placed a stone.');
+        return player_id(browser);
+      })
+      .then(function(player_id) {
+        return browser.reload();
+      })
+      .then(function(){
+        assert.ok(browser.success);
+        assert_piece_played(24, { color: "black" });
+        report('successfully saved and reloaded the board intact');
+      })
+      .then(function(){
+        done();
+      })
+      .fail(function(error){
+        report("test failure: " + error);
+      });
+  });
 
   it("should syndicate updates to everyone watching.", function(done) {
     var black_browser = new Zombie({ site: 'http://localhost:3000', silent: false});
@@ -258,7 +309,6 @@ describe("Boards", function() {
           },
           function() {
             //assert that white player was denied.
-            debugger
             assert.ok(white_browser.text("body").match(/already claimed/), "only first visit should claim an invitation");
             done();
           }

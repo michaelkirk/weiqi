@@ -17,6 +17,8 @@
         });
       });
       this.template = _.template('\
+        <div class="board board<%= width %>"> \
+        </div> \
         <div class="console"> \
           <div class="banner"> \
             <p>you are</p> \
@@ -24,8 +26,6 @@
           </div> \
           <ul class="share"> \
           </ul> \
-        </div> \
-        <div class="board board<%= width %>"> \
         </div> \
       ');
       
