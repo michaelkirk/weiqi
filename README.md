@@ -14,10 +14,10 @@ Installation
 Prerequisites
 -------------
 
-### node
-    $> git clone https://github.com/joyent/node
-    $> cd node
-    $> ./configure && make && make install
+### node & nvm
+    # install nvm: https://github.com/creationix/nvm
+    $> nvm install 0.8
+    $> nvm use 0.8
 
 ### npm
     $> curl http://npmjs.org/install.sh | sudo sh
