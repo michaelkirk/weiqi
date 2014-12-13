@@ -19,7 +19,7 @@
     "redis" : "latest",
     "hiredis" : "latest",
     "cookie" : "latest",
-    "connect-redis" : "latest",
+    "connect-redis" : "1.4.7",
     "q":"latest",
     "node-uuid":"latest"
   },
