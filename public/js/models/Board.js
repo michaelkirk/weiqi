@@ -77,13 +77,13 @@ var _init = function(weiqi){
     },
     whose_turn: function() {
       //black goes first
-      if (this.get("last_played") == undefined || this.get("last_played") == "white") { 
+      if (this.get("last_played") == undefined || this.get("last_played").color == "white") { 
         return "black";
       } else {
         return "white";
       }
     },
-    play: function(color, x, y) {
+    play: function(color, x, y, replay) {
       if (this.whose_turn() != color) { throw new weiqi.IllegalMoveError("It's not your turn.") }
 
       var move = new weiqi.Move({x: x, y: y, color: color, num: this.moves.length});
@@ -91,20 +91,23 @@ var _init = function(weiqi){
         throw new weiqi.IllegalMoveError("Forbidden by the rule of ko.") 
       } else {
         if (this.get_cell(x, y).play(color)) {
+          var previous_move = this.get('last_played') && new weiqi.Move(this.get('last_played'));
           this.moves.add(move);
           var cells_attr = this.get('cells');
           cells_attr[x][y].holds = color;
           this.set({ 
             cells: cells_attr,
-            last_played: color,
+            last_played: move.toJSON(),
             move_count: this.get('move_count') + 1
           });
+          this.trigger('play', move, previous_move)
         }
       }
 
       this.remove_dead_groups(this.get_cell(x,y));
 
-      return move.save()
+      if(!replay)
+        return move.save();
     },
     play_black: function(x,y) {
       return this.play("black", x, y);
