@@ -42,7 +42,7 @@ To run the client specs, point your browser to: file://&lt;project directory&gt;
     $> make server &
 
 To run the acceptance suite
-    $> sudo npm install -g mocha
+    $> npm install -g mocha
     $> make test
 
 Deployment
