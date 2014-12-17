@@ -14,10 +14,10 @@ Installation
 Prerequisites
 -------------
 
-### node
-    $> git clone https://github.com/joyent/node
-    $> cd node
-    $> ./configure && make && make install
+### node & nvm
+    # install nvm: https://github.com/creationix/nvm
+    $> nvm install 0.8
+    $> nvm use 0.8
 
 ### npm
     $> curl http://npmjs.org/install.sh | sudo sh
@@ -42,7 +42,7 @@ To run the client specs, point your browser to: file://&lt;project directory&gt;
     $> make server &
 
 To run the acceptance suite
-    $> sudo npm install -g mocha
+    $> npm install -g mocha
     $> make test
 
 Deployment
