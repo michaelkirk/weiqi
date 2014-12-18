@@ -91,7 +91,8 @@ var _init = function(weiqi){
         throw new weiqi.IllegalMoveError("Forbidden by the rule of ko.") 
       } else {
         if (this.get_cell(x, y).play(color)) {
-          this.moves.add(move);
+          // push to end of list
+          this.moves.push(move);
           var cells_attr = this.get('cells');
           cells_attr[x][y].holds = color;
           this.set({ 
