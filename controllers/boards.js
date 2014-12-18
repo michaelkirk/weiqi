@@ -24,7 +24,7 @@ module.exports = function(app){
   boards.show = function(req, res){
     var player, board_id, board;
 
-    player = new weiqi.Player({ id: req.params.id });
+    player = new weiqi.Player({ _id: req.params.id });
     player.fetch().then(function() {
       board_id = player.get('board_id');
       board = new weiqi.Board({ id: board_id });
@@ -56,9 +56,9 @@ module.exports = function(app){
     var board = new weiqi.Board({ width: req.body.board_size });
     board.save()
       .then(function(){
-        return board.find_white_player_id();
-      }).then(function(white_player_id) {
-        res.redirect(302, '/boards/' + white_player_id);
+        return board.find_white_player();
+      }).then(function(white_player) {
+        res.redirect(302, '/boards/' + white_player.id);
       }).fail(function(error){
         return render_error(error, res);
       });
