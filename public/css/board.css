@@ -45,3 +45,9 @@
   cursor: url('/img/pieces/white1.png') 15 15, default;
 }
 
+.jgo_m {
+  /* Override jgo marker style, it's not centered.*/
+  top: 2px;
+  left: 2px;
+}
+
