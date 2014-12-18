@@ -25,9 +25,10 @@ module.exports = function(app){
     var player, board_id, board;
 
     player = new weiqi.Player({ _id: req.params.id });
+    console.log('playerId', player.id)
     player.fetch().then(function() {
       board_id = player.get('board_id');
-      board = new weiqi.Board({ id: board_id });
+      board = new weiqi.Board({ _id: board_id });
       return board.fetch();
     }).then(function(fetched_board) {
       fetched_board.id = board_id;
@@ -66,10 +67,10 @@ module.exports = function(app){
 
   boards.play = function(req, res) {
     var player, board;
-    player = new weiqi.Player({ id: req.params.id });
+    player = new weiqi.Player({ _id: req.params.id });
     player.fetch().then(function() {
       var board_id = player.get('board_id');
-      board = new weiqi.Board({ id: board_id });
+      board = new weiqi.Board({ _id: board_id });
       return board.fetch();
     }).then(function(fetched_board){
       board.set(fetched_board);
@@ -77,7 +78,7 @@ module.exports = function(app){
       return board.save();
     }).then(function(saved_board){
       res.on('finish', function(){
-        app.io.sockets.in(saved_board.id).emit('board-update');
+        app.io.sockets.in(board.id).emit('board-update');
       });
       if(req.params.format == 'json') {
         attributes_string = JSON.stringify(saved_board);
