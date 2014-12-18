@@ -45,9 +45,23 @@
   cursor: url('/img/pieces/white1.png') 15 15, default;
 }
 
-.jgo_m {
-  /* Override jgo marker style, it's not centered.*/
-  top: 2px;
-  left: 2px;
+.jgo_m.circle_b, .jgo_m.circle_w {
+  height: 11px;
+  width: 11px;
+  top: 10px;
+  left: 10px;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 9px;
+  background-image: none;
+  opacity: 0.7;
+}
+
+.jgo_m.circle_b {
+  border-color: black;
+}
+
+.jgo_m.circle_w {
+  border-color: white;
 }
 
