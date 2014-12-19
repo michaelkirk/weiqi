@@ -9,12 +9,11 @@
     initialize: function(options) {
       options = options || {}
       this.player_color = options['player_color'];
-      this.cell_views = [];
+      this.cell_views = {};
       var board_view = this;
-      _.each(this.model.cells, function(rows) {
-        _.each(rows, function(cell) {
-          board_view.cell_views.push(new weiqi.CellView({model: cell, board_view: board_view}));
-        });
+      _.each(_.flatten(this.model.cells), function(cell) {
+        new_cell_view = new weiqi.CellView({model: cell, board_view: board_view});
+        board_view.cell_views[board_view._cell_view_key(cell.get('x'), cell.get('y'))] = new_cell_view
       });
       this.template = _.template('\
         <div class="board board<%= width %>"> \
@@ -40,18 +39,35 @@
 
       this.render();
     },
+    _cell_view_key: function(x, y) { return x + '-' + y}, 
+    get_cell_view: function(x, y) {
+      if(x < this.model.get('width') && y < this.model.get('width')){
+        return this.cell_views[this._cell_view_key(x, y)];
+      }
+      else {
+        throw new Error("attempting to accessing outside of game board");
+      }
+    },
     update_turn: function() {
       if(this.model.whose_turn() == this.player_color) {
         this.$el.addClass("your-turn");
       } else {
         this.$el.removeClass("your-turn");
       }
+      this.indicate_latest_move();
+
+    },
+    indicate_latest_move: function(){
+
+      var latest_move = this.model.moves.last();
 
       $('.jgo_m', this.$el).removeClass('circle_b').removeClass('circle_w');
-      var latest_move = this.model.moves.last();
       if(latest_move){
+
         var cell = this.model.get_cell(latest_move.get('x'), latest_move.get('y'));
-        var overlay = cell.view.$el.find('.jgo_m');
+        var cell_view = this.get_cell_view(latest_move.get('x'), latest_move.get('y'));
+
+        var overlay = cell_view.$el.find('.jgo_m');
         if(cell.get('holds') == "white")
           $(overlay).addClass("circle_b");
         else
@@ -78,9 +94,6 @@
 
       var board_view = this;
       _.each(this.cell_views, function(cell_view) {
-        // make sure we keep reverse references across 'board-update' events
-        // the 'cells' attr of the Board isntance is being reset
-        cell_view.model.view = cell_view;
         $(".board", board_view.$el).append(cell_view.render());
       });
       return this.$el;

@@ -19,6 +19,16 @@ describe("Cell", function() {
     });
   });
 
+  describe("#cells", function() {
+    it("should fetch cells", function() {
+      expect(board.get_cell(2, 3)).toEqual(board.cells[2][3]);
+    });
+    it("should do boundary checking", function() {
+      expect(function() {
+        board.get_cell(20, 9)
+      }).toThrow();
+    });
+  });
   describe("#play", function() {
     describe("when the cell is empty", function() {
       beforeEach(function() {
