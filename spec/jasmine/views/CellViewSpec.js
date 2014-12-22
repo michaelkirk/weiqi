@@ -29,7 +29,7 @@ describe("CellView", function() {
 
   describe("#cell_views", function() {
     it("should fetch cells", function() {
-      expect(board_view.get_cell_view(2, 3)).toEqual(board_view.cell_views[2 + '-' +3]);
+      expect(board_view.get_cell_view(2, 3)).toEqual(board_view.cell_views[2][3]);
     });
     it("should do boundary checking", function() {
       expect(function() {

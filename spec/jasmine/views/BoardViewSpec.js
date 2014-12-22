@@ -5,7 +5,7 @@ describe("BoardView", function() {
       var board = new weiqi.Board();
       var $el = $('<div>');
       var board_view = new weiqi.BoardView({model: board, el: $el});
-      expect(_.values(board_view.cell_views).length).toEqual(board.get('width') * board.get('width'));
+      expect(_.flatten(board_view.cell_views).length).toEqual(board.get('width') * board.get('width'));
     });
   });
 
