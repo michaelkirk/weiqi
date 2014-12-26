@@ -4,6 +4,17 @@ var mongo_promise = require('../../../../lib/persistence/mongo/client.js');
 
 describe("Player", function() {
 
+  beforeEach(function(done){
+    Player.find_by_board_id_and_color('fake-boarduid-----------', 'black').then(function(player){
+      return player.delete();
+    }).then(function(){
+      done(); 
+    }).fail(function(err){
+      done(err);
+    })
+
+  })
+
   describe("#create", function() {
     it('should be possible to create and fetch a Player', function(done) {
       var mock_board_id = "fake-boarduid-----------"
