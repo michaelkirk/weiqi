@@ -167,7 +167,7 @@ var _init = function(weiqi){
       return this.urlRoot + '/' + this.player_id + '.' + 'json';
     },
     invitation_url: function() {
-      return location.host + "/invitations/" + this.get('invitation_id');
+      return '//' + location.host + "/invitations/" + this.get('invitation_id');
     },
     urlRoot: '/boards'
 
