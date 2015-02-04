@@ -26,24 +26,14 @@ app.configure(function(){
   //and then accessing it via app.redis_client?
 
   // express.js < 4
-  var mongoStore = require('connect-mongo')(express);
-  var mongo_client = require('./lib/persistence/mongo/client.js')
-
+  var MongoStore = require('connect-mongo')(express);
+  var mongoUrl = process.env.DATABASE_URL || "mongodb://localhost:27017/weiqi"
+  var mongoStore = new MongoStore({ url: mongoUrl });
 
   app.use(express.session({
-    store: new mongoStore({
-      db: (process.env.DATABASE_NAME || "weiqi")
-      // defaults:
-      /*  host: '127.0.0.1',
-        port: 27017,
-        stringify: true,
-        collection: 'sessions',
-        auto_reconnect: false,
-        ssl: false,
-        w: 1,
-        defaultExpirationTime:  1000 * 60 * 60 * 24 * 14  */
-    })
+    store: mongoStore
   }));
+
   app.use(app.router);
   // app.use(require('less-middleware')({ src: __dirname + '/public' }));
   app.use(express.static(path.join(__dirname, 'public')));
