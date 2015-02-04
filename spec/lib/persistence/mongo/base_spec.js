@@ -4,8 +4,8 @@ var underscore = require('underscore');
 var Backbone = require('backbone');
 
 describe('Base', function() {
-  it("should provide a way to save a fetch models to redis", function(done) {
-    var SomeModel = Base({ model: Backbone.Model.extend({collection_name: "some_models"}),  name: 'some_model' });
+  it("saves and retrieves a model using mongo", function(done) {
+    var SomeModel = Base({ model: Backbone.Model.extend({collection_name: "some_models"}) });
 
     var some_instance = new SomeModel({ some_attr: 'some_value' });
     var some_other_instance;
