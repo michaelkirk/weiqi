@@ -1,9 +1,9 @@
 name             'weiqi-chef'
-maintainer       'YOUR_NAME'
-maintainer_email 'YOUR_EMAIL'
+maintainer       'Sam Vevang'
+maintainer_email 'sam.vevang@gmail.com'
 license          'All rights reserved'
-description      'Installs/Configures weiqi-chef'
-long_description 'Installs/Configures weiqi-chef'
+description      'Installs a development env for weiqi'
+long_description 'Installs a development env for weiqi as part of a vagrant dev environment'
 version          '0.1.0'
 
 depends "apt"
