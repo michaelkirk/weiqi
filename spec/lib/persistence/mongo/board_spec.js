@@ -4,7 +4,7 @@ var weiqi = require('../../../../lib/weiqi-models.js');
 
 describe("Board", function() {
   describe("#create", function() {
-    it("should have a UUID pk", function() {
+    it("generates an id", function() {
       var board = new weiqi.Board();
       board.save();
       var mongo_id_regex =/^[0-9a-f]{24}$/
