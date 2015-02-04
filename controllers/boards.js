@@ -25,7 +25,6 @@ module.exports = function(app){
     var player, board_id, board;
 
     player = new weiqi.Player({ _id: req.params.id });
-    console.log('playerId', player.id)
     player.fetch().then(function() {
       board_id = player.get('board_id');
       board = new weiqi.Board({ _id: board_id });

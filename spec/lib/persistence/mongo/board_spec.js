@@ -50,7 +50,6 @@ describe("Board", function() {
         return board.find_white_player();
       }).then(function(white_player_result) {
         var mongo_id_regex =/^[0-9a-f]{24}$/
-        console.log('white player', white_player_result)
         assert.ok(white_player_result.id.match(mongo_id_regex), "white_player_id didn't look like a mongo id");
         done();
       }).fail(function(error) {

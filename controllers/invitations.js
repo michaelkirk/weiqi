@@ -12,7 +12,6 @@ module.exports = {
       } else {
         return invitation.claim().then(function() {
           var board_id = invitation.get('board_id');
-          console.log('board_id', board_id)
           board = new weiqi.Board({ _id: board_id });
           return board.fetch();
         }).then(function() {
