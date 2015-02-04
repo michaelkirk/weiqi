@@ -14,16 +14,30 @@ Installation
 Prerequisites
 -------------
 
-### node
-    $> git clone https://github.com/joyent/node
-    $> cd node
-    $> ./configure && make && make install
+### node & nvm
+    # install nvm: https://github.com/creationix/nvm
+    $> nvm install 0.8
+    $> nvm use 0.8
 
 ### npm
     $> curl http://npmjs.org/install.sh | sudo sh
 
 ### Redis
     $> sudo apt-get install redis-server
+
+
+Vagrant
+-------
+
+As an alternative to the above steps you can use vagrant. Make sure
+an up-to-date vagrant and chef-dk are installed and run the folowing commands:
+
+    $> vagrant plugin install vagrant-berkshelf
+    $> vagrant plugin install vagrant-omnibus
+
+Lastly, bring the box up and provision it:
+
+    $> vagrant up
 
 
 Install WeiQi
@@ -42,7 +56,7 @@ To run the client specs, point your browser to: file://&lt;project directory&gt;
     $> make server &
 
 To run the acceptance suite
-    $> sudo npm install -g mocha
+    $> npm install -g mocha
     $> make test
 
 Deployment

@@ -5,7 +5,7 @@ describe("BoardView", function() {
       var board = new weiqi.Board();
       var $el = $('<div>');
       var board_view = new weiqi.BoardView({model: board, el: $el});
-      expect(board_view.cells.length).toEqual(board.get('width') * board.get('width'));
+      expect(_.flatten(board_view.cell_views).length).toEqual(board.get('width') * board.get('width'));
     });
   });
 
@@ -41,14 +41,14 @@ describe("BoardView", function() {
     var board_view = new weiqi.BoardView({ model: board, el: $el });
 
     it("should render each of it's cells", function() {
-      spyOn(board_view.cells[0], 'render');
+      spyOn(board_view.get_cell_view(0, 0), 'render');
       //spot check
-      spyOn(board_view.cells[20], 'render');
+      spyOn(board_view.get_cell_view(1, 0), 'render');
 
       board_view.render();
 
-      expect(board_view.cells[0].render).toHaveBeenCalled();
-      expect(board_view.cells[20].render).toHaveBeenCalled();
+      expect(board_view.get_cell_view(0, 0).render).toHaveBeenCalled();
+      expect(board_view.get_cell_view(1, 0).render).toHaveBeenCalled();
     });
 
     describe("when it's the white player's board", function() {

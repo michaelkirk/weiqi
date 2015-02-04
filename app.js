@@ -21,18 +21,19 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser('yae2ieghiegh7Ahdie4U'));
 
-  //TODO doing this makes redis_client local, and not in the scope of the
+  //TODO doing this makes mongo_client local, and not in the scope of the
   //boards controller. Is there a better way to do this? E.g. an explicit export
   //and then accessing it via app.redis_client?
-  //var redis_client;
-  //The other problem is that there is "offline" code that needs access to the
-  //redis_client without the express app. Here I have broken the client code out
-  var redisStore = require('connect-redis')(express);
-  var redis_client = require('./lib/persistence/redis/client.js')
+
+  // express.js < 4
+  var MongoStore = require('connect-mongo')(express);
+  var mongoUrl = process.env.DATABASE_URL || "mongodb://localhost:27017/weiqi"
+  var mongoStore = new MongoStore({ url: mongoUrl });
 
   app.use(express.session({
-    store: new redisStore({client: redis_client})
+    store: mongoStore
   }));
+
   app.use(app.router);
   // app.use(require('less-middleware')({ src: __dirname + '/public' }));
   app.use(express.static(path.join(__dirname, 'public')));
@@ -49,7 +50,7 @@ app.locals({
 });
 
 app.configure('development', function(){
-  app.use(express.errorHandler());
+  app.use(express.errorHandler({dumpExceptions: true, showStack: true }))
 });
 
 // build weiqi routes

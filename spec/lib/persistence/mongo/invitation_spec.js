@@ -4,7 +4,7 @@ var Invitation = require('../../../../lib/weiqi-models').Invitation;
 describe('Invitation', function() {
   var invitation;
   beforeEach(function() {
-    invitation = new weiqi.Invitation();
+    invitation = new Invitation();
   });
 
   describe("#is_claimed", function() {

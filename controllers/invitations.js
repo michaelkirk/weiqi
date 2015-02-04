@@ -2,7 +2,7 @@ var weiqi = require('../lib/weiqi-models.js')
 
 module.exports = {
   show: function(request, response) {
-    var invitation = new weiqi.Invitation({ id: request.params.id });
+    var invitation = new weiqi.Invitation({ _id: request.params.id });
     var board;
     invitation.fetch().then(function() {
       if (invitation.is_claimed()) { 
@@ -12,12 +12,12 @@ module.exports = {
       } else {
         return invitation.claim().then(function() {
           var board_id = invitation.get('board_id');
-          board = new weiqi.Board({ id: board_id });
+          board = new weiqi.Board({ _id: board_id });
           return board.fetch();
         }).then(function() {
-          return board.find_black_player_id();
-        }).then(function(black_player_id) {
-          response.redirect(302, "/boards/" + black_player_id);
+          return board.find_black_player();
+        }).then(function(black_player) {
+          response.redirect(302, "/boards/" + black_player.id);
         }).done();
       }
     }).done();
