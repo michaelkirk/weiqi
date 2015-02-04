@@ -17,8 +17,7 @@ package "git"
 package "vim"
 package "curl"
 package "ack-grep"
-package "redis-server"
-
+package "mongodb-server"
 
 bash "install nvm" do
   user "vagrant"
