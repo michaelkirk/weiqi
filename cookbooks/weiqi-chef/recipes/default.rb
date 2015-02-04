@@ -34,13 +34,13 @@ end
 
 bash "install node versions" do
   user "vagrant"
-  code "source /home/vagrant/.nvm/nvm.sh && nvm install 0.8"
-  not_if "source /home/vagrant/.nvm/nvm.sh && nvm list | grep 0.8"
+  code "source /home/vagrant/.nvm/nvm.sh && nvm install 0.10"
+  not_if "source /home/vagrant/.nvm/nvm.sh && nvm list | grep 0.10"
 end
 
-bash "use 0.8 node by default" do
+bash "use 0.10 node by default" do
   user "vagrant"
-  code "echo 'nvm use 0.8' >> /home/vagrant/.bashrc"
-  not_if "grep 'nvm use 0.8' /home/vagrant/.bashrc"
+  code "echo 'nvm use 0.10' >> /home/vagrant/.bashrc"
+  not_if "grep 'nvm use 0.10' /home/vagrant/.bashrc"
 end
 
