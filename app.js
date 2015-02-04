@@ -32,7 +32,7 @@ app.configure(function(){
 
   app.use(express.session({
     store: new mongoStore({
-      db: "weiqi"
+      db: ("weiqi" || process.env.DATABASE_NAME)
       // defaults:
       /*  host: '127.0.0.1',
         port: 27017,
